@@ -1,167 +1,74 @@
 import { useState, useEffect, useRef } from "react";
 
-const LogoSVG = () => (
-  <svg width="56" height="56" viewBox="0 0 120 120">
+/* ─── LOGO ─── */
+const LogoSVG = ({ size = 56 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 120 120">
     <rect width="120" height="120" fill="#0D2F5E" rx="6"/>
-    <text x="60" y="13" textAnchor="middle" fontFamily="Arial" fontSize="7.5"
-          fill="#7EC8A0" fontWeight="700" letterSpacing="0.3">HIGIENE OCUPACIONAL</text>
-    <text x="60" y="22" textAnchor="middle" fontFamily="Arial" fontSize="7.5"
-          fill="#7EC8A0" fontWeight="700" letterSpacing="0.3">Y MEDIO AMBIENTE</text>
-    <circle cx="60" cy="58" r="30" fill="none" stroke="#2E7D32" strokeWidth="2.5"/>
-    <ellipse cx="60" cy="58" rx="30" ry="12" fill="none" stroke="#2E7D32" strokeWidth="1.5"/>
-    <ellipse cx="60" cy="58" rx="12" ry="30" fill="none" stroke="#2E7D32" strokeWidth="1.5"/>
-    <circle cx="60" cy="58" r="18" fill="#0D2F5E" stroke="#2E7D32" strokeWidth="2"/>
-    <text x="60" y="64" textAnchor="middle" fontFamily="Arial Black" fontWeight="900"
-          fontSize="16" fill="#ffffff" letterSpacing="1">EEA</text>
-    <text x="60" y="96" textAnchor="middle" fontFamily="Arial" fontSize="7"
-          fill="#ffffff" fontWeight="700" letterSpacing="0.3">ENVIRONMENTAL</text>
-    <text x="60" y="105" textAnchor="middle" fontFamily="Arial" fontSize="7"
-          fill="#ffffff" fontWeight="700" letterSpacing="0.3">EXPRESS ARGENTINA</text>
-    <circle cx="103" cy="103" r="12" fill="#2E7D32"/>
-    <text x="103" y="108" textAnchor="middle" fontFamily="Arial" fontSize="14"
-          fill="#ffffff" fontWeight="900">✓</text>
+    <text x="60" y="14" textAnchor="middle" fontFamily="Arial" fontSize="7.5"
+          fill="#7EC8A0" fontWeight="700">HIGIENE OCUPACIONAL</text>
+    <text x="60" y="23" textAnchor="middle" fontFamily="Arial" fontSize="7.5"
+          fill="#7EC8A0" fontWeight="700">Y MEDIO AMBIENTE</text>
+    <circle cx="60" cy="59" r="30" fill="none" stroke="#2E7D32" strokeWidth="2.5"/>
+    <ellipse cx="60" cy="59" rx="30" ry="12" fill="none" stroke="#2E7D32" strokeWidth="1.5"/>
+    <ellipse cx="60" cy="59" rx="12" ry="30" fill="none" stroke="#2E7D32" strokeWidth="1.5"/>
+    <circle cx="60" cy="59" r="18" fill="#0D2F5E" stroke="#2E7D32" strokeWidth="2"/>
+    <text x="60" y="65" textAnchor="middle" fontFamily="Arial Black"
+          fontWeight="900" fontSize="16" fill="#ffffff">EEA</text>
+    <text x="60" y="97" textAnchor="middle" fontFamily="Arial" fontSize="7"
+          fill="#ffffff" fontWeight="700">ENVIRONMENTAL</text>
+    <text x="60" y="106" textAnchor="middle" fontFamily="Arial" fontSize="7"
+          fill="#ffffff" fontWeight="700">EXPRESS ARGENTINA</text>
+    <circle cx="104" cy="104" r="11" fill="#2E7D32"/>
+    <text x="104" y="109" textAnchor="middle" fontFamily="Arial"
+          fontSize="13" fill="#fff" fontWeight="900">✓</text>
   </svg>
 );
 
-const services = [
-  { num: "01", icon: "ti-sun", name: "Iluminación laboral", norm: "Resol. SRT 84/2012" },
-  { num: "02", icon: "ti-volume", name: "Ruido y dosimetrías", norm: "Resol. SRT 85/2012" },
-  { num: "03", icon: "ti-temperature", name: "Carga térmica", norm: "Resol. SRT 30/2023" },
-  { num: "04", icon: "ti-snowflake", name: "Estrés por frío", norm: "MTEySS 295/2003" },
-  { num: "05", icon: "ti-bolt", name: "Puesta a tierra", norm: "Resol. SRT 900/2015" },
-  { num: "06", icon: "ti-wind", name: "Ventilación y aspiración", norm: "Caudales y velocidades" },
-  { num: "07", icon: "ti-atom", name: "Agentes químicos", norm: "COVs, plomo, BTEX" },
-  { num: "08", icon: "ti-ruler-measure", name: "Espesores por ultrasonido", norm: "ASME Section VIII" },
-  { num: "09", icon: "ti-activity", name: "Ergonomía y vibraciones", norm: "Mano-brazo y cuerpo entero" },
+/* ─── DATA ─── */
+const slides = [
+  {
+    img: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=80",
+    title: "Especialistas en Higiene y Seguridad en el Trabajo",
+    sub: "Mediciones ambientales y protocolos SRT para su empresa",
+    btn: "Solicitar presupuesto",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1400&q=80",
+    title: "Más de 30 tipos de estudios certificados",
+    sub: "Protocolos oficiales SRT, MTEySS y ASME con informe en 48hs",
+    btn: "Ver servicios",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1400&q=80",
+    title: "Instrumentos calibrados con trazabilidad al INTI",
+    sub: "Resultados confiables para presentar ante ART e inspecciones",
+    btn: "Conocernos",
+  },
 ];
 
-const serviciosInfo = [
-  {
-    titulo: "Iluminación laboral",
-    norma: "Resolución SRT N° 84/2012",
-    descripcion: "Estudio de los niveles de iluminación en los puestos de trabajo para verificar el cumplimiento de los valores mínimos establecidos por la normativa.",
-    items: [
-      "Medición de iluminancia (E) en lux con luxómetro calibrado",
-      "Verificación de E mínima, E máxima y E media por sector",
-      "Control de uniformidad: E mínima ≥ E media / 2",
-      "Clasificación por tipo: general, localizada, natural, artificial, mixta",
-      "Valores de referencia según tarea (ej: oficinas 300 lux, depósitos 100 lux)",
-      "Grilla de puntos de medición según método de la cavidad zonal",
-    ],
-    cuando: "Obligatorio para todos los establecimientos. Se recomienda medir en el período de menor iluminación natural.",
-  },
-  {
-    titulo: "Ruido y dosimetrías",
-    norma: "Resolución SRT N° 85/2012",
-    descripcion: "Evaluación de la exposición ocupacional al ruido para proteger la salud auditiva de los trabajadores.",
-    items: [
-      "Medición con sonómetro integrador Clase 2 (ponderación A, respuesta lenta)",
-      "Dosimetrías con dosímetro personal en puestos variables",
-      "Nivel de presión acústica continuo equivalente (LAeq,Te)",
-      "Evaluación de ruido de impulso: nivel pico ponderado C (LCpico)",
-      "Cálculo de fracción de dosis y dosis acumulada (%)",
-      "Límite: 85 dBA para 8hs, 140 dBC para impulso",
-    ],
-    cuando: "Obligatorio cuando existen fuentes de ruido en el establecimiento. El técnico debe medir con la maquinaria en condiciones normales de operación.",
-  },
-  {
-    titulo: "Carga térmica",
-    norma: "Resolución SRT N° 30/2023",
-    descripcion: "Evaluación del estrés por calor en puestos de trabajo con exposición a ambientes calurosos o fuentes de calor radiante.",
-    items: [
-      "Medición de TGBH (Temperatura de Globo y Bulbo Húmedo)",
-      "Determinación de la Tasa Metabólica (TM en Watts)",
-      "Cálculo de TGBH ponderado para ciclos trabajo/descanso",
-      "Verificación de VLA (Valor Límite de Acción) y VLP (Valor Límite Permisible)",
-      "Evaluación de aclimatación del trabajador",
-      "Aplicación de VAR (Valor de Ajuste por Ropa)",
-    ],
-    cuando: "Obligatorio en tareas con exposición a calor. Debe realizarse en el período de mayor carga térmica del año (verano) y con las fuentes de calor operativas.",
-  },
-  {
-    titulo: "Estrés por frío",
-    norma: "Resolución MTEySS N° 295/2003",
-    descripcion: "Evaluación de la exposición a ambientes fríos en tareas en cámaras frigoríficas, depósitos refrigerados o exteriores en invierno.",
-    items: [
-      "Medición de Temperatura de Bulbo Seco (TBS)",
-      "Medición de velocidad del viento (m/s)",
-      "Cálculo de Temperatura Equivalente de Enfriamiento (TEE)",
-      "Determinación de rangos de peligro según TEE",
-      "Evaluación de ciclos de exposición y recuperación",
-      "Recomendaciones de ropa de abrigo y equipos de protección",
-    ],
-    cuando: "Aplicable en trabajos en cámaras frigoríficas, depósitos de frío, trabajos en exteriores en invierno y cualquier tarea con exposición a bajas temperaturas.",
-  },
-  {
-    titulo: "Puesta a tierra",
-    norma: "Resolución SRT N° 900/2015",
-    descripcion: "Verificación de la continuidad eléctrica de las masas y ensayo de dispositivos de corte automático (disyuntores diferenciales).",
-    items: [
-      "Medición de resistencia de puesta a tierra (en Ohms)",
-      "Ensayo de continuidad eléctrica de las masas metálicas",
-      "Verificación de disyuntores diferenciales (corriente de disparo y tiempo)",
-      "Control de tensión de contacto (no debe superar 24V en locales húmedos)",
-      "Inspección visual de tableros y conexiones",
-      "Certificado según Anexo VI del Dec. 351/79",
-    ],
-    cuando: "Obligatorio anualmente para todos los establecimientos. Imprescindible para presentar ante la ART y organismos de control.",
-  },
-  {
-    titulo: "Ventilación y aspiración",
-    norma: "Decreto 351/79 — Anexo II",
-    descripcion: "Evaluación de los sistemas de ventilación general y aspiración localizada para garantizar calidad de aire y confort térmico.",
-    items: [
-      "Medición de caudales de aire (m³/h) con anemómetro",
-      "Verificación de velocidades de aire en bocas y ductos",
-      "Control de renovaciones de aire por hora según actividad",
-      "Evaluación de campanas de extracción localizada",
-      "Medición de temperatura y humedad relativa del aire",
-      "Verificación de presiones negativas en zonas contaminadas",
-    ],
-    cuando: "Aplicable en industrias con generación de polvo, vapores, gases o donde se requiera control de temperatura y calidad de aire.",
-  },
-  {
-    titulo: "Agentes químicos",
-    norma: "Resolución MTEySS N° 295/2003",
-    descripcion: "Evaluación de la exposición ocupacional a contaminantes químicos en el ambiente de trabajo.",
-    items: [
-      "Muestreo de COVs (Compuestos Orgánicos Volátiles)",
-      "Determinación de plomo en aire y superficies",
-      "Análisis de BTEX (Benceno, Tolueno, Etilbenceno, Xileno)",
-      "Medición de hidrocarburos alifáticos y aromáticos",
-      "Comparación con TLVs (Valores Límite de Umbral — ACGIH)",
-      "Recomendaciones de EPP y controles de ingeniería",
-    ],
-    cuando: "Obligatorio cuando los trabajadores están expuestos a solventes, pinturas, adhesivos, combustibles u otros productos químicos en su jornada laboral.",
-  },
-  {
-    titulo: "Espesores por ultrasonido",
-    norma: "ASME Section VIII — Código API 510",
-    descripcion: "Medición de espesores de recipientes a presión, cañerías y estructuras metálicas mediante ultrasonido para detectar corrosión.",
-    items: [
-      "Medición de espesores con equipo de ultrasonido calibrado",
-      "Detección de zonas de corrosión interna y externa",
-      "Comparación con espesores originales o mínimos admisibles",
-      "Evaluación de velocidad de corrosión (mm/año)",
-      "Aplicable en recipientes a presión, calderas, tanques y cañerías",
-      "Informe con mapa de puntos y recomendación de vida útil",
-    ],
-    cuando: "Obligatorio para recipientes sometidos a presión según SRT. Se recomienda cada 1-3 años según condiciones de operación y resultados previos.",
-  },
-  {
-    titulo: "Ergonomía y vibraciones",
-    norma: "Resolución MTEySS N° 295/2003",
-    descripcion: "Evaluación de la exposición a vibraciones mecánicas transmitidas al sistema mano-brazo y cuerpo entero.",
-    items: [
-      "Medición de vibraciones mano-brazo (herramientas vibrantes)",
-      "Medición de vibraciones cuerpo entero (vehículos, plataformas)",
-      "Cálculo de valor de exposición diario A(8) en m/s²",
-      "Comparación con Valor de Acción (2,5 m/s²) y Valor Límite (5 m/s²)",
-      "Evaluación ergonómica de posturas y movimientos repetitivos",
-      "Recomendaciones de rediseño de puestos y EPP antivibratorio",
-    ],
-    cuando: "Aplicable cuando los trabajadores utilizan herramientas vibrantes (amoladoras, martillos neumáticos, etc.) o trabajan sobre superficies vibrantes (montacargas, tractores).",
-  },
+const quickCards = [
+  { icon: "ti-microscope", title: "Solicitar estudio", desc: "Cotizá tu medición sin cargo" },
+  { icon: "ti-file-text", title: "Ver normativa", desc: "Resoluciones SRT vigentes" },
+  { icon: "ti-phone-call", title: "Contacto directo", desc: "Respondemos en menos de 24hs" },
+];
+
+const services = [
+  { icon: "ti-sun", name: "Iluminación laboral", norm: "Resol. SRT 84/2012", desc: "Niveles de iluminancia en puestos de trabajo" },
+  { icon: "ti-volume", name: "Ruido y dosimetrías", norm: "Resol. SRT 85/2012", desc: "Exposición ocupacional al ruido" },
+  { icon: "ti-temperature", name: "Carga térmica", norm: "Resol. SRT 30/2023", desc: "Estrés por calor en ambientes laborales" },
+  { icon: "ti-snowflake", name: "Estrés por frío", norm: "MTEySS 295/2003", desc: "Exposición a ambientes refrigerados" },
+  { icon: "ti-bolt", name: "Puesta a tierra", norm: "Resol. SRT 900/2015", desc: "Continuidad eléctrica y disyuntores" },
+  { icon: "ti-wind", name: "Ventilación y aspiración", norm: "Decreto 351/79", desc: "Caudales, velocidades y calidad de aire" },
+  { icon: "ti-atom", name: "Agentes químicos", norm: "MTEySS 295/2003", desc: "COVs, plomo, BTEX e hidrocarburos" },
+  { icon: "ti-ruler-measure", name: "Espesores por ultrasonido", norm: "ASME Section VIII", desc: "Detección de corrosión en recipientes" },
+  { icon: "ti-activity", name: "Ergonomía y vibraciones", norm: "MTEySS 295/2003", desc: "Mano-brazo y cuerpo entero" },
+];
+
+const stats = [
+  { value: "+30", label: "Tipos de estudios" },
+  { value: "100%", label: "Normativa SRT" },
+  { value: "48hs", label: "Entrega de informe" },
+  { value: "AHRA", label: "Asociación profesional" },
 ];
 
 const whyItems = [
@@ -182,43 +89,99 @@ const studyOptions = [
   "Varios/consultar",
 ];
 
+const serviciosInfo = [
+  {
+    titulo: "Iluminación laboral", norma: "Resolución SRT N° 84/2012",
+    descripcion: "Estudio de los niveles de iluminación en los puestos de trabajo para verificar el cumplimiento de los valores mínimos establecidos por la normativa.",
+    items: ["Medición de iluminancia (E) en lux con luxómetro calibrado","Verificación de E mínima, E máxima y E media por sector","Control de uniformidad: E mínima ≥ E media / 2","Clasificación por tipo: general, localizada, natural, artificial, mixta","Valores de referencia según tarea (ej: oficinas 300 lux, depósitos 100 lux)","Grilla de puntos de medición según método de la cavidad zonal"],
+    cuando: "Obligatorio para todos los establecimientos. Se recomienda medir en el período de menor iluminación natural.",
+  },
+  {
+    titulo: "Ruido y dosimetrías", norma: "Resolución SRT N° 85/2012",
+    descripcion: "Evaluación de la exposición ocupacional al ruido para proteger la salud auditiva de los trabajadores.",
+    items: ["Medición con sonómetro integrador Clase 2 (ponderación A, respuesta lenta)","Dosimetrías con dosímetro personal en puestos variables","Nivel de presión acústica continuo equivalente (LAeq,Te)","Evaluación de ruido de impulso: nivel pico ponderado C (LCpico)","Cálculo de fracción de dosis y dosis acumulada (%)","Límite: 85 dBA para 8hs, 140 dBC para impulso"],
+    cuando: "Obligatorio cuando existen fuentes de ruido en el establecimiento. El técnico debe medir con la maquinaria en condiciones normales de operación.",
+  },
+  {
+    titulo: "Carga térmica", norma: "Resolución SRT N° 30/2023",
+    descripcion: "Evaluación del estrés por calor en puestos de trabajo con exposición a ambientes calurosos o fuentes de calor radiante.",
+    items: ["Medición de TGBH (Temperatura de Globo y Bulbo Húmedo)","Determinación de la Tasa Metabólica (TM en Watts)","Cálculo de TGBH ponderado para ciclos trabajo/descanso","Verificación de VLA (Valor Límite de Acción) y VLP (Valor Límite Permisible)","Evaluación de aclimatación del trabajador","Aplicación de VAR (Valor de Ajuste por Ropa)"],
+    cuando: "Obligatorio en tareas con exposición a calor. Debe realizarse en el período de mayor carga térmica del año (verano) y con las fuentes de calor operativas.",
+  },
+  {
+    titulo: "Estrés por frío", norma: "Resolución MTEySS N° 295/2003",
+    descripcion: "Evaluación de la exposición a ambientes fríos en tareas en cámaras frigoríficas, depósitos refrigerados o exteriores en invierno.",
+    items: ["Medición de Temperatura de Bulbo Seco (TBS)","Medición de velocidad del viento (m/s)","Cálculo de Temperatura Equivalente de Enfriamiento (TEE)","Determinación de rangos de peligro según TEE","Evaluación de ciclos de exposición y recuperación","Recomendaciones de ropa de abrigo y equipos de protección"],
+    cuando: "Aplicable en trabajos en cámaras frigoríficas, depósitos de frío, trabajos en exteriores en invierno y cualquier tarea con exposición a bajas temperaturas.",
+  },
+  {
+    titulo: "Puesta a tierra", norma: "Resolución SRT N° 900/2015",
+    descripcion: "Verificación de la continuidad eléctrica de las masas y ensayo de dispositivos de corte automático (disyuntores diferenciales).",
+    items: ["Medición de resistencia de puesta a tierra (en Ohms)","Ensayo de continuidad eléctrica de las masas metálicas","Verificación de disyuntores diferenciales (corriente de disparo y tiempo)","Control de tensión de contacto (no debe superar 24V en locales húmedos)","Inspección visual de tableros y conexiones","Certificado según Anexo VI del Dec. 351/79"],
+    cuando: "Obligatorio anualmente para todos los establecimientos. Imprescindible para presentar ante la ART y organismos de control.",
+  },
+  {
+    titulo: "Ventilación y aspiración", norma: "Decreto 351/79 — Anexo II",
+    descripcion: "Evaluación de los sistemas de ventilación general y aspiración localizada para garantizar calidad de aire y confort térmico.",
+    items: ["Medición de caudales de aire (m³/h) con anemómetro","Verificación de velocidades de aire en bocas y ductos","Control de renovaciones de aire por hora según actividad","Evaluación de campanas de extracción localizada","Medición de temperatura y humedad relativa del aire","Verificación de presiones negativas en zonas contaminadas"],
+    cuando: "Aplicable en industrias con generación de polvo, vapores, gases o donde se requiera control de temperatura y calidad de aire.",
+  },
+  {
+    titulo: "Agentes químicos", norma: "Resolución MTEySS N° 295/2003",
+    descripcion: "Evaluación de la exposición ocupacional a contaminantes químicos en el ambiente de trabajo.",
+    items: ["Muestreo de COVs (Compuestos Orgánicos Volátiles)","Determinación de plomo en aire y superficies","Análisis de BTEX (Benceno, Tolueno, Etilbenceno, Xileno)","Medición de hidrocarburos alifáticos y aromáticos","Comparación con TLVs (Valores Límite de Umbral — ACGIH)","Recomendaciones de EPP y controles de ingeniería"],
+    cuando: "Obligatorio cuando los trabajadores están expuestos a solventes, pinturas, adhesivos, combustibles u otros productos químicos en su jornada laboral.",
+  },
+  {
+    titulo: "Espesores por ultrasonido", norma: "ASME Section VIII — Código API 510",
+    descripcion: "Medición de espesores de recipientes a presión, cañerías y estructuras metálicas mediante ultrasonido para detectar corrosión.",
+    items: ["Medición de espesores con equipo de ultrasonido calibrado","Detección de zonas de corrosión interna y externa","Comparación con espesores originales o mínimos admisibles","Evaluación de velocidad de corrosión (mm/año)","Aplicable en recipientes a presión, calderas, tanques y cañerías","Informe con mapa de puntos y recomendación de vida útil"],
+    cuando: "Obligatorio para recipientes sometidos a presión según SRT. Se recomienda cada 1-3 años según condiciones de operación y resultados previos.",
+  },
+  {
+    titulo: "Ergonomía y vibraciones", norma: "Resolución MTEySS N° 295/2003",
+    descripcion: "Evaluación de la exposición a vibraciones mecánicas transmitidas al sistema mano-brazo y cuerpo entero.",
+    items: ["Medición de vibraciones mano-brazo (herramientas vibrantes)","Medición de vibraciones cuerpo entero (vehículos, plataformas)","Cálculo de valor de exposición diario A(8) en m/s²","Comparación con Valor de Acción (2,5 m/s²) y Valor Límite (5 m/s²)","Evaluación ergonómica de posturas y movimientos repetitivos","Recomendaciones de rediseño de puestos y EPP antivibratorio"],
+    cuando: "Aplicable cuando los trabajadores utilizan herramientas vibrantes (amoladoras, martillos neumáticos, etc.) o trabajan sobre superficies vibrantes (montacargas, tractores).",
+  },
+];
+
+/* ─── COMPONENT ─── */
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [slide, setSlide] = useState(0);
   const [modalIndex, setModalIndex] = useState<number | null>(null);
-  const [formData, setFormData] = useState({
-    nombre: "",
-    empresa: "",
-    email: "",
-    telefono: "",
-    estudio: "",
-    mensaje: "",
-  });
+  const [formData, setFormData] = useState({ nombre: "", empresa: "", email: "", telefono: "", estudio: "", mensaje: "" });
 
   const contactRef = useRef<HTMLElement>(null);
+  const serviciosRef = useRef<HTMLElement>(null);
 
+  // Nav scroll
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Slider auto
   useEffect(() => {
-    if (modalIndex !== null) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    const t = setInterval(() => setSlide((s) => (s + 1) % slides.length), 5000);
+    return () => clearInterval(t);
+  }, []);
+
+  // Modal body lock
+  useEffect(() => {
+    document.body.style.overflow = modalIndex !== null ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [modalIndex]);
 
-  const scrollToContact = (e: React.MouseEvent) => {
+  const scrollTo = (ref: React.RefObject<HTMLElement | null>) => (e: React.MouseEvent) => {
     e.preventDefault();
-    contactRef.current?.scrollIntoView({ behavior: "smooth" });
+    ref.current?.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
   };
-
-  const scrollToSection = (id: string) => (e: React.MouseEvent) => {
+  const scrollToId = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
@@ -231,365 +194,251 @@ export default function Home() {
   };
 
   const activeService = modalIndex !== null ? serviciosInfo[modalIndex] : null;
+  const NAV_H = 36 + 72; // topbar + nav
 
   return (
     <>
-      {/* Tabler Icons CDN */}
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"
-      />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
 
-      {/* NAV */}
-      <nav
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          backgroundColor: "white",
-          borderBottom: scrolled ? "1px solid #e5e7eb" : "1px solid #f3f4f6",
-          boxShadow: scrolled ? "0 2px 8px rgba(0,0,0,0.07)" : "none",
-          transition: "box-shadow 0.2s, border-color 0.2s",
-        }}
-      >
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 68 }}>
-          {/* Logo + Brand */}
+      {/* ── TOPBAR ── */}
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1100, backgroundColor: "#1e3a5f", height: 36, display: "flex", alignItems: "center" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.8)" }}>
+            contacto@envexar.com &nbsp;|&nbsp; WhatsApp: Consultas rápidas
+          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            {[
+              { icon: "ti-brand-facebook", href: "#" },
+              { icon: "ti-brand-instagram", href: "#" },
+              { icon: "ti-brand-linkedin", href: "#" },
+            ].map(({ icon, href }) => (
+              <a key={icon} href={href} style={{ color: "rgba(255,255,255,0.7)", fontSize: 15, textDecoration: "none" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}>
+                <i className={`ti ${icon}`}/>
+              </a>
+            ))}
+            <a href="#" style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", textDecoration: "none", borderLeft: "1px solid rgba(255,255,255,0.25)", paddingLeft: 14 }}>Acceso clientes</a>
+          </div>
+        </div>
+      </div>
+
+      {/* ── NAV ── */}
+      <nav style={{
+        position: "fixed", top: 36, left: 0, right: 0, zIndex: 1000,
+        backgroundColor: "white",
+        borderBottom: "1px solid #e5e7eb",
+        boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.08)" : "none",
+        transition: "box-shadow 0.25s",
+        height: 72,
+      }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <LogoSVG />
+            <LogoSVG size={52}/>
             <div>
               <div style={{ fontSize: 15, fontWeight: 700, color: "#1e3a5f", lineHeight: 1.2 }}>Environmental Express Argentina</div>
-              <div style={{ fontSize: 11, color: "#166534", fontWeight: 500, letterSpacing: "0.02em" }}>Higiene Ocupacional y Medio Ambiente</div>
+              <div style={{ fontSize: 11, color: "#166534", fontWeight: 600, letterSpacing: "0.02em" }}>Higiene Ocupacional y Medio Ambiente</div>
             </div>
           </div>
 
-          {/* Desktop Nav Links */}
           <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: 28 }}>
-            <a href="#inicio" onClick={scrollToSection("hero")} style={{ fontSize: 13, fontWeight: 600, color: "#1e3a5f", textDecoration: "none", letterSpacing: "0.05em" }}>INICIO</a>
-            <a href="#servicios" onClick={scrollToSection("servicios")} style={{ fontSize: 13, fontWeight: 600, color: "#1e3a5f", textDecoration: "none", letterSpacing: "0.05em" }}>SERVICIOS</a>
-            <a href="#clientes" onClick={scrollToSection("por-que")} style={{ fontSize: 13, fontWeight: 600, color: "#1e3a5f", textDecoration: "none", letterSpacing: "0.05em" }}>CLIENTES</a>
-            <a href="#contacto" onClick={scrollToContact} style={{ fontSize: 13, fontWeight: 600, color: "#1e3a5f", textDecoration: "none", letterSpacing: "0.05em" }}>CONTACTO</a>
-
-            <a href="mailto:contacto@envexar.com" style={{ color: "#1e3a5f", fontSize: 20, textDecoration: "none", lineHeight: 1 }} title="Email">
-              <i className="ti ti-mail" />
-            </a>
-            <a href="tel:+5493814000000" style={{ color: "#1e3a5f", fontSize: 20, textDecoration: "none", lineHeight: 1 }} title="Teléfono">
-              <i className="ti ti-phone" />
-            </a>
-
-            <a
-              href="#contacto"
-              onClick={scrollToContact}
-              style={{
-                backgroundColor: "#1e3a5f",
-                color: "white",
-                padding: "8px 16px",
-                borderRadius: 4,
-                fontSize: 12,
-                fontWeight: 700,
-                textDecoration: "none",
-                letterSpacing: "0.05em",
-                whiteSpace: "nowrap",
-              }}
-            >
-              OFICINA VIRTUAL
-            </a>
-          </div>
-
-          {/* Hamburger */}
-          <button
-            className="hamburger-btn"
-            onClick={() => setMenuOpen(!menuOpen)}
-            style={{ display: "none", background: "none", border: "none", cursor: "pointer", color: "#1e3a5f", fontSize: 24 }}
-          >
-            <i className={menuOpen ? "ti ti-x" : "ti ti-menu-2"} />
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {menuOpen && (
-          <div
-            className="mobile-menu"
-            style={{
-              backgroundColor: "white",
-              borderTop: "1px solid #e5e7eb",
-              padding: "16px 24px",
-              display: "flex",
-              flexDirection: "column",
-              gap: 16,
-            }}
-          >
-            {["INICIO", "SERVICIOS", "CLIENTES"].map((label) => (
-              <a
-                key={label}
-                href={`#${label.toLowerCase()}`}
-                onClick={scrollToSection(label === "CLIENTES" ? "por-que" : label === "INICIO" ? "hero" : "servicios")}
-                style={{ fontSize: 14, fontWeight: 600, color: "#1e3a5f", textDecoration: "none" }}
-              >
+            {[
+              { label: "INICIO", action: scrollToId("hero") },
+              { label: "SERVICIOS", action: scrollTo(serviciosRef as React.RefObject<HTMLElement>) },
+              { label: "NOSOTROS", action: scrollToId("por-que") },
+              { label: "CONTACTO", action: scrollTo(contactRef as React.RefObject<HTMLElement>) },
+            ].map(({ label, action }) => (
+              <a key={label} href="#" onClick={action}
+                style={{ fontSize: 13, fontWeight: 600, color: "#1e3a5f", textDecoration: "none", letterSpacing: "0.04em" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#166534")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#1e3a5f")}>
                 {label}
               </a>
             ))}
-            <a href="#contacto" onClick={scrollToContact} style={{ fontSize: 14, fontWeight: 600, color: "#1e3a5f", textDecoration: "none" }}>CONTACTO</a>
-            <a
-              href="#contacto"
-              onClick={scrollToContact}
-              style={{
-                backgroundColor: "#1e3a5f",
-                color: "white",
-                padding: "10px 20px",
-                borderRadius: 4,
-                fontSize: 13,
-                fontWeight: 700,
-                textDecoration: "none",
-                textAlign: "center",
-              }}
-            >
-              OFICINA VIRTUAL
+            <a href="#" onClick={scrollTo(contactRef as React.RefObject<HTMLElement>)}
+              style={{ backgroundColor: "#166534", color: "white", padding: "9px 18px", borderRadius: 4, fontSize: 12, fontWeight: 700, textDecoration: "none", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#14532d")}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#166534")}>
+              SOLICITAR PRESUPUESTO
+            </a>
+          </div>
+
+          <button className="hamburger-btn" onClick={() => setMenuOpen(!menuOpen)}
+            style={{ display: "none", background: "none", border: "none", cursor: "pointer", color: "#1e3a5f", fontSize: 24 }}>
+            <i className={menuOpen ? "ti ti-x" : "ti ti-menu-2"}/>
+          </button>
+        </div>
+
+        {menuOpen && (
+          <div style={{ backgroundColor: "white", borderTop: "1px solid #e5e7eb", padding: "16px 24px", display: "flex", flexDirection: "column", gap: 14 }}>
+            {["INICIO", "SERVICIOS", "NOSOTROS", "CONTACTO"].map((l) => (
+              <a key={l} href="#" onClick={l === "SERVICIOS" ? scrollTo(serviciosRef as React.RefObject<HTMLElement>) : l === "CONTACTO" ? scrollTo(contactRef as React.RefObject<HTMLElement>) : scrollToId(l === "NOSOTROS" ? "por-que" : "hero")}
+                style={{ fontSize: 14, fontWeight: 600, color: "#1e3a5f", textDecoration: "none" }}>{l}</a>
+            ))}
+            <a href="#" onClick={scrollTo(contactRef as React.RefObject<HTMLElement>)}
+              style={{ backgroundColor: "#166534", color: "white", padding: "10px", borderRadius: 4, fontSize: 13, fontWeight: 700, textDecoration: "none", textAlign: "center" }}>
+              SOLICITAR PRESUPUESTO
             </a>
           </div>
         )}
       </nav>
 
-      {/* HERO */}
-      <section
-        id="hero"
-        style={{
-          marginTop: 68,
-          height: 480,
-          position: "relative",
-          backgroundImage: "url(https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=80)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
-        }}
-      >
-        <div style={{ position: "absolute", inset: 0, backgroundColor: "rgba(10,20,40,0.56)" }} />
-        <div style={{ position: "relative", zIndex: 1, textAlign: "center", padding: "0 24px", maxWidth: 800 }}>
-          <h1 style={{ fontSize: "clamp(22px, 4vw, 38px)", fontWeight: 700, color: "white", marginBottom: 16, lineHeight: 1.25 }}>
-            Especialistas en Higiene y Seguridad en el Trabajo
-          </h1>
-          <p style={{ fontSize: "clamp(14px, 2vw, 17px)", color: "rgba(255,255,255,0.88)", marginBottom: 28, lineHeight: 1.65, maxWidth: 640, margin: "0 auto 28px" }}>
-            Mediciones ambientales, protocolos SRT y estudios de riesgo laboral. Más de 30 tipos de estudios para empresas de todo el país.
-          </p>
-
-          <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
-            {[0, 1, 2, 3].map((i) => (
-              <div
-                key={i}
-                style={{
-                  width: i === 0 ? 24 : 8,
-                  height: 8,
-                  borderRadius: 4,
-                  backgroundColor: i === 0 ? "white" : "rgba(255,255,255,0.4)",
-                }}
-              />
-            ))}
+      {/* ── HERO SLIDER ── */}
+      <div id="hero" style={{ marginTop: NAV_H, height: 520, position: "relative", overflow: "hidden" }}>
+        {slides.map((s, i) => (
+          <div key={i} style={{
+            position: "absolute", inset: 0,
+            backgroundImage: `url(${s.img})`,
+            backgroundSize: "cover", backgroundPosition: "center",
+            opacity: i === slide ? 1 : 0,
+            transition: "opacity 0.8s ease",
+          }}>
+            <div style={{ position: "absolute", inset: 0, backgroundColor: "rgba(10,20,40,0.58)" }}/>
           </div>
+        ))}
+        <div style={{ position: "relative", zIndex: 1, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "0 24px" }}>
+          <h1 style={{ fontSize: "clamp(22px, 4vw, 40px)", fontWeight: 800, color: "white", maxWidth: 760, lineHeight: 1.2, marginBottom: 16 }}>
+            {slides[slide].title}
+          </h1>
+          <p style={{ fontSize: "clamp(14px, 2vw, 18px)", color: "rgba(255,255,255,0.85)", marginBottom: 32, maxWidth: 560 }}>
+            {slides[slide].sub}
+          </p>
+          <a href="#" onClick={scrollTo(contactRef as React.RefObject<HTMLElement>)}
+            style={{ backgroundColor: "#166534", color: "white", padding: "13px 28px", borderRadius: 4, fontSize: 14, fontWeight: 700, textDecoration: "none", letterSpacing: "0.04em" }}>
+            {slides[slide].btn}
+          </a>
         </div>
-      </section>
 
-      {/* SERVICIOS */}
-      <section id="servicios" style={{ backgroundColor: "#f8fafc", padding: "72px 24px" }}>
+        {/* Arrows */}
+        {[{ dir: -1, label: "‹" }, { dir: 1, label: "›" }].map(({ dir, label }) => (
+          <button key={dir} onClick={() => setSlide((s) => (s + dir + slides.length) % slides.length)}
+            style={{ position: "absolute", top: "50%", [dir === -1 ? "left" : "right"]: 20, transform: "translateY(-50%)", background: "rgba(255,255,255,0.18)", border: "none", color: "white", fontSize: 28, width: 44, height: 44, borderRadius: "50%", cursor: "pointer", zIndex: 2, display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>
+            {label}
+          </button>
+        ))}
+
+        {/* Dots */}
+        <div style={{ position: "absolute", bottom: 20, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 8, zIndex: 2 }}>
+          {slides.map((_, i) => (
+            <button key={i} onClick={() => setSlide(i)}
+              style={{ width: i === slide ? 24 : 8, height: 8, borderRadius: 4, backgroundColor: i === slide ? "white" : "rgba(255,255,255,0.45)", border: "none", cursor: "pointer", transition: "width 0.3s", padding: 0 }}/>
+          ))}
+        </div>
+      </div>
+
+      {/* ── QUICK CARDS ── */}
+      <div style={{ backgroundColor: "white", padding: "0 24px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 0, borderTop: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.07)", borderRadius: "0 0 8px 8px", overflow: "hidden" }}>
+          {quickCards.map(({ icon, title, desc }, i) => (
+            <div key={i} style={{ padding: "28px 28px", borderTop: "3px solid #166534", backgroundColor: "white", borderRight: i < 2 ? "1px solid #e5e7eb" : "none", cursor: "pointer", transition: "background 0.2s" }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f0fdf4")}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}>
+              <i className={`ti ${icon}`} style={{ fontSize: 32, color: "#166534", display: "block", marginBottom: 10 }}/>
+              <div style={{ fontSize: 15, fontWeight: 700, color: "#1e3a5f", marginBottom: 4 }}>{title}</div>
+              <div style={{ fontSize: 13, color: "#64748b" }}>{desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── SERVICIOS ── */}
+      <section ref={serviciosRef as React.RefObject<HTMLElement>} style={{ backgroundColor: "#f8fafc", padding: "72px 24px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, color: "#1e3a5f", marginBottom: 10 }}>
+            <h2 style={{ fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 800, color: "#1e3a5f", marginBottom: 10 }}>
               Estudios y mediciones certificadas
             </h2>
-            <p style={{ fontSize: 16, color: "#6b7280", maxWidth: 520, margin: "0 auto" }}>
+            <p style={{ fontSize: 16, color: "#64748b", maxWidth: 520, margin: "0 auto" }}>
               Protocolos oficiales SRT para todos los agentes de riesgo
             </p>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: 1,
-              backgroundColor: "#e5e7eb",
-            }}
-          >
-            {services.map(({ num, icon, name, norm }, index) => (
-              <div
-                key={num}
-                onClick={() => setModalIndex(index)}
-                style={{
-                  backgroundColor: "#f8fafc",
-                  padding: "28px 24px",
-                  cursor: "pointer",
-                  transition: "background-color 0.2s",
-                  position: "relative",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f0fdf4")}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#f8fafc")}
-              >
-                <div style={{ fontSize: 12, fontWeight: 700, color: "#9ca3af", letterSpacing: "0.1em", marginBottom: 12 }}>{num}</div>
-                <i className={`ti ${icon}`} style={{ fontSize: 28, color: "#166534", display: "block", marginBottom: 10 }} />
-                <div style={{ fontSize: 15, fontWeight: 600, color: "#1e3a5f", marginBottom: 6 }}>{name}</div>
-                <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 10 }}>{norm}</div>
-                <div style={{ fontSize: 11, color: "#166534", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
-                  <i className="ti ti-info-circle" style={{ fontSize: 13 }} />
-                  Ver detalle
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20 }}>
+            {services.map(({ icon, name, norm, desc }, i) => (
+              <div key={i} onClick={() => setModalIndex(i)}
+                style={{ backgroundColor: "white", borderRadius: 8, padding: "28px 24px", border: "1px solid #e5e7eb", cursor: "pointer", transition: "box-shadow 0.2s, transform 0.2s", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
+                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.10)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)"; e.currentTarget.style.transform = "translateY(0)"; }}>
+                <div style={{ width: 48, height: 48, borderRadius: "50%", backgroundColor: "#f0fdf4", border: "1.5px solid #bbf7d0", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+                  <i className={`ti ${icon}`} style={{ fontSize: 22, color: "#166534" }}/>
                 </div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "#1e293b", marginBottom: 4 }}>{name}</div>
+                <div style={{ fontSize: 12, color: "#166534", fontWeight: 600, marginBottom: 8 }}>{norm}</div>
+                <div style={{ fontSize: 13, color: "#64748b", lineHeight: 1.5, marginBottom: 14 }}>{desc}</div>
+                <div style={{ fontSize: 13, color: "#166534", fontWeight: 700 }}>Ver más →</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* POR QUÉ ELEGIRNOS */}
+      {/* ── STATS ── */}
+      <section style={{ backgroundColor: "#1e3a5f", padding: "56px 24px" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0 }}>
+          {stats.map(({ value, label }, i) => (
+            <div key={i} style={{ textAlign: "center", padding: "16px", borderRight: i < 3 ? "1px solid rgba(255,255,255,0.15)" : "none" }}>
+              <div style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 900, color: "white", marginBottom: 6 }}>{value}</div>
+              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", letterSpacing: "0.04em", textTransform: "uppercase" }}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── POR QUÉ ELEGIRNOS ── */}
       <section id="por-que" style={{ backgroundColor: "white" }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            minHeight: 400,
-          }}
-        >
-          <div
-            style={{
-              position: "relative",
-              backgroundImage: "url(https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80)",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              minHeight: 380,
-            }}
-          >
-            <div style={{ position: "absolute", inset: 0, backgroundColor: "rgba(10,20,40,0.45)" }} />
-            <div
-              style={{
-                position: "absolute",
-                bottom: 24,
-                left: 24,
-                backgroundColor: "#166534",
-                color: "white",
-                padding: "8px 16px",
-                borderRadius: 4,
-                fontSize: 14,
-                fontWeight: 700,
-              }}
-            >
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 420 }}>
+          <div style={{ position: "relative", backgroundImage: "url(https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80)", backgroundSize: "cover", backgroundPosition: "center", minHeight: 380 }}>
+            <div style={{ position: "absolute", inset: 0, backgroundColor: "rgba(10,20,40,0.45)" }}/>
+            <div style={{ position: "absolute", bottom: 24, left: 24, backgroundColor: "#166534", color: "white", padding: "8px 18px", borderRadius: 4, fontSize: 14, fontWeight: 700 }}>
               +30 tipos de estudios
             </div>
           </div>
-
           <div style={{ padding: "56px 48px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <h2 style={{ fontSize: "clamp(20px, 2.5vw, 28px)", fontWeight: 700, color: "#1e3a5f", marginBottom: 32, lineHeight: 1.3 }}>
+            <h2 style={{ fontSize: "clamp(20px, 2.5vw, 28px)", fontWeight: 800, color: "#1e3a5f", marginBottom: 32, lineHeight: 1.3 }}>
               Profesionales matriculados. Resultados confiables.
             </h2>
-
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
               {whyItems.map(({ icon, text }) => (
                 <div key={icon} style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
-                  <div
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: "50%",
-                      backgroundColor: "#f0fdf4",
-                      border: "1.5px solid #bbf7d0",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <i className={`ti ${icon}`} style={{ fontSize: 18, color: "#166534" }} />
+                  <div style={{ width: 36, height: 36, borderRadius: "50%", backgroundColor: "#f0fdf4", border: "1.5px solid #bbf7d0", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <i className={`ti ${icon}`} style={{ fontSize: 17, color: "#166534" }}/>
                   </div>
                   <p style={{ fontSize: 15, color: "#374151", lineHeight: 1.6, marginTop: 6 }}>{text}</p>
                 </div>
               ))}
             </div>
-
-            <div
-              style={{
-                marginTop: 32,
-                padding: "14px 20px",
-                backgroundColor: "#f8fafc",
-                border: "1px solid #e5e7eb",
-                borderRadius: 6,
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-              }}
-            >
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: "50%",
-                  backgroundColor: "#1e3a5f",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                  color: "white",
-                  fontSize: 12,
-                  fontWeight: 900,
-                  letterSpacing: "0.05em",
-                }}
-              >
-                AHRA
-              </div>
+            <div style={{ marginTop: 32, padding: "14px 20px", backgroundColor: "#f8fafc", border: "1px solid #e5e7eb", borderRadius: 6, display: "flex", alignItems: "center", gap: 12 }}>
+              <div style={{ width: 40, height: 40, borderRadius: "50%", backgroundColor: "#1e3a5f", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "white", fontSize: 11, fontWeight: 900, letterSpacing: "0.04em" }}>AHRA</div>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 600, color: "#1e3a5f" }}>Asociación de Higienistas Industriales de Argentina</div>
-                <div style={{ fontSize: 12, color: "#6b7280" }}>Profesionales matriculados y habilitados</div>
+                <div style={{ fontSize: 12, color: "#64748b" }}>Profesionales matriculados y habilitados</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CONTACTO */}
-      <section
-        id="contacto"
-        ref={contactRef}
-        style={{ backgroundColor: "#1e3a5f" }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            maxWidth: 1100,
-            margin: "0 auto",
-          }}
-        >
-          {/* Left: Contact Info */}
-          <div style={{ padding: "56px 48px" }}>
-            <h2 style={{ fontSize: "clamp(22px, 2.5vw, 30px)", fontWeight: 700, color: "white", marginBottom: 12 }}>
-              Contacto
-            </h2>
-            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.72)", marginBottom: 40, lineHeight: 1.65, maxWidth: 340 }}>
-              Coordinamos la visita técnica y entregamos informes certificados en tiempo récord. Consultanos sin compromiso.
+      {/* ── CONTACTO ── */}
+      <section ref={contactRef} style={{ backgroundColor: "#f8fafc", padding: "72px 24px" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, backgroundColor: "white", borderRadius: 12, boxShadow: "0 4px 24px rgba(0,0,0,0.07)", overflow: "hidden" }}>
+          {/* Left */}
+          <div style={{ backgroundColor: "#1e3a5f", padding: "48px 40px" }}>
+            <h2 style={{ fontSize: "clamp(22px, 2.5vw, 28px)", fontWeight: 800, color: "white", marginBottom: 12 }}>Contacto</h2>
+            <p style={{ fontSize: 15, color: "rgba(255,255,255,0.72)", marginBottom: 36, lineHeight: 1.65 }}>
+              Coordinamos la visita técnica y entregamos informes certificados en tiempo récord.
             </p>
-
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               {[
-                { icon: "ti-mail", label: "Email", value: "contacto@envexar.com" },
-                { icon: "ti-brand-whatsapp", label: "WhatsApp", value: "Consultas rápidas" },
+                { icon: "ti-mail", label: "EMAIL", value: "contacto@envexar.com" },
+                { icon: "ti-brand-whatsapp", label: "WHATSAPP", value: "Consultas rápidas" },
               ].map(({ icon, label, value }) => (
                 <div key={label} style={{ display: "flex", gap: 14 }}>
-                  <div
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: "50%",
-                      backgroundColor: "rgba(255,255,255,0.1)",
-                      border: "1px solid rgba(255,255,255,0.2)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <i className={`ti ${icon}`} style={{ fontSize: 18, color: "#86efac" }} />
+                  <div style={{ width: 38, height: 38, borderRadius: "50%", backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <i className={`ti ${icon}`} style={{ fontSize: 18, color: "#86efac" }}/>
                   </div>
                   <div>
-                    <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 2, fontWeight: 600, letterSpacing: "0.05em" }}>{label.toUpperCase()}</div>
-                    <div style={{ fontSize: 14, color: "rgba(255,255,255,0.88)", lineHeight: 1.5 }}>{value}</div>
+                    <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: 2, fontWeight: 700, letterSpacing: "0.06em" }}>{label}</div>
+                    <div style={{ fontSize: 14, color: "rgba(255,255,255,0.88)" }}>{value}</div>
                   </div>
                 </div>
               ))}
@@ -597,309 +446,150 @@ export default function Home() {
           </div>
 
           {/* Right: Form */}
-          <div style={{ backgroundColor: "#f8fafc", padding: "56px 48px" }}>
-            <h3 style={{ fontSize: 20, fontWeight: 700, color: "#1e3a5f", marginBottom: 28 }}>Solicitar estudio</h3>
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div style={{ padding: "48px 40px" }}>
+            <h3 style={{ fontSize: 20, fontWeight: 700, color: "#1e3a5f", marginBottom: 24 }}>Solicitar estudio</h3>
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 <div>
-                  <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 4 }}>Nombre completo *</label>
-                  <input
-                    required
-                    value={formData.nombre}
-                    onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-                    placeholder="Juan García"
-                    style={inputStyle}
-                  />
+                  <label style={labelStyle}>Nombre completo *</label>
+                  <input required value={formData.nombre} onChange={(e) => setFormData({ ...formData, nombre: e.target.value })} placeholder="Juan García" style={inputStyle}/>
                 </div>
                 <div>
-                  <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 4 }}>Empresa</label>
-                  <input
-                    value={formData.empresa}
-                    onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
-                    placeholder="Nombre de empresa"
-                    style={inputStyle}
-                  />
+                  <label style={labelStyle}>Empresa</label>
+                  <input value={formData.empresa} onChange={(e) => setFormData({ ...formData, empresa: e.target.value })} placeholder="Empresa S.A." style={inputStyle}/>
                 </div>
               </div>
-
               <div>
-                <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 4 }}>Email corporativo *</label>
-                <input
-                  required
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="juan@empresa.com"
-                  style={inputStyle}
-                />
+                <label style={labelStyle}>Email corporativo *</label>
+                <input required type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="juan@empresa.com" style={inputStyle}/>
               </div>
-
               <div>
-                <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 4 }}>Teléfono / WhatsApp</label>
-                <input
-                  value={formData.telefono}
-                  onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-                  placeholder="+54 381 000 0000"
-                  style={inputStyle}
-                />
+                <label style={labelStyle}>Teléfono / WhatsApp</label>
+                <input value={formData.telefono} onChange={(e) => setFormData({ ...formData, telefono: e.target.value })} placeholder="+54 381 000 0000" style={inputStyle}/>
               </div>
-
               <div>
-                <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 4 }}>¿Qué estudio necesitás? *</label>
-                <select
-                  required
-                  value={formData.estudio}
-                  onChange={(e) => setFormData({ ...formData, estudio: e.target.value })}
-                  style={{ ...inputStyle, color: formData.estudio ? "#111827" : "#9ca3af" }}
-                >
+                <label style={labelStyle}>¿Qué estudio necesitás? *</label>
+                <select required value={formData.estudio} onChange={(e) => setFormData({ ...formData, estudio: e.target.value })} style={{ ...inputStyle, color: formData.estudio ? "#111827" : "#9ca3af" }}>
                   <option value="" disabled>Seleccioná un estudio</option>
-                  {studyOptions.map((opt) => (
-                    <option key={opt} value={opt} style={{ color: "#111827" }}>{opt}</option>
-                  ))}
+                  {studyOptions.map((o) => <option key={o} value={o} style={{ color: "#111827" }}>{o}</option>)}
                 </select>
               </div>
-
               <div>
-                <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 4 }}>Mensaje</label>
-                <textarea
-                  value={formData.mensaje}
-                  onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
-                  placeholder="Describí brevemente tu necesidad..."
-                  rows={4}
-                  style={{ ...inputStyle, resize: "vertical" }}
-                />
+                <label style={labelStyle}>Mensaje</label>
+                <textarea value={formData.mensaje} onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })} placeholder="Describí brevemente tu necesidad..." rows={3} style={{ ...inputStyle, resize: "vertical" }}/>
               </div>
-
-              <button
-                type="submit"
-                style={{
-                  backgroundColor: "#1e3a5f",
-                  color: "white",
-                  border: "none",
-                  padding: "13px 24px",
-                  borderRadius: 4,
-                  fontSize: 14,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 8,
-                  letterSpacing: "0.03em",
-                  transition: "background-color 0.2s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#162d4a")}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#1e3a5f")}
-              >
-                <i className="ti ti-send" style={{ fontSize: 16 }} />
-                Enviar solicitud
+              <button type="submit" style={{ backgroundColor: "#166534", color: "white", border: "none", padding: "13px 24px", borderRadius: 4, fontSize: 14, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "background 0.2s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#14532d")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#166534")}>
+                <i className="ti ti-send" style={{ fontSize: 16 }}/> Enviar solicitud
               </button>
             </form>
           </div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer style={{ backgroundColor: "#111827", padding: "20px 24px" }}>
-        <div
-          style={{
-            maxWidth: 1100,
-            margin: "0 auto",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: 8,
-          }}
-        >
-          <div style={{ fontSize: 13, color: "#9ca3af" }}>
-            © 2026 Environmental Express Argentina · envexar.com
+      {/* ── FOOTER ── */}
+      <footer style={{ backgroundColor: "#1e3a5f", padding: "48px 24px 24px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 40, marginBottom: 40 }}>
+            {/* Col 1 */}
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+                <LogoSVG size={44}/>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "white", lineHeight: 1.3 }}>Environmental<br/>Express Argentina</div>
+              </div>
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.7 }}>
+                Especialistas en higiene ocupacional y medio ambiente. Mediciones certificadas en todo el país.
+              </p>
+            </div>
+            {/* Col 2 */}
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>Links rápidos</div>
+              {[
+                { label: "Inicio", action: scrollToId("hero") },
+                { label: "Servicios", action: scrollTo(serviciosRef as React.RefObject<HTMLElement>) },
+                { label: "Contacto", action: scrollTo(contactRef as React.RefObject<HTMLElement>) },
+                { label: "AHRA", href: "#" },
+              ].map(({ label, action, href }) => (
+                <a key={label} href={href || "#"} onClick={action}
+                  style={{ display: "block", fontSize: 14, color: "rgba(255,255,255,0.7)", textDecoration: "none", marginBottom: 10 }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#86efac")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}>
+                  {label}
+                </a>
+              ))}
+            </div>
+            {/* Col 3 */}
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>Contacto</div>
+              {[
+                { icon: "ti-mail", text: "contacto@envexar.com" },
+                { icon: "ti-brand-whatsapp", text: "WhatsApp: Consultas rápidas" },
+              ].map(({ icon, text }) => (
+                <div key={text} style={{ display: "flex", gap: 10, marginBottom: 14, alignItems: "center" }}>
+                  <i className={`ti ${icon}`} style={{ fontSize: 16, color: "#86efac" }}/>
+                  <span style={{ fontSize: 13, color: "rgba(255,255,255,0.7)" }}>{text}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div style={{ fontSize: 13, color: "#9ca3af" }}>
-            contacto@envexar.com
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.12)", paddingTop: 20, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>© 2026 Environmental Express Argentina · envexar.com</span>
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>Tucumán, Argentina</span>
           </div>
         </div>
       </footer>
 
-      {/* WhatsApp FAB */}
-      <a
-        href="https://wa.me/5493814000000"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="WhatsApp"
-        style={{
-          position: "fixed",
-          bottom: 24,
-          right: 24,
-          width: 52,
-          height: 52,
-          borderRadius: "50%",
-          backgroundColor: "#25d366",
-          color: "white",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 28,
-          boxShadow: "0 4px 16px rgba(37,211,102,0.4)",
-          zIndex: 999,
-          textDecoration: "none",
-          transition: "transform 0.2s, box-shadow 0.2s",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "scale(1.1)";
-          e.currentTarget.style.boxShadow = "0 6px 20px rgba(37,211,102,0.55)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = "scale(1)";
-          e.currentTarget.style.boxShadow = "0 4px 16px rgba(37,211,102,0.4)";
-        }}
-      >
-        <i className="ti ti-brand-whatsapp" />
+      {/* ── WHATSAPP FAB ── */}
+      <a href="https://wa.me/5493814000000" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"
+        style={{ position: "fixed", bottom: 24, right: 24, width: 54, height: 54, borderRadius: "50%", backgroundColor: "#25d366", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, boxShadow: "0 4px 16px rgba(37,211,102,0.4)", zIndex: 999, textDecoration: "none", transition: "transform 0.2s, box-shadow 0.2s" }}
+        onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.1)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(37,211,102,0.55)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(37,211,102,0.4)"; }}>
+        <i className="ti ti-brand-whatsapp"/>
       </a>
 
-      {/* SERVICE MODAL */}
+      {/* ── MODAL ── */}
       {activeService && (
-        <div
-          onClick={() => setModalIndex(null)}
-          style={{
-            position: "fixed",
-            inset: 0,
-            backgroundColor: "rgba(0,0,0,0.55)",
-            zIndex: 2000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 16,
-          }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              backgroundColor: "white",
-              borderRadius: 12,
-              maxWidth: 560,
-              width: "100%",
-              maxHeight: "80vh",
-              overflowY: "auto",
-              padding: 32,
-              position: "relative",
-            }}
-          >
-            {/* Close */}
-            <button
-              onClick={() => setModalIndex(null)}
-              style={{
-                position: "absolute",
-                top: 14,
-                right: 16,
-                background: "none",
-                border: "none",
-                fontSize: 22,
-                cursor: "pointer",
-                color: "#64748b",
-                lineHeight: 1,
-              }}
-            >
-              ×
-            </button>
-
-            {/* Norma badge */}
+        <div onClick={() => setModalIndex(null)}
+          style={{ position: "fixed", inset: 0, backgroundColor: "rgba(0,0,0,0.55)", zIndex: 2000, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+          <div onClick={(e) => e.stopPropagation()}
+            style={{ backgroundColor: "white", borderRadius: 12, maxWidth: 560, width: "100%", maxHeight: "82vh", overflowY: "auto", padding: 32, position: "relative" }}>
+            <button onClick={() => setModalIndex(null)}
+              style={{ position: "absolute", top: 14, right: 16, background: "none", border: "none", fontSize: 24, cursor: "pointer", color: "#64748b", lineHeight: 1 }}>×</button>
             <div style={{ marginBottom: 16 }}>
-              <span
-                style={{
-                  backgroundColor: "#dcfce7",
-                  color: "#166534",
-                  fontSize: 10,
-                  fontWeight: 800,
-                  padding: "3px 10px",
-                  borderRadius: 20,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.07em",
-                }}
-              >
-                {activeService.norma}
-              </span>
+              <span style={{ backgroundColor: "#dcfce7", color: "#166534", fontSize: 10, fontWeight: 800, padding: "3px 10px", borderRadius: 20, textTransform: "uppercase", letterSpacing: "0.07em" }}>{activeService.norma}</span>
             </div>
-
-            <h2 style={{ color: "#1e3a5f", fontSize: 18, fontWeight: 800, marginBottom: 10 }}>
-              {activeService.titulo}
-            </h2>
-            <p style={{ color: "#4b5563", fontSize: 13, lineHeight: 1.7, marginBottom: 16 }}>
-              {activeService.descripcion}
-            </p>
-
-            <h4 style={{ color: "#1e293b", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10 }}>
-              ¿Qué incluye el estudio?
-            </h4>
+            <h2 style={{ color: "#1e3a5f", fontSize: 18, fontWeight: 800, marginBottom: 10 }}>{activeService.titulo}</h2>
+            <p style={{ color: "#4b5563", fontSize: 13, lineHeight: 1.7, marginBottom: 16 }}>{activeService.descripcion}</p>
+            <h4 style={{ color: "#1e293b", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10 }}>¿Qué incluye el estudio?</h4>
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, padding: 0 }}>
               {activeService.items.map((item, i) => (
                 <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 12.5, color: "#374151" }}>
-                  <span style={{ color: "#166534", fontSize: 14, flexShrink: 0, lineHeight: 1.4 }}>✓</span>
-                  {item}
+                  <span style={{ color: "#166534", fontSize: 14, flexShrink: 0, lineHeight: 1.4 }}>✓</span>{item}
                 </li>
               ))}
             </ul>
-
-            <div
-              style={{
-                backgroundColor: "#f0fdf4",
-                borderLeft: "3px solid #16a34a",
-                padding: "12px 14px",
-                borderRadius: "0 8px 8px 0",
-              }}
-            >
-              <span style={{ fontSize: 11, fontWeight: 700, color: "#166534", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                ¿Cuándo es obligatorio?
-              </span>
-              <p style={{ fontSize: 12, color: "#374151", marginTop: 4, lineHeight: 1.6, margin: "4px 0 0" }}>
-                {activeService.cuando}
-              </p>
+            <div style={{ backgroundColor: "#f0fdf4", borderLeft: "3px solid #16a34a", padding: "12px 14px", borderRadius: "0 8px 8px 0" }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: "#166534", textTransform: "uppercase", letterSpacing: "0.05em" }}>¿Cuándo es obligatorio?</span>
+              <p style={{ fontSize: 12, color: "#374151", marginTop: 4, lineHeight: 1.6, margin: "4px 0 0" }}>{activeService.cuando}</p>
             </div>
           </div>
         </div>
       )}
 
-      {/* Responsive Styles */}
+      {/* ── RESPONSIVE ── */}
       <style>{`
         @media (max-width: 768px) {
           .nav-links { display: none !important; }
           .hamburger-btn { display: flex !important; align-items: center; }
         }
         @media (max-width: 640px) {
-          #servicios > div > div:last-child {
-            grid-template-columns: 1fr !important;
-          }
-          #por-que > div {
-            grid-template-columns: 1fr !important;
-          }
-          #contacto > div {
-            grid-template-columns: 1fr !important;
-          }
-          #contacto > div > div:first-child {
-            padding: 40px 24px !important;
-          }
-          #contacto > div > div:last-child {
-            padding: 40px 24px !important;
-          }
-          #por-que > div > div:last-child {
-            padding: 32px 24px !important;
-          }
+          #por-que > div { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </>
   );
 }
 
-const inputStyle: React.CSSProperties = {
-  width: "100%",
-  padding: "10px 12px",
-  border: "1.5px solid #d1d5db",
-  borderRadius: 4,
-  fontSize: 14,
-  color: "#111827",
-  backgroundColor: "white",
-  outline: "none",
-  fontFamily: "inherit",
-  boxSizing: "border-box",
-  transition: "border-color 0.2s",
-};
+const labelStyle: React.CSSProperties = { fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 4 };
+const inputStyle: React.CSSProperties = { width: "100%", padding: "10px 12px", border: "1.5px solid #d1d5db", borderRadius: 4, fontSize: 14, color: "#111827", backgroundColor: "white", outline: "none", fontFamily: "inherit", boxSizing: "border-box", transition: "border-color 0.2s" };

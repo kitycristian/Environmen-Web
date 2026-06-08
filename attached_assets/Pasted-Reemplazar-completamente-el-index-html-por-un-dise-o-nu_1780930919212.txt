@@ -1,0 +1,144 @@
+Reemplazar completamente el index.html por un diseño nuevo, limpio y 
+corporativo moderno inspirado en borealsalud.com.ar — fondo blanco, 
+tipografía clara, secciones bien definidas, profesional.
+
+---
+
+ESTRUCTURA COMPLETA:
+
+1. BARRA SUPERIOR (topbar)
+   Fondo #1e3a5f, altura 36px, texto pequeño
+   - Izquierda: "contacto@envexar.com  |  WhatsApp: Consultas rápidas"
+   - Derecha: íconos de redes (Facebook, Instagram, LinkedIn) + "Acceso clientes"
+
+2. NAV PRINCIPAL
+   Fondo blanco, sombra sutil, altura 72px, sticky
+   - Logo SVG grande (56px) con texto al lado
+   - Links: INICIO · SERVICIOS · NOSOTROS · CONTACTO
+   - Botón verde "SOLICITAR PRESUPUESTO"
+
+   LOGO SVG a usar (copiar exacto):
+   <svg width="56" height="56" viewBox="0 0 120 120">
+     <rect width="120" height="120" fill="#0D2F5E" rx="6"/>
+     <text x="60" y="14" text-anchor="middle" font-family="Arial" font-size="7.5"
+           fill="#7EC8A0" font-weight="700">HIGIENE OCUPACIONAL</text>
+     <text x="60" y="23" text-anchor="middle" font-family="Arial" font-size="7.5"
+           fill="#7EC8A0" font-weight="700">Y MEDIO AMBIENTE</text>
+     <circle cx="60" cy="59" r="30" fill="none" stroke="#2E7D32" stroke-width="2.5"/>
+     <ellipse cx="60" cy="59" rx="30" ry="12" fill="none" stroke="#2E7D32" stroke-width="1.5"/>
+     <ellipse cx="60" cy="59" rx="12" ry="30" fill="none" stroke="#2E7D32" stroke-width="1.5"/>
+     <circle cx="60" cy="59" r="18" fill="#0D2F5E" stroke="#2E7D32" stroke-width="2"/>
+     <text x="60" y="65" text-anchor="middle" font-family="Arial Black"
+           font-weight="900" font-size="16" fill="#ffffff">EEA</text>
+     <text x="60" y="97" text-anchor="middle" font-family="Arial" font-size="7"
+           fill="#ffffff" font-weight="700">ENVIRONMENTAL</text>
+     <text x="60" y="106" text-anchor="middle" font-family="Arial" font-size="7"
+           fill="#ffffff" font-weight="700">EXPRESS ARGENTINA</text>
+     <circle cx="104" cy="104" r="11" fill="#2E7D32"/>
+     <text x="104" y="109" text-anchor="middle" font-family="Arial"
+           font-size="13" fill="#fff" font-weight="900">✓</text>
+   </svg>
+
+3. HERO SLIDER (carousel automático cada 5 segundos)
+   Full width, altura 520px, 3 slides con foto de fondo + overlay oscuro + texto centrado
+
+   Slide 1:
+   - Foto: https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=80
+   - Título: "Especialistas en Higiene y Seguridad en el Trabajo"
+   - Subtítulo: "Mediciones ambientales y protocolos SRT para su empresa"
+   - Botón: "Solicitar presupuesto"
+
+   Slide 2:
+   - Foto: https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1400&q=80
+   - Título: "Más de 30 tipos de estudios certificados"
+   - Subtítulo: "Protocolos oficiales SRT, MTEySS y ASME con informe en 48hs"
+   - Botón: "Ver servicios"
+
+   Slide 3:
+   - Foto: https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1400&q=80
+   - Título: "Instrumentos calibrados con trazabilidad al INTI"
+   - Subtítulo: "Resultados confiables para presentar ante ART e inspecciones"
+   - Botón: "Conocernos"
+
+   Flechas izquierda/derecha + puntos indicadores abajo
+
+4. SECCIÓN ACCESOS RÁPIDOS (3 cards debajo del slider)
+   Fondo blanco, 3 columnas, con ícono grande, título y descripción corta:
+   - 🔬 "Solicitar estudio" — "Cotizá tu medición sin cargo"
+   - 📄 "Ver normativa" — "Resoluciones SRT vigentes"
+   - 📞 "Contacto directo" — "Respondemos en menos de 24hs"
+   Cada card con borde superior verde de 3px
+
+5. SECCIÓN SERVICIOS
+   Fondo #f8fafc, padding generoso
+   Título centrado: "Estudios y mediciones certificadas"
+   Grid 3 columnas de cards blancas con:
+   - Ícono Tabler en círculo verde claro
+   - Nombre del estudio
+   - Normativa en verde
+   - Descripción de 1 línea
+   - "Ver más →" en verde
+   Al hacer clic abre modal con info detallada (usar el JS del prompt anterior)
+
+   9 servicios (mismos del prompt anterior con sus descripciones)
+
+6. SECCIÓN ESTADÍSTICAS
+   Fondo #1e3a5f, 4 columnas centradas:
+   - +30 | Tipos de estudios
+   - 100% | Normativa SRT
+   - 48hs | Entrega de informe
+   - AHRA | Asociación profesional
+
+7. SECCIÓN ¿POR QUÉ ELEGIRNOS?
+   Fondo blanco, 2 columnas:
+   - Izquierda: foto https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80
+   - Derecha: título + 4 items con ícono verde + badge AHRA al pie
+
+8. SECCIÓN CONTACTO
+   Fondo #f8fafc, 2 columnas:
+   - Izquierda: título + email + WhatsApp (SIN dirección)
+   - Derecha: formulario con campos:
+     Nombre + Empresa (fila), Email, Teléfono, Select estudio, Textarea, Botón verde
+
+9. FOOTER
+   Fondo #1e3a5f, 3 columnas:
+   - Col 1: Logo + descripción breve
+   - Col 2: Links rápidos (Inicio, Servicios, Contacto, AHRA)
+   - Col 3: Contacto (email + WhatsApp)
+   Línea inferior: © 2026 · envexar.com
+
+10. BOTÓN WHATSAPP flotante (fixed, abajo derecha, verde #25d366)
+
+---
+
+PALETA DE COLORES:
+- Navy: #1e3a5f
+- Verde: #166534
+- Verde claro acento: #16a34a
+- Fondo: #f8fafc
+- Texto: #1e293b
+- Texto suave: #64748b
+
+---
+
+COMPORTAMIENTO JS:
+- Slider automático cada 5 segundos con transición fade
+- Nav sticky que cambia a fondo sólido con sombra al hacer scroll
+- Smooth scroll en todos los links del nav
+- Modal para cada servicio (con toda la info técnica SRT del prompt anterior)
+- Formulario muestra alert de confirmación al enviar
+- Botón WhatsApp: href="https://wa.me/5493814000000"
+
+---
+
+RESPONSIVE:
+- Mobile: nav colapsable con hamburguesa, grid 1 columna, slider full width
+- Tablet: grid 2 columnas
+
+---
+
+IMPORTANTE:
+- Todo en un único archivo index.html
+- CSS en <style>, JS en <script>
+- No usar jQuery ni frameworks
+- Meta description para SEO incluida
