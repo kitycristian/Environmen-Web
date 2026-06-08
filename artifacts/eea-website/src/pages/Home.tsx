@@ -336,7 +336,7 @@ export default function Home() {
           <div
             style={{
               position: "relative",
-              backgroundImage: "url(https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80)",
+              backgroundImage: "url(https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80)",
               backgroundSize: "cover",
               backgroundPosition: "center",
               minHeight: 380,
