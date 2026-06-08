@@ -376,37 +376,6 @@ export default function Home() {
             Mediciones ambientales, protocolos SRT y estudios de riesgo laboral. Más de 30 tipos de estudios para empresas de todo el país.
           </p>
 
-          <div style={{ display: "flex", justifyContent: "center", gap: 20, marginBottom: 32 }}>
-            {[
-              { icon: "ti-brand-facebook", href: "#", label: "Facebook" },
-              { icon: "ti-brand-instagram", href: "#", label: "Instagram" },
-              { icon: "ti-brand-linkedin", href: "#", label: "LinkedIn" },
-            ].map(({ icon, href, label }) => (
-              <a
-                key={label}
-                href={href}
-                aria-label={label}
-                style={{
-                  width: 40,
-                  height: 40,
-                  border: "1.5px solid rgba(255,255,255,0.5)",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "white",
-                  fontSize: 18,
-                  textDecoration: "none",
-                  transition: "background 0.2s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.15)")}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
-              >
-                <i className={`ti ${icon}`} />
-              </a>
-            ))}
-          </div>
-
           <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
             {[0, 1, 2, 3].map((i) => (
               <div
