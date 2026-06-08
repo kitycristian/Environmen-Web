@@ -1,15 +1,25 @@
 import { useState, useEffect, useRef } from "react";
 
 const LogoSVG = () => (
-  <svg width="36" height="36" viewBox="0 0 110 110">
-    <circle cx="55" cy="55" r="52" fill="#1e3a5f"/>
-    <circle cx="55" cy="55" r="48" fill="none" stroke="#166534" strokeWidth="3.5"/>
-    <ellipse cx="55" cy="55" rx="48" ry="20" fill="none" stroke="#166534" strokeWidth="2" opacity="0.55"/>
-    <ellipse cx="55" cy="55" rx="20" ry="48" fill="none" stroke="#166534" strokeWidth="2" opacity="0.55"/>
-    <circle cx="55" cy="55" r="27" fill="#1e3a5f" stroke="#166534" strokeWidth="2"/>
-    <text x="55" y="62" textAnchor="middle" fontFamily="Arial Black" fontWeight="900" fontSize="19" fill="#fff">EEA</text>
-    <circle cx="87" cy="82" r="10" fill="#166534"/>
-    <text x="87" y="86.5" textAnchor="middle" fontFamily="Arial" fontSize="12" fill="#fff" fontWeight="900">✓</text>
+  <svg width="56" height="56" viewBox="0 0 120 120">
+    <rect width="120" height="120" fill="#0D2F5E" rx="6"/>
+    <text x="60" y="13" textAnchor="middle" fontFamily="Arial" fontSize="7.5"
+          fill="#7EC8A0" fontWeight="700" letterSpacing="0.3">HIGIENE OCUPACIONAL</text>
+    <text x="60" y="22" textAnchor="middle" fontFamily="Arial" fontSize="7.5"
+          fill="#7EC8A0" fontWeight="700" letterSpacing="0.3">Y MEDIO AMBIENTE</text>
+    <circle cx="60" cy="58" r="30" fill="none" stroke="#2E7D32" strokeWidth="2.5"/>
+    <ellipse cx="60" cy="58" rx="30" ry="12" fill="none" stroke="#2E7D32" strokeWidth="1.5"/>
+    <ellipse cx="60" cy="58" rx="12" ry="30" fill="none" stroke="#2E7D32" strokeWidth="1.5"/>
+    <circle cx="60" cy="58" r="18" fill="#0D2F5E" stroke="#2E7D32" strokeWidth="2"/>
+    <text x="60" y="64" textAnchor="middle" fontFamily="Arial Black" fontWeight="900"
+          fontSize="16" fill="#ffffff" letterSpacing="1">EEA</text>
+    <text x="60" y="96" textAnchor="middle" fontFamily="Arial" fontSize="7"
+          fill="#ffffff" fontWeight="700" letterSpacing="0.3">ENVIRONMENTAL</text>
+    <text x="60" y="105" textAnchor="middle" fontFamily="Arial" fontSize="7"
+          fill="#ffffff" fontWeight="700" letterSpacing="0.3">EXPRESS ARGENTINA</text>
+    <circle cx="103" cy="103" r="12" fill="#2E7D32"/>
+    <text x="103" y="108" textAnchor="middle" fontFamily="Arial" fontSize="14"
+          fill="#ffffff" fontWeight="900">✓</text>
   </svg>
 );
 
@@ -23,6 +33,135 @@ const services = [
   { num: "07", icon: "ti-atom", name: "Agentes químicos", norm: "COVs, plomo, BTEX" },
   { num: "08", icon: "ti-ruler-measure", name: "Espesores por ultrasonido", norm: "ASME Section VIII" },
   { num: "09", icon: "ti-activity", name: "Ergonomía y vibraciones", norm: "Mano-brazo y cuerpo entero" },
+];
+
+const serviciosInfo = [
+  {
+    titulo: "Iluminación laboral",
+    norma: "Resolución SRT N° 84/2012",
+    descripcion: "Estudio de los niveles de iluminación en los puestos de trabajo para verificar el cumplimiento de los valores mínimos establecidos por la normativa.",
+    items: [
+      "Medición de iluminancia (E) en lux con luxómetro calibrado",
+      "Verificación de E mínima, E máxima y E media por sector",
+      "Control de uniformidad: E mínima ≥ E media / 2",
+      "Clasificación por tipo: general, localizada, natural, artificial, mixta",
+      "Valores de referencia según tarea (ej: oficinas 300 lux, depósitos 100 lux)",
+      "Grilla de puntos de medición según método de la cavidad zonal",
+    ],
+    cuando: "Obligatorio para todos los establecimientos. Se recomienda medir en el período de menor iluminación natural.",
+  },
+  {
+    titulo: "Ruido y dosimetrías",
+    norma: "Resolución SRT N° 85/2012",
+    descripcion: "Evaluación de la exposición ocupacional al ruido para proteger la salud auditiva de los trabajadores.",
+    items: [
+      "Medición con sonómetro integrador Clase 2 (ponderación A, respuesta lenta)",
+      "Dosimetrías con dosímetro personal en puestos variables",
+      "Nivel de presión acústica continuo equivalente (LAeq,Te)",
+      "Evaluación de ruido de impulso: nivel pico ponderado C (LCpico)",
+      "Cálculo de fracción de dosis y dosis acumulada (%)",
+      "Límite: 85 dBA para 8hs, 140 dBC para impulso",
+    ],
+    cuando: "Obligatorio cuando existen fuentes de ruido en el establecimiento. El técnico debe medir con la maquinaria en condiciones normales de operación.",
+  },
+  {
+    titulo: "Carga térmica",
+    norma: "Resolución SRT N° 30/2023",
+    descripcion: "Evaluación del estrés por calor en puestos de trabajo con exposición a ambientes calurosos o fuentes de calor radiante.",
+    items: [
+      "Medición de TGBH (Temperatura de Globo y Bulbo Húmedo)",
+      "Determinación de la Tasa Metabólica (TM en Watts)",
+      "Cálculo de TGBH ponderado para ciclos trabajo/descanso",
+      "Verificación de VLA (Valor Límite de Acción) y VLP (Valor Límite Permisible)",
+      "Evaluación de aclimatación del trabajador",
+      "Aplicación de VAR (Valor de Ajuste por Ropa)",
+    ],
+    cuando: "Obligatorio en tareas con exposición a calor. Debe realizarse en el período de mayor carga térmica del año (verano) y con las fuentes de calor operativas.",
+  },
+  {
+    titulo: "Estrés por frío",
+    norma: "Resolución MTEySS N° 295/2003",
+    descripcion: "Evaluación de la exposición a ambientes fríos en tareas en cámaras frigoríficas, depósitos refrigerados o exteriores en invierno.",
+    items: [
+      "Medición de Temperatura de Bulbo Seco (TBS)",
+      "Medición de velocidad del viento (m/s)",
+      "Cálculo de Temperatura Equivalente de Enfriamiento (TEE)",
+      "Determinación de rangos de peligro según TEE",
+      "Evaluación de ciclos de exposición y recuperación",
+      "Recomendaciones de ropa de abrigo y equipos de protección",
+    ],
+    cuando: "Aplicable en trabajos en cámaras frigoríficas, depósitos de frío, trabajos en exteriores en invierno y cualquier tarea con exposición a bajas temperaturas.",
+  },
+  {
+    titulo: "Puesta a tierra",
+    norma: "Resolución SRT N° 900/2015",
+    descripcion: "Verificación de la continuidad eléctrica de las masas y ensayo de dispositivos de corte automático (disyuntores diferenciales).",
+    items: [
+      "Medición de resistencia de puesta a tierra (en Ohms)",
+      "Ensayo de continuidad eléctrica de las masas metálicas",
+      "Verificación de disyuntores diferenciales (corriente de disparo y tiempo)",
+      "Control de tensión de contacto (no debe superar 24V en locales húmedos)",
+      "Inspección visual de tableros y conexiones",
+      "Certificado según Anexo VI del Dec. 351/79",
+    ],
+    cuando: "Obligatorio anualmente para todos los establecimientos. Imprescindible para presentar ante la ART y organismos de control.",
+  },
+  {
+    titulo: "Ventilación y aspiración",
+    norma: "Decreto 351/79 — Anexo II",
+    descripcion: "Evaluación de los sistemas de ventilación general y aspiración localizada para garantizar calidad de aire y confort térmico.",
+    items: [
+      "Medición de caudales de aire (m³/h) con anemómetro",
+      "Verificación de velocidades de aire en bocas y ductos",
+      "Control de renovaciones de aire por hora según actividad",
+      "Evaluación de campanas de extracción localizada",
+      "Medición de temperatura y humedad relativa del aire",
+      "Verificación de presiones negativas en zonas contaminadas",
+    ],
+    cuando: "Aplicable en industrias con generación de polvo, vapores, gases o donde se requiera control de temperatura y calidad de aire.",
+  },
+  {
+    titulo: "Agentes químicos",
+    norma: "Resolución MTEySS N° 295/2003",
+    descripcion: "Evaluación de la exposición ocupacional a contaminantes químicos en el ambiente de trabajo.",
+    items: [
+      "Muestreo de COVs (Compuestos Orgánicos Volátiles)",
+      "Determinación de plomo en aire y superficies",
+      "Análisis de BTEX (Benceno, Tolueno, Etilbenceno, Xileno)",
+      "Medición de hidrocarburos alifáticos y aromáticos",
+      "Comparación con TLVs (Valores Límite de Umbral — ACGIH)",
+      "Recomendaciones de EPP y controles de ingeniería",
+    ],
+    cuando: "Obligatorio cuando los trabajadores están expuestos a solventes, pinturas, adhesivos, combustibles u otros productos químicos en su jornada laboral.",
+  },
+  {
+    titulo: "Espesores por ultrasonido",
+    norma: "ASME Section VIII — Código API 510",
+    descripcion: "Medición de espesores de recipientes a presión, cañerías y estructuras metálicas mediante ultrasonido para detectar corrosión.",
+    items: [
+      "Medición de espesores con equipo de ultrasonido calibrado",
+      "Detección de zonas de corrosión interna y externa",
+      "Comparación con espesores originales o mínimos admisibles",
+      "Evaluación de velocidad de corrosión (mm/año)",
+      "Aplicable en recipientes a presión, calderas, tanques y cañerías",
+      "Informe con mapa de puntos y recomendación de vida útil",
+    ],
+    cuando: "Obligatorio para recipientes sometidos a presión según SRT. Se recomienda cada 1-3 años según condiciones de operación y resultados previos.",
+  },
+  {
+    titulo: "Ergonomía y vibraciones",
+    norma: "Resolución MTEySS N° 295/2003",
+    descripcion: "Evaluación de la exposición a vibraciones mecánicas transmitidas al sistema mano-brazo y cuerpo entero.",
+    items: [
+      "Medición de vibraciones mano-brazo (herramientas vibrantes)",
+      "Medición de vibraciones cuerpo entero (vehículos, plataformas)",
+      "Cálculo de valor de exposición diario A(8) en m/s²",
+      "Comparación con Valor de Acción (2,5 m/s²) y Valor Límite (5 m/s²)",
+      "Evaluación ergonómica de posturas y movimientos repetitivos",
+      "Recomendaciones de rediseño de puestos y EPP antivibratorio",
+    ],
+    cuando: "Aplicable cuando los trabajadores utilizan herramientas vibrantes (amoladoras, martillos neumáticos, etc.) o trabajan sobre superficies vibrantes (montacargas, tractores).",
+  },
 ];
 
 const whyItems = [
@@ -46,6 +185,7 @@ const studyOptions = [
 export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [modalIndex, setModalIndex] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     nombre: "",
     empresa: "",
@@ -62,6 +202,15 @@ export default function Home() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (modalIndex !== null) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [modalIndex]);
 
   const scrollToContact = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -80,6 +229,8 @@ export default function Home() {
     alert("¡Gracias! Te contactaremos a la brevedad.");
     setFormData({ nombre: "", empresa: "", email: "", telefono: "", estudio: "", mensaje: "" });
   };
+
+  const activeService = modalIndex !== null ? serviciosInfo[modalIndex] : null;
 
   return (
     <>
@@ -103,7 +254,7 @@ export default function Home() {
           transition: "box-shadow 0.2s, border-color 0.2s",
         }}
       >
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 68 }}>
           {/* Logo + Brand */}
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <LogoSVG />
@@ -120,7 +271,6 @@ export default function Home() {
             <a href="#clientes" onClick={scrollToSection("por-que")} style={{ fontSize: 13, fontWeight: 600, color: "#1e3a5f", textDecoration: "none", letterSpacing: "0.05em" }}>CLIENTES</a>
             <a href="#contacto" onClick={scrollToContact} style={{ fontSize: 13, fontWeight: 600, color: "#1e3a5f", textDecoration: "none", letterSpacing: "0.05em" }}>CONTACTO</a>
 
-            {/* Icon Buttons */}
             <a href="mailto:contacto@envexar.com" style={{ color: "#1e3a5f", fontSize: 20, textDecoration: "none", lineHeight: 1 }} title="Email">
               <i className="ti ti-mail" />
             </a>
@@ -128,7 +278,6 @@ export default function Home() {
               <i className="ti ti-phone" />
             </a>
 
-            {/* Virtual Office Button */}
             <a
               href="#contacto"
               onClick={scrollToContact}
@@ -206,7 +355,7 @@ export default function Home() {
       <section
         id="hero"
         style={{
-          marginTop: 64,
+          marginTop: 68,
           height: 480,
           position: "relative",
           backgroundImage: "url(https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=80)",
@@ -218,10 +367,7 @@ export default function Home() {
           flexDirection: "column",
         }}
       >
-        {/* Overlay */}
         <div style={{ position: "absolute", inset: 0, backgroundColor: "rgba(10,20,40,0.56)" }} />
-
-        {/* Content */}
         <div style={{ position: "relative", zIndex: 1, textAlign: "center", padding: "0 24px", maxWidth: 800 }}>
           <h1 style={{ fontSize: "clamp(22px, 4vw, 38px)", fontWeight: 700, color: "white", marginBottom: 16, lineHeight: 1.25 }}>
             Especialistas en Higiene y Seguridad en el Trabajo
@@ -230,7 +376,6 @@ export default function Home() {
             Mediciones ambientales, protocolos SRT y estudios de riesgo laboral. Más de 30 tipos de estudios para empresas de todo el país.
           </p>
 
-          {/* Social Icons */}
           <div style={{ display: "flex", justifyContent: "center", gap: 20, marginBottom: 32 }}>
             {[
               { icon: "ti-brand-facebook", href: "#", label: "Facebook" },
@@ -262,7 +407,6 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Decorative dots */}
           <div style={{ display: "flex", justifyContent: "center", gap: 8 }}>
             {[0, 1, 2, 3].map((i) => (
               <div
@@ -272,7 +416,6 @@ export default function Home() {
                   height: 8,
                   borderRadius: 4,
                   backgroundColor: i === 0 ? "white" : "rgba(255,255,255,0.4)",
-                  transition: "width 0.3s",
                 }}
               />
             ))}
@@ -292,7 +435,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Grid */}
           <div
             style={{
               display: "grid",
@@ -301,14 +443,16 @@ export default function Home() {
               backgroundColor: "#e5e7eb",
             }}
           >
-            {services.map(({ num, icon, name, norm }) => (
+            {services.map(({ num, icon, name, norm }, index) => (
               <div
                 key={num}
+                onClick={() => setModalIndex(index)}
                 style={{
                   backgroundColor: "#f8fafc",
                   padding: "28px 24px",
-                  cursor: "default",
+                  cursor: "pointer",
                   transition: "background-color 0.2s",
+                  position: "relative",
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f0fdf4")}
                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#f8fafc")}
@@ -316,7 +460,11 @@ export default function Home() {
                 <div style={{ fontSize: 12, fontWeight: 700, color: "#9ca3af", letterSpacing: "0.1em", marginBottom: 12 }}>{num}</div>
                 <i className={`ti ${icon}`} style={{ fontSize: 28, color: "#166534", display: "block", marginBottom: 10 }} />
                 <div style={{ fontSize: 15, fontWeight: 600, color: "#1e3a5f", marginBottom: 6 }}>{name}</div>
-                <div style={{ fontSize: 12, color: "#6b7280" }}>{norm}</div>
+                <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 10 }}>{norm}</div>
+                <div style={{ fontSize: 11, color: "#166534", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
+                  <i className="ti ti-info-circle" style={{ fontSize: 13 }} />
+                  Ver detalle
+                </div>
               </div>
             ))}
           </div>
@@ -332,7 +480,6 @@ export default function Home() {
             minHeight: 400,
           }}
         >
-          {/* Left: Image */}
           <div
             style={{
               position: "relative",
@@ -343,7 +490,6 @@ export default function Home() {
             }}
           >
             <div style={{ position: "absolute", inset: 0, backgroundColor: "rgba(10,20,40,0.45)" }} />
-            {/* Badge */}
             <div
               style={{
                 position: "absolute",
@@ -361,7 +507,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right: Content */}
           <div style={{ padding: "56px 48px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <h2 style={{ fontSize: "clamp(20px, 2.5vw, 28px)", fontWeight: 700, color: "#1e3a5f", marginBottom: 32, lineHeight: 1.3 }}>
               Profesionales matriculados. Resultados confiables.
@@ -390,7 +535,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* AHRA Badge */}
             <div
               style={{
                 marginTop: 32,
@@ -455,7 +599,6 @@ export default function Home() {
 
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               {[
-                { icon: "ti-map-pin", label: "Dirección", value: "Monteagudo 511, Piso 2 Of. D\nSan Miguel de Tucumán, Argentina" },
                 { icon: "ti-mail", label: "Email", value: "contacto@envexar.com" },
                 { icon: "ti-brand-whatsapp", label: "WhatsApp", value: "Consultas rápidas" },
               ].map(({ icon, label, value }) => (
@@ -477,7 +620,7 @@ export default function Home() {
                   </div>
                   <div>
                     <div style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 2, fontWeight: 600, letterSpacing: "0.05em" }}>{label.toUpperCase()}</div>
-                    <div style={{ fontSize: 14, color: "rgba(255,255,255,0.88)", lineHeight: 1.5, whiteSpace: "pre-line" }}>{value}</div>
+                    <div style={{ fontSize: 14, color: "rgba(255,255,255,0.88)", lineHeight: 1.5 }}>{value}</div>
                   </div>
                 </div>
               ))}
@@ -488,7 +631,6 @@ export default function Home() {
           <div style={{ backgroundColor: "#f8fafc", padding: "56px 48px" }}>
             <h3 style={{ fontSize: 20, fontWeight: 700, color: "#1e3a5f", marginBottom: 28 }}>Solicitar estudio</h3>
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              {/* Row: Nombre + Empresa */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 <div>
                   <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 4 }}>Nombre completo *</label>
@@ -605,7 +747,7 @@ export default function Home() {
             © 2026 Environmental Express Argentina · envexar.com
           </div>
           <div style={{ fontSize: 13, color: "#9ca3af" }}>
-            Tucumán, Argentina · contacto@envexar.com
+            contacto@envexar.com
           </div>
         </div>
       </footer>
@@ -645,6 +787,108 @@ export default function Home() {
       >
         <i className="ti ti-brand-whatsapp" />
       </a>
+
+      {/* SERVICE MODAL */}
+      {activeService && (
+        <div
+          onClick={() => setModalIndex(null)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0,0,0,0.55)",
+            zIndex: 2000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 16,
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: "white",
+              borderRadius: 12,
+              maxWidth: 560,
+              width: "100%",
+              maxHeight: "80vh",
+              overflowY: "auto",
+              padding: 32,
+              position: "relative",
+            }}
+          >
+            {/* Close */}
+            <button
+              onClick={() => setModalIndex(null)}
+              style={{
+                position: "absolute",
+                top: 14,
+                right: 16,
+                background: "none",
+                border: "none",
+                fontSize: 22,
+                cursor: "pointer",
+                color: "#64748b",
+                lineHeight: 1,
+              }}
+            >
+              ×
+            </button>
+
+            {/* Norma badge */}
+            <div style={{ marginBottom: 16 }}>
+              <span
+                style={{
+                  backgroundColor: "#dcfce7",
+                  color: "#166534",
+                  fontSize: 10,
+                  fontWeight: 800,
+                  padding: "3px 10px",
+                  borderRadius: 20,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.07em",
+                }}
+              >
+                {activeService.norma}
+              </span>
+            </div>
+
+            <h2 style={{ color: "#1e3a5f", fontSize: 18, fontWeight: 800, marginBottom: 10 }}>
+              {activeService.titulo}
+            </h2>
+            <p style={{ color: "#4b5563", fontSize: 13, lineHeight: 1.7, marginBottom: 16 }}>
+              {activeService.descripcion}
+            </p>
+
+            <h4 style={{ color: "#1e293b", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 10 }}>
+              ¿Qué incluye el estudio?
+            </h4>
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, padding: 0 }}>
+              {activeService.items.map((item, i) => (
+                <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: 12.5, color: "#374151" }}>
+                  <span style={{ color: "#166534", fontSize: 14, flexShrink: 0, lineHeight: 1.4 }}>✓</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <div
+              style={{
+                backgroundColor: "#f0fdf4",
+                borderLeft: "3px solid #16a34a",
+                padding: "12px 14px",
+                borderRadius: "0 8px 8px 0",
+              }}
+            >
+              <span style={{ fontSize: 11, fontWeight: 700, color: "#166534", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                ¿Cuándo es obligatorio?
+              </span>
+              <p style={{ fontSize: 12, color: "#374151", marginTop: 4, lineHeight: 1.6, margin: "4px 0 0" }}>
+                {activeService.cuando}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Responsive Styles */}
       <style>{`

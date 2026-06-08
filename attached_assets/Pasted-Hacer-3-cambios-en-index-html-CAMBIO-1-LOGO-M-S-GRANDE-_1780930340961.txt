@@ -1,0 +1,248 @@
+Hacer 3 cambios en index.html:
+
+---
+
+CAMBIO 1 — LOGO MÁS GRANDE Y FIEL AL ORIGINAL
+
+Reemplazar el SVG del logo en el nav por este que respeta el diseño original 
+(cuadrado navy, globo verde con meridianos, EEA grande, textos arriba y abajo):
+
+<svg width="56" height="56" viewBox="0 0 120 120">
+  <!-- Fondo cuadrado navy -->
+  <rect width="120" height="120" fill="#0D2F5E" rx="6"/>
+  
+  <!-- Texto superior -->
+  <text x="60" y="13" text-anchor="middle" font-family="Arial" font-size="7.5" 
+        fill="#7EC8A0" font-weight="700" letter-spacing="0.3">HIGIENE OCUPACIONAL</text>
+  <text x="60" y="22" text-anchor="middle" font-family="Arial" font-size="7.5" 
+        fill="#7EC8A0" font-weight="700" letter-spacing="0.3">Y MEDIO AMBIENTE</text>
+  
+  <!-- Globo terrestre — círculo exterior -->
+  <circle cx="60" cy="58" r="30" fill="none" stroke="#2E7D32" stroke-width="2.5"/>
+  
+  <!-- Meridianos horizontales -->
+  <ellipse cx="60" cy="58" rx="30" ry="12" fill="none" stroke="#2E7D32" stroke-width="1.5"/>
+  
+  <!-- Meridianos verticales -->
+  <ellipse cx="60" cy="58" rx="12" ry="30" fill="none" stroke="#2E7D32" stroke-width="1.5"/>
+  
+  <!-- Círculo interior con EEA -->
+  <circle cx="60" cy="58" r="18" fill="#0D2F5E" stroke="#2E7D32" stroke-width="2"/>
+  <text x="60" y="64" text-anchor="middle" font-family="Arial Black" font-weight="900" 
+        font-size="16" fill="#ffffff" letter-spacing="1">EEA</text>
+  
+  <!-- Texto inferior -->
+  <text x="60" y="96" text-anchor="middle" font-family="Arial" font-size="7" 
+        fill="#ffffff" font-weight="700" letter-spacing="0.3">ENVIRONMENTAL</text>
+  <text x="60" y="105" text-anchor="middle" font-family="Arial" font-size="7" 
+        fill="#ffffff" font-weight="700" letter-spacing="0.3">EXPRESS ARGENTINA</text>
+  
+  <!-- Tilde verde abajo derecha -->
+  <circle cx="103" cy="103" r="12" fill="#2E7D32"/>
+  <text x="103" y="108" text-anchor="middle" font-family="Arial" font-size="14" 
+        fill="#ffffff" font-weight="900">✓</text>
+</svg>
+
+También ajustar el alto del nav a 68px para que el logo entre bien.
+
+---
+
+CAMBIO 2 — ELIMINAR DIRECCIÓN DEL FOOTER Y CONTACTO
+
+En la sección de contacto (columna izquierda), eliminar el item de dirección 
+(Monteagudo 511...). Dejar solo email y WhatsApp.
+
+En el footer, eliminar la dirección si aparece. Dejar solo:
+"© 2026 Environmental Express Argentina · envexar.com"
+y "contacto@envexar.com"
+
+---
+
+CAMBIO 3 — MODAL CON INFO SRT AL HACER CLIC EN CADA SERVICIO
+
+Cada servicio en la grilla al hacer clic debe abrir un modal con información 
+técnica sobre ese estudio según la normativa SRT.
+
+Agregar este sistema de modales:
+
+HTML — agregar antes del cierre de </body> un div modal:
+<div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);
+z-index:1000;display:flex;align-items:center;justify-content:center" onclick="closeModal(event)">
+  <div id="modal-box" style="background:#fff;border-radius:12px;max-width:560px;width:90%;
+  max-height:80vh;overflow-y:auto;padding:32px;position:relative">
+    <button onclick="document.getElementById('modal').style.display='none'" 
+      style="position:absolute;top:14px;right:16px;background:none;border:none;
+      font-size:22px;cursor:pointer;color:#64748b">×</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+JavaScript — agregar estos datos y funciones:
+
+const serviciosInfo = {
+  0: {
+    titulo: "Iluminación laboral",
+    norma: "Resolución SRT N° 84/2012",
+    descripcion: "Estudio de los niveles de iluminación en los puestos de trabajo para verificar el cumplimiento de los valores mínimos establecidos por la normativa.",
+    items: [
+      "Medición de iluminancia (E) en lux con luxómetro calibrado",
+      "Verificación de E mínima, E máxima y E media por sector",
+      "Control de uniformidad: E mínima ≥ E media / 2",
+      "Clasificación por tipo: general, localizada, natural, artificial, mixta",
+      "Valores de referencia según tarea (ej: oficinas 300 lux, depósitos 100 lux)",
+      "Grilla de puntos de medición según método de la cavidad zonal"
+    ],
+    cuando: "Obligatorio para todos los establecimientos. Se recomienda medir en el período de menor iluminación natural."
+  },
+  1: {
+    titulo: "Ruido y dosimetrías",
+    norma: "Resolución SRT N° 85/2012",
+    descripcion: "Evaluación de la exposición ocupacional al ruido para proteger la salud auditiva de los trabajadores.",
+    items: [
+      "Medición con sonómetro integrador Clase 2 (ponderación A, respuesta lenta)",
+      "Dosimetrías con dosímetro personal en puestos variables",
+      "Nivel de presión acústica continuo equivalente (LAeq,Te)",
+      "Evaluación de ruido de impulso: nivel pico ponderado C (LCpico)",
+      "Cálculo de fracción de dosis y dosis acumulada (%)",
+      "Límite: 85 dBA para 8hs, 140 dBC para impulso"
+    ],
+    cuando: "Obligatorio cuando existen fuentes de ruido en el establecimiento. El técnico debe medir con la maquinaria en condiciones normales de operación."
+  },
+  2: {
+    titulo: "Carga térmica",
+    norma: "Resolución SRT N° 30/2023",
+    descripcion: "Evaluación del estrés por calor en puestos de trabajo con exposición a ambientes calurosos o fuentes de calor radiante.",
+    items: [
+      "Medición de TGBH (Temperatura de Globo y Bulbo Húmedo)",
+      "Determinación de la Tasa Metabólica (TM en Watts)",
+      "Cálculo de TGBH ponderado para ciclos trabajo/descanso",
+      "Verificación de VLA (Valor Límite de Acción) y VLP (Valor Límite Permisible)",
+      "Evaluación de aclimatación del trabajador",
+      "Aplicación de VAR (Valor de Ajuste por Ropa)"
+    ],
+    cuando: "Obligatorio en tareas con exposición a calor. Debe realizarse en el período de mayor carga térmica del año (verano) y con las fuentes de calor operativas."
+  },
+  3: {
+    titulo: "Estrés por frío",
+    norma: "Resolución MTEySS N° 295/2003",
+    descripcion: "Evaluación de la exposición a ambientes fríos en tareas en cámaras frigoríficas, depósitos refrigerados o exteriores en invierno.",
+    items: [
+      "Medición de Temperatura de Bulbo Seco (TBS)",
+      "Medición de velocidad del viento (m/s)",
+      "Cálculo de Temperatura Equivalente de Enfriamiento (TEE)",
+      "Determinación de rangos de peligro según TEE",
+      "Evaluación de ciclos de exposición y recuperación",
+      "Recomendaciones de ropa de abrigo y equipos de protección"
+    ],
+    cuando: "Aplicable en trabajos en cámaras frigoríficas, depósitos de frío, trabajos en exteriores en invierno y cualquier tarea con exposición a bajas temperaturas."
+  },
+  4: {
+    titulo: "Puesta a tierra",
+    norma: "Resolución SRT N° 900/2015",
+    descripcion: "Verificación de la continuidad eléctrica de las masas y ensayo de dispositivos de corte automático (disyuntores diferenciales).",
+    items: [
+      "Medición de resistencia de puesta a tierra (en Ohms)",
+      "Ensayo de continuidad eléctrica de las masas metálicas",
+      "Verificación de disyuntores diferenciales (corriente de disparo y tiempo)",
+      "Control de tensión de contacto (no debe superar 24V en locales húmedos)",
+      "Inspección visual de tableros y conexiones",
+      "Certificado según Anexo VI del Dec. 351/79"
+    ],
+    cuando: "Obligatorio anualmente para todos los establecimientos. Imprescindible para presentar ante la ART y organismos de control."
+  },
+  5: {
+    titulo: "Ventilación y aspiración",
+    norma: "Decreto 351/79 — Anexo II",
+    descripcion: "Evaluación de los sistemas de ventilación general y aspiración localizada para garantizar calidad de aire y confort térmico.",
+    items: [
+      "Medición de caudales de aire (m³/h) con anemómetro",
+      "Verificación de velocidades de aire en bocas y ductos",
+      "Control de renovaciones de aire por hora según actividad",
+      "Evaluación de campanas de extracción localizada",
+      "Medición de temperatura y humedad relativa del aire",
+      "Verificación de presiones negativas en zonas contaminadas"
+    ],
+    cuando: "Aplicable en industrias con generación de polvo, vapores, gases o donde se requiera control de temperatura y calidad de aire."
+  },
+  6: {
+    titulo: "Agentes químicos",
+    norma: "Resolución MTEySS N° 295/2003",
+    descripcion: "Evaluación de la exposición ocupacional a contaminantes químicos en el ambiente de trabajo.",
+    items: [
+      "Muestreo de COVs (Compuestos Orgánicos Volátiles)",
+      "Determinación de plomo en aire y superficies",
+      "Análisis de BTEX (Benceno, Tolueno, Etilbenceno, Xileno)",
+      "Medición de hidrocarburos alifáticos y aromáticos",
+      "Comparación con TLVs (Valores Límite de Umbral — ACGIH)",
+      "Recomendaciones de EPP y controles de ingeniería"
+    ],
+    cuando: "Obligatorio cuando los trabajadores están expuestos a solventes, pinturas, adhesivos, combustibles u otros productos químicos en su jornada laboral."
+  },
+  7: {
+    titulo: "Espesores por ultrasonido",
+    norma: "ASME Section VIII — Código API 510",
+    descripcion: "Medición de espesores de recipientes a presión, cañerías y estructuras metálicas mediante ultrasonido para detectar corrosión.",
+    items: [
+      "Medición de espesores con equipo de ultrasonido calibrado",
+      "Detección de zonas de corrosión interna y externa",
+      "Comparación con espesores originales o mínimos admisibles",
+      "Evaluación de velocidad de corrosión (mm/año)",
+      "Aplicable en recipientes a presión, calderas, tanques y cañerías",
+      "Informe con mapa de puntos y recomendación de vida útil"
+    ],
+    cuando: "Obligatorio para recipientes sometidos a presión según SRT. Se recomienda cada 1-3 años según condiciones de operación y resultados previos."
+  },
+  8: {
+    titulo: "Ergonomía y vibraciones",
+    norma: "Resolución MTEySS N° 295/2003",
+    descripcion: "Evaluación de la exposición a vibraciones mecánicas transmitidas al sistema mano-brazo y cuerpo entero.",
+    items: [
+      "Medición de vibraciones mano-brazo (herramientas vibrantes)",
+      "Medición de vibraciones cuerpo entero (vehículos, plataformas)",
+      "Cálculo de valor de exposición diario A(8) en m/s²",
+      "Comparación con Valor de Acción (2,5 m/s²) y Valor Límite (5 m/s²)",
+      "Evaluación ergonómica de posturas y movimientos repetitivos",
+      "Recomendaciones de rediseño de puestos y EPP antivibratorio"
+    ],
+    cuando: "Aplicable cuando los trabajadores utilizan herramientas vibrantes (amoladoras, martillos neumáticos, etc.) o trabajan sobre superficies vibrantes (montacargas, tractores)."
+  }
+};
+
+function openModal(index) {
+  const info = serviciosInfo[index];
+  if (!info) return;
+  document.getElementById('modal-content').innerHTML = `
+    <div style="margin-bottom:16px">
+      <span style="background:#dcfce7;color:#166534;font-size:10px;font-weight:800;
+        padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.07em">
+        ${info.norma}
+      </span>
+    </div>
+    <h2 style="color:#1e3a5f;font-size:18px;font-weight:800;margin-bottom:10px">${info.titulo}</h2>
+    <p style="color:#4b5563;font-size:13px;line-height:1.7;margin-bottom:16px">${info.descripcion}</p>
+    <h4 style="color:#1e293b;font-size:12px;font-weight:700;text-transform:uppercase;
+      letter-spacing:0.06em;margin-bottom:10px">¿Qué incluye el estudio?</h4>
+    <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+      ${info.items.map(i => `
+        <li style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:#374151">
+          <span style="color:#166534;font-size:14px;flex-shrink:0">✓</span>${i}
+        </li>`).join('')}
+    </ul>
+    <div style="background:#f0fdf4;border-left:3px solid #16a34a;padding:12px 14px;border-radius:0 8px 8px 0">
+      <span style="font-size:11px;font-weight:700;color:#166534;text-transform:uppercase;
+        letter-spacing:0.05em">¿Cuándo es obligatorio?</span>
+      <p style="font-size:12px;color:#374151;margin-top:4px;line-height:1.6">${info.cuando}</p>
+    </div>
+  `;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function closeModal(e) {
+  if (e.target.id === 'modal') document.getElementById('modal').style.display = 'none';
+}
+
+Agregar onclick="openModal(INDEX)" a cada item de la grilla de servicios,
+donde INDEX es 0 para iluminación, 1 para ruido, etc. en orden.
+
+También agregar cursor:pointer a cada .si (servicio item) y un pequeño texto
+"Ver más →" en color verde al final de cada servicio item.
