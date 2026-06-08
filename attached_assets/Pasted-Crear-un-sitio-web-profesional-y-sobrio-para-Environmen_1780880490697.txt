@@ -1,0 +1,136 @@
+Crear un sitio web profesional y sobrio para "Environmental Express Argentina" 
+en un único archivo index.html. Sin frameworks, sin dependencias externas 
+excepto una librería de íconos.
+
+---
+
+IDENTIDAD VISUAL:
+- Azul navy oscuro: #1e3a5f
+- Verde oscuro: #166534
+- Fondo claro: #f8fafc
+- Tipografía: Segoe UI, system-ui, sans-serif
+- Estilo: sobrio, corporativo, similar a consultoras de seguridad industrial
+- Íconos: usar Tabler Icons via CDN:
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+
+---
+
+ESTRUCTURA DEL HTML — un solo archivo index.html con estas secciones:
+
+1. NAV fijo arriba:
+   - Logo SVG de EEA (círculo navy, borde verde, meridianos, texto EEA en blanco, tilde verde)
+   - Texto: "Environmental Express Argentina" / subtítulo "Higiene Ocupacional y Medio Ambiente"
+   - Links: INICIO · SERVICIOS · CLIENTES · CONTACTO
+   - Dos botones ícono (mail, teléfono) + botón "OFICINA VIRTUAL" navy
+   - Fondo blanco, borde inferior sutil
+
+2. HERO — foto de fondo full width, altura 480px:
+   - Imagen de fondo: https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=80
+   - Overlay oscuro rgba(10,20,40,0.56)
+   - Texto centrado encima:
+     - H1: "Especialistas en Higiene y Seguridad en el Trabajo"
+     - Párrafo: "Mediciones ambientales, protocolos SRT y estudios de riesgo laboral. 
+       Más de 30 tipos de estudios para empresas de todo el país."
+   - Íconos de redes sociales (Facebook, Instagram, LinkedIn) centrados
+   - 4 puntitos decorativos abajo (como slider)
+
+3. SECCIÓN SERVICIOS — fondo #f8fafc:
+   - Título centrado: "Estudios y mediciones certificadas"
+   - Subtítulo: "Protocolos oficiales SRT para todos los agentes de riesgo"
+   - Grid 3 columnas, separado por líneas grises (gap:1px, background:#e5e7eb)
+   - Cada celda: número (01, 02...), ícono Tabler, nombre del estudio, normativa
+   - Al hover: fondo #f0fdf4
+   - 9 servicios:
+     01 · ti-sun · Iluminación laboral · Resol. SRT 84/2012
+     02 · ti-volume · Ruido y dosimetrías · Resol. SRT 85/2012
+     03 · ti-temperature · Carga térmica · Resol. SRT 30/2023
+     04 · ti-snowflake · Estrés por frío · MTEySS 295/2003
+     05 · ti-bolt · Puesta a tierra · Resol. SRT 900/2015
+     06 · ti-wind · Ventilación y aspiración · Caudales y velocidades
+     07 · ti-atom · Agentes químicos · COVs, plomo, BTEX
+     08 · ti-ruler-measure · Espesores por ultrasonido · ASME Section VIII
+     09 · ti-activity · Ergonomía y vibraciones · Mano-brazo y cuerpo entero
+
+4. SECCIÓN "¿POR QUÉ ELEGIRNOS?" — grid 2 columnas:
+   - Columna izquierda: foto de fondo con overlay oscuro
+     URL: https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80
+     Badge abajo izquierda: "+30 tipos de estudios"
+   - Columna derecha:
+     Título: "Profesionales matriculados. Resultados confiables."
+     Lista de 4 items con íconos verdes:
+     - ti-certificate · Instrumentos calibrados con trazabilidad al INTI
+     - ti-file-check · Informes SRT listos para ART e inspecciones laborales
+     - ti-map-pin · Cobertura en todo el territorio nacional
+     - ti-clock · Entrega de informes en 48-72 horas hábiles
+     Badge AHRA al pie con descripción
+
+5. SECCIÓN CONTACTO — fondo #1e3a5f, grid 2 columnas:
+   - Columna izquierda (navy):
+     Título "Contacto" + descripción
+     3 items de contacto con íconos:
+     - Dirección: Monteagudo 511, Piso 2 Of. D, San Miguel de Tucumán, Argentina
+     - Email: contacto@envexar.com
+     - WhatsApp: Consultas rápidas
+   - Columna derecha (fondo #f8fafc):
+     Formulario con campos:
+     - Nombre completo + Empresa (en fila)
+     - Email corporativo
+     - Teléfono / WhatsApp
+     - Select: ¿Qué estudio necesitás? (opciones: Iluminación SRT 84/2012, 
+       Ruido SRT 85/2012, Carga térmica SRT 30/2023, Estrés por frío, 
+       Puesta a tierra, Espesores ultrasonido, Agentes químicos, Varios/consultar)
+     - Textarea: mensaje
+     - Botón "Enviar solicitud" navy con ícono ti-send
+
+6. FOOTER — fondo #111827:
+   - Izquierda: © 2026 Environmental Express Argentina · envexar.com
+   - Derecha: Tucumán, Argentina · contacto@envexar.com
+
+7. BOTÓN WHATSAPP flotante — círculo verde #25d366, ícono ti-brand-whatsapp,
+   fixed abajo a la derecha
+
+---
+
+LOGO SVG (usar este código exacto):
+<svg width="36" height="36" viewBox="0 0 110 110">
+  <circle cx="55" cy="55" r="52" fill="#1e3a5f"/>
+  <circle cx="55" cy="55" r="48" fill="none" stroke="#166534" stroke-width="3.5"/>
+  <ellipse cx="55" cy="55" rx="48" ry="20" fill="none" stroke="#166534" stroke-width="2" opacity="0.55"/>
+  <ellipse cx="55" cy="55" rx="20" ry="48" fill="none" stroke="#166534" stroke-width="2" opacity="0.55"/>
+  <circle cx="55" cy="55" r="27" fill="#1e3a5f" stroke="#166534" stroke-width="2"/>
+  <text x="55" y="62" text-anchor="middle" font-family="Arial Black" 
+        font-weight="900" font-size="19" fill="#fff">EEA</text>
+  <circle cx="87" cy="82" r="10" fill="#166534"/>
+  <text x="87" y="86.5" text-anchor="middle" font-family="Arial" 
+        font-size="12" fill="#fff" font-weight="900">✓</text>
+</svg>
+
+---
+
+COMPORTAMIENTO JAVASCRIPT:
+- Nav se queda fijo (position:fixed) al hacer scroll
+- El link "CONTACTO" del nav hace scroll suave a la sección de contacto
+- El formulario al enviarse muestra un alert: "¡Gracias! Te contactaremos a la brevedad."
+- El botón WhatsApp abre: https://wa.me/5493814000000 (placeholder)
+- Smooth scroll para todos los links del nav
+
+---
+
+RESPONSIVE (mobile):
+- Nav: ocultar links, mostrar solo logo y botón hamburguesa
+- Hero: reducir font-size del H1
+- Servicios: grid 1 columna en mobile
+- About: grid 1 columna en mobile (imagen arriba, texto abajo)
+- Contacto: grid 1 columna en mobile
+
+---
+
+NOTAS:
+- Todo en un único archivo index.html (CSS en <style>, JS en <script>)
+- No usar jQuery ni frameworks
+- El formulario no necesita backend por ahora — solo el alert
+- Asegurarse que las imágenes de Unsplash carguen correctamente
+- Meta tags: charset UTF-8, viewport, description para SEO
+  <meta name="description" content="Environmental Express Argentina - 
+  Especialistas en Higiene y Seguridad en el Trabajo. Mediciones ambientales, 
+  protocolos SRT, estudios de riesgo laboral en Tucumán y todo el país.">
