@@ -1,0 +1,587 @@
+// ── PORTAL — público ──────────────────────────────────────────────
+
+// Login del cliente
+app.post("/api/portal/login", async (req, res) => {
+  const { email, password } = req.body;
+  const [user] = await db.select().from(clientPortalUsers)
+    .where(eq(clientPortalUsers.email, email.toLowerCase()));
+  if (!user || !user.activo) {
+    return res.status(401).json({ message: "Email o contraseña incorrectos" });
+  }
+  if (user.password !== hashPortalPassword(password)) {
+    return res.status(401).json({ message: "Email o contraseña incorrectos" });
+  }
+  // Guardar sesión del portal separada de la del admin
+  (req.session as any).portalUserId = user.id;
+  res.json({ ok: true, nombre: user.nombre, email: user.email });
+});
+
+// Logout del cliente
+app.post("/api/portal/logout", (req, res) => {
+  delete (req.session as any).portalUserId;
+  res.json({ ok: true });
+});
+
+// Verificar sesión portal
+app.get("/api/portal/me", async (req, res) => {
+  const portalUserId = (req.session as any).portalUserId;
+  if (!portalUserId) return res.status(401).json({ message: "No autenticado" });
+  const [user] = await db.select().from(clientPortalUsers)
+    .where(eq(clientPortalUsers.id, portalUserId));
+  if (!user || !user.activo) return res.status(401).json({ message: "No autenticado" });
+  res.json({ nombre: user.nombre, email: user.email });
+});
+
+// Listar informes del cliente logueado
+app.get("/api/portal/reports", async (req, res) => {
+  const portalUserId = (req.session as any).portalUserId;
+  if (!portalUserId) return res.status(401).json({ message: "No autenticado" });
+  const reports = await db.select({
+    id: clientReports.id,
+    titulo: clientReports.titulo,
+    descripcion: clientReports.descripcion,
+    tipoEstudio: clientReports.tipoEstudio,
+    fechaEstudio: clientReports.fechaEstudio,
+    pdfNombre: clientReports.pdfNombre,
+    creadoEn: clientReports.creadoEn,
+  }).from(clientReports)
+    .where(eq(clientReports.clientPortalUserId, portalUserId))
+    .orderBy(desc(clientReports.creadoEn));
+  res.json(reports);
+});
+
+// Ver PDF de un informe (solo para imprimir, sin descarga)
+app.get("/api/portal/reports/:id/pdf", async (req, res) => {
+  const portalUserId = (req.session as any).portalUserId;
+  if (!portalUserId) return res.status(401).json({ message: "No autenticado" });
+  const [report] = await db.select().from(clientReports)
+    .where(
+      and(
+        eq(clientReports.id, req.params.id),
+        eq(clientReports.clientPortalUserId, portalUserId)
+      )
+    );
+  if (!report) return res.status(404).json({ message: "No encontrado" });
+  const buffer = Buffer.from(report.pdfData, "base64");
+  // Content-Disposition inline para mostrar en browser (no descargar)
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Content-Disposition", `inline; filename="${report.pdfNombre}"`);
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.send(buffer);
+});
+
+// ── ADMIN — gestión del portal ────────────────────────────────────
+
+// Listar usuarios del portal
+app.get("/api/portal-users", async (req, res) => {
+  if (!req.isAuthenticated()) return res.status(401).json({ message: "No autorizado" });
+  const users = await db.select({
+    id: clientPortalUsers.id,
+    email: clientPortalUsers.email,
+    nombre: clientPortalUsers.nombre,
+    activo: clientPortalUsers.activo,
+    clientId: clientPortalUsers.clientId,
+    creadoEn: clientPortalUsers.creadoEn,
+  }).from(clientPortalUsers).orderBy(desc(clientPortalUsers.creadoEn));
+  res.json(users);
+});
+
+// Crear usuario del portal
+app.post("/api/portal-users", async (req, res) => {
+  if (!req.isAuthenticated()) return res.status(401).json({ message: "No autorizado" });
+  const { email, nombre, clientId } = req.body;
+  const password = generatePassword();
+  const [user] = await db.insert(clientPortalUsers).values({
+    email: email.toLowerCase(),
+    nombre,
+    clientId,
+    password: hashPortalPassword(password),
+  }).returning();
+
+  // Enviar email de bienvenida con credenciales
+  if (process.env.SMTP_HOST) {
+    try {
+      const nodemailer = await import("nodemailer");
+      const transporter = nodemailer.default.createTransport({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || "587"),
+        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      });
+      await transporter.sendMail({
+        from: `"Environmental Express Argentina" <${process.env.SMTP_USER}>`,
+        to: email,
+        subject: "Acceso a tu portal de informes — EEA",
+        html: `
+<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto">
+  <div style="background:#0D2F5E;padding:24px;text-align:center;border-radius:8px 8px 0 0">
+    <h2 style="color:#fff;margin:0;font-size:18px">Environmental Express Argentina</h2>
+    <p style="color:#7EC8A0;margin:6px 0 0;font-size:13px">Portal de Informes</p>
+  </div>
+  <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-radius:0 0 8px 8px">
+    <p style="color:#1e293b;font-size:14px">Hola <strong>${nombre}</strong>,</p>
+    <p style="color:#374151;font-size:13.5px;line-height:1.7">
+      Tu informe de Higiene y Seguridad está disponible en el portal de EEA.
+      Usá las siguientes credenciales para acceder:
+    </p>
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;
+      padding:16px 20px;margin:20px 0">
+      <div style="margin-bottom:10px">
+        <span style="font-size:11px;font-weight:700;color:#64748b;
+          text-transform:uppercase;letter-spacing:0.05em">Email</span>
+        <p style="color:#1e293b;font-size:14px;font-weight:600;margin:2px 0">${email}</p>
+      </div>
+      <div>
+        <span style="font-size:11px;font-weight:700;color:#64748b;
+          text-transform:uppercase;letter-spacing:0.05em">Contraseña</span>
+        <p style="color:#1e293b;font-size:18px;font-weight:800;
+          letter-spacing:2px;margin:2px 0;font-family:monospace">${password}</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin:24px 0">
+      <a href="https://envexar.com/portal" 
+        style="background:#166534;color:#fff;padding:12px 28px;
+        border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;
+        display:inline-block">
+        Acceder al portal →
+      </a>
+    </div>
+    <p style="color:#94a3b8;font-size:11.5px;text-align:center;margin-top:16px">
+      Por seguridad, te recomendamos cambiar tu contraseña la primera vez que ingreses.
+    </p>
+  </div>
+</div>
+        `,
+      });
+    } catch(emailErr) {
+      console.warn("Email no enviado:", emailErr);
+    }
+  }
+
+  res.json({ ok: true, id: user.id, passwordGenerada: password });
+});
+
+// Subir informe PDF a un usuario del portal
+app.post("/api/portal-users/:userId/reports", async (req, res) => {
+  if (!req.isAuthenticated()) return res.status(401).json({ message: "No autorizado" });
+  const { titulo, descripcion, tipoEstudio, fechaEstudio, pdfBase64, pdfNombre } = req.body;
+
+  const [report] = await db.insert(clientReports).values({
+    clientPortalUserId: req.params.userId,
+    titulo,
+    descripcion,
+    tipoEstudio,
+    fechaEstudio,
+    pdfData: pdfBase64,
+    pdfNombre: pdfNombre || "informe.pdf",
+  }).returning();
+
+  // Obtener datos del usuario para el email
+  const [user] = await db.select().from(clientPortalUsers)
+    .where(eq(clientPortalUsers.id, req.params.userId));
+
+  // Enviar email de notificación
+  if (process.env.SMTP_HOST && user) {
+    try {
+      const nodemailer = await import("nodemailer");
+      const transporter = nodemailer.default.createTransport({
+        host: process.env.SMTP_HOST,
+        port: parseInt(process.env.SMTP_PORT || "587"),
+        auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      });
+      await transporter.sendMail({
+        from: `"Environmental Express Argentina" <${process.env.SMTP_USER}>`,
+        to: user.email,
+        subject: `📄 Tu informe está listo — ${titulo}`,
+        html: `
+<div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto">
+  <div style="background:#0D2F5E;padding:24px;text-align:center;border-radius:8px 8px 0 0">
+    <h2 style="color:#fff;margin:0;font-size:18px">Environmental Express Argentina</h2>
+    <p style="color:#7EC8A0;margin:6px 0 0;font-size:13px">Portal de Informes</p>
+  </div>
+  <div style="background:#f8fafc;padding:28px;border:1px solid #e2e8f0;border-radius:0 0 8px 8px">
+    <p style="color:#1e293b;font-size:14px">Hola <strong>${user.nombre}</strong>,</p>
+    <p style="color:#374151;font-size:13.5px;line-height:1.7">
+      Tu informe de Higiene y Seguridad está listo para consultar:
+    </p>
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;
+      padding:16px 20px;margin:20px 0;border-left:4px solid #166534">
+      <p style="color:#1e293b;font-size:15px;font-weight:700;margin:0 0 4px">
+        📄 ${titulo}
+      </p>
+      ${tipoEstudio ? `<p style="color:#166534;font-size:12px;font-weight:600;margin:0 0 4px">${tipoEstudio}</p>` : ""}
+      ${fechaEstudio ? `<p style="color:#64748b;font-size:12px;margin:0">Fecha del estudio: ${fechaEstudio}</p>` : ""}
+      ${descripcion ? `<p style="color:#374151;font-size:12.5px;margin:8px 0 0">${descripcion}</p>` : ""}
+    </div>
+    <div style="text-align:center;margin:24px 0">
+      <a href="https://envexar.com/portal"
+        style="background:#166534;color:#fff;padding:12px 28px;
+        border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;
+        display:inline-block">
+        Ver mi informe →
+      </a>
+    </div>
+    <p style="color:#94a3b8;font-size:11px;text-align:center">
+      El informe solo puede visualizarse e imprimirse desde el portal.
+    </p>
+  </div>
+</div>
+        `,
+      });
+      await db.update(clientReports)
+        .set({ notificacionEnviada: true })
+        .where(eq(clientReports.id, report.id));
+    } catch(emailErr) {
+      console.warn("Email no enviado:", emailErr);
+    }
+  }
+
+  res.json({ ok: true, id: report.id });
+});
+
+// Eliminar usuario del portal
+app.delete("/api/portal-users/:id", async (req, res) => {
+  if (!req.isAuthenticated()) return res.status(401).json({ message: "No autorizado" });
+  await db.update(clientPortalUsers)
+    .set({ activo: false })
+    .where(eq(clientPortalUsers.id, req.params.id));
+  res.json({ ok: true });
+});
+
+
+--- CAMBIO 4: client/src/pages/portal-admin.tsx (archivo nuevo) ---
+Crear página de administración del portal con 2 tabs:
+
+TAB 1 — CLIENTES DEL PORTAL:
+- Tabla con: Nombre, Email, Cliente vinculado, Estado, Informes, Acciones
+- Botón "Nuevo acceso" → modal con:
+  · Select de cliente existente (cargar de /api/clients)
+  · Campo email
+  · Campo nombre del contacto
+  · Al guardar: POST /api/portal-users
+  · Mostrar la contraseña generada en un toast o modal
+    "Contraseña generada: XXXXXXXX — El cliente la recibirá por email"
+- Botón "Subir informe" por cada usuario → modal con:
+  · Input título del informe
+  · Select tipo de estudio (Iluminación, Ruido, Calor, Frío, PAT, etc.)
+  · Input fecha del estudio
+  · Textarea descripción/observaciones
+  · Input file para subir el PDF
+  · Al seleccionar el PDF, convertirlo a base64 con FileReader
+  · Al guardar: POST /api/portal-users/:userId/reports con el base64
+  · Mostrar loading mientras sube
+- Botón desactivar cuenta (rojo)
+
+TAB 2 — INFORMES SUBIDOS:
+- Lista de todos los informes subidos con:
+  · Cliente, título, tipo, fecha, si se envió la notificación
+  · Fecha de carga
+
+Agregar en App.tsx la ruta /portal-admin y en el sidebar
+bajo GESTIÓN: "Portal Clientes" con ícono ti-users-group.
+
+
+=====================================================================
+PROYECTO 2 — LA WEB (archivo nuevo: portal.html)
+=====================================================================
+
+--- CAMBIO 5: portal.html ---
+Crear este archivo en la raíz de la web.
+Es una página standalone de login + visualización de informes.
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Informes — Environmental Express Argentina</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { background: #f8fafc; min-height: 100vh; }
+
+    /* NAV */
+    nav { background: #0D2F5E; padding: 0 32px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-logo span { color: #fff; font-size: 14px; font-weight: 700; }
+    .nav-logo small { color: #7EC8A0; font-size: 10px; display: block; }
+    .nav-back { color: rgba(255,255,255,0.6); font-size: 12px;
+      text-decoration: none; display: flex; align-items: center; gap: 6px; }
+
+    /* LOGIN */
+    #login-screen { display: flex; align-items: center; justify-content: center;
+      min-height: calc(100vh - 60px); padding: 24px; }
+    .login-card { background: #fff; border-radius: 14px; padding: 36px;
+      max-width: 400px; width: 100%; border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+    .login-card h2 { color: #0D2F5E; font-size: 20px; font-weight: 800;
+      margin-bottom: 6px; }
+    .login-card p { color: #64748b; font-size: 13px; margin-bottom: 24px; }
+    .fi { width: 100%; padding: 11px 13px; border: 1.5px solid #e5e7eb;
+      border-radius: 8px; font-size: 13.5px; color: #1e293b; outline: none;
+      margin-bottom: 12px; transition: border-color 0.2s; }
+    .fi:focus { border-color: #0D2F5E; }
+    .login-btn { width: 100%; background: #166534; color: #fff; border: none;
+      padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 700;
+      cursor: pointer; margin-top: 4px; }
+    .login-btn:hover { background: #15803d; }
+    .error-msg { color: #dc2626; font-size: 12.5px; margin-bottom: 10px;
+      display: none; }
+
+    /* PORTAL */
+    #portal-screen { display: none; max-width: 800px; margin: 0 auto;
+      padding: 32px 24px; }
+    .portal-header { display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 28px; }
+    .portal-header h1 { color: #0D2F5E; font-size: 20px; font-weight: 800; }
+    .portal-header p { color: #64748b; font-size: 13px; margin-top: 2px; }
+    .logout-btn { background: none; border: 1px solid #e2e8f0; color: #64748b;
+      padding: 8px 16px; border-radius: 7px; font-size: 12.5px; cursor: pointer; }
+
+    /* CARDS DE INFORMES */
+    .reports-grid { display: flex; flex-direction: column; gap: 12px; }
+    .report-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+      padding: 20px 22px; display: flex; align-items: center;
+      justify-content: space-between; border-left: 4px solid #166534; }
+    .report-info h3 { color: #0D2F5E; font-size: 14px; font-weight: 700;
+      margin-bottom: 3px; }
+    .report-info p { color: #64748b; font-size: 12px; }
+    .report-tipo { display: inline-block; background: #dcfce7; color: #166534;
+      font-size: 10.5px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 6px; }
+    .print-btn { background: #0D2F5E; color: #fff; border: none; padding: 10px 20px;
+      border-radius: 8px; font-size: 12.5px; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .print-btn:hover { background: #1e3a5f; }
+    .empty-state { text-align: center; padding: 60px 20px; color: #94a3b8; }
+    .empty-state i { font-size: 48px; margin-bottom: 12px; display: block; }
+
+    /* VISOR PDF */
+    #pdf-viewer { display: none; position: fixed; inset: 0; background: #1e293b;
+      z-index: 1000; flex-direction: column; }
+    #pdf-viewer-header { background: #0D2F5E; padding: 12px 20px;
+      display: flex; align-items: center; justify-content: space-between; }
+    #pdf-viewer-header span { color: #fff; font-size: 14px; font-weight: 600; }
+    .viewer-btns { display: flex; gap: 10px; }
+    .viewer-print-btn { background: #166534; color: #fff; border: none;
+      padding: 9px 20px; border-radius: 7px; font-size: 13px; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .viewer-close-btn { background: rgba(255,255,255,0.1); color: #fff;
+      border: none; padding: 9px 16px; border-radius: 7px; font-size: 13px;
+      cursor: pointer; }
+    #pdf-frame { flex: 1; border: none; width: 100%; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <svg width="36" height="36" viewBox="0 0 110 110">
+      <rect width="110" height="110" fill="#0D2F5E" rx="6"/>
+      <ellipse cx="55" cy="57" rx="34" ry="26" fill="none" stroke="#2E7D32" stroke-width="2.5"/>
+      <ellipse cx="55" cy="57" rx="34" ry="10" fill="none" stroke="#2E7D32" stroke-width="1.8"/>
+      <ellipse cx="55" cy="57" rx="13" ry="26" fill="none" stroke="#2E7D32" stroke-width="1.8"/>
+      <circle cx="55" cy="57" r="19" fill="#0D2F5E"/>
+      <text x="55" y="64" text-anchor="middle" font-family="Arial Black"
+            font-weight="900" font-size="18" fill="#fff">EEA</text>
+      <circle cx="96" cy="96" r="10" fill="#2E7D32"/>
+      <text x="96" y="101" text-anchor="middle" font-family="Arial"
+            font-size="12" fill="#fff" font-weight="900">✓</text>
+    </svg>
+    <div>
+      <span>Environmental Express Argentina</span>
+      <small>Portal de Informes</small>
+    </div>
+  </div>
+  <a href="/" class="nav-back">
+    <i class="ti ti-arrow-left"></i> Volver al sitio
+  </a>
+</nav>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <h2>Acceso al portal</h2>
+    <p>Ingresá con las credenciales que te enviamos por email</p>
+    <div class="error-msg" id="error-msg">Email o contraseña incorrectos</div>
+    <input class="fi" type="email" id="login-email" placeholder="Email">
+    <input class="fi" type="password" id="login-pass" placeholder="Contraseña">
+    <button class="login-btn" onclick="handleLogin()">
+      Ingresar <i class="ti ti-arrow-right"></i>
+    </button>
+  </div>
+</div>
+
+<!-- PORTAL -->
+<div id="portal-screen">
+  <div class="portal-header">
+    <div>
+      <h1>Mis informes</h1>
+      <p id="portal-subtitle">Podés visualizar e imprimir tus informes desde acá</p>
+    </div>
+    <button class="logout-btn" onclick="handleLogout()">
+      <i class="ti ti-logout"></i> Cerrar sesión
+    </button>
+  </div>
+  <div class="reports-grid" id="reports-list"></div>
+</div>
+
+<!-- VISOR PDF -->
+<div id="pdf-viewer">
+  <div id="pdf-viewer-header">
+    <span id="viewer-title">Informe</span>
+    <div class="viewer-btns">
+      <button class="viewer-print-btn" onclick="printPdf()">
+        <i class="ti ti-printer"></i> Imprimir
+      </button>
+      <button class="viewer-close-btn" onclick="closePdf()">
+        <i class="ti ti-x"></i> Cerrar
+      </button>
+    </div>
+  </div>
+  <iframe id="pdf-frame" src=""></iframe>
+</div>
+
+<script>
+  const APP_URL = 'https://TU-APP.replit.app';
+  // Reemplazar con la URL real de la app
+
+  let currentPdfUrl = null;
+
+  async function handleLogin() {
+    const email = document.getElementById('login-email').value;
+    const pass = document.getElementById('login-pass').value;
+    const errEl = document.getElementById('error-msg');
+    errEl.style.display = 'none';
+
+    try {
+      const res = await fetch(`${APP_URL}/api/portal/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pass }),
+        credentials: 'include',
+      });
+      if (!res.ok) {
+        errEl.style.display = 'block';
+        return;
+      }
+      const data = await res.json();
+      showPortal(data.nombre);
+      loadReports();
+    } catch(e) {
+      errEl.textContent = 'Error de conexión. Intentá de nuevo.';
+      errEl.style.display = 'block';
+    }
+  }
+
+  async function handleLogout() {
+    await fetch(`${APP_URL}/api/portal/logout`, {
+      method: 'POST', credentials: 'include'
+    });
+    document.getElementById('portal-screen').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+  }
+
+  function showPortal(nombre) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('portal-screen').style.display = 'block';
+    document.getElementById('portal-subtitle').textContent =
+      `Bienvenido/a, ${nombre}. Podés visualizar e imprimir tus informes.`;
+  }
+
+  async function loadReports() {
+    const res = await fetch(`${APP_URL}/api/portal/reports`,
+      { credentials: 'include' });
+    const reports = await res.json();
+    const container = document.getElementById('reports-list');
+
+    if (!reports.length) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="ti ti-file-off"></i>
+          <p>Aún no tenés informes disponibles.</p>
+          <p style="font-size:12px;margin-top:6px">
+            Te notificaremos por email cuando tu informe esté listo.
+          </p>
+        </div>`;
+      return;
+    }
+
+    container.innerHTML = reports.map(r => `
+      <div class="report-card">
+        <div class="report-info">
+          ${r.tipoEstudio ? `<div class="report-tipo">${r.tipoEstudio}</div>` : ''}
+          <h3>${r.titulo}</h3>
+          <p>${r.fechaEstudio ? `Fecha del estudio: ${r.fechaEstudio}` : ''}
+          ${r.descripcion ? ` · ${r.descripcion}` : ''}</p>
+        </div>
+        <button class="print-btn" onclick="openPdf('${r.id}', '${r.titulo}')">
+          <i class="ti ti-printer"></i> Ver e imprimir
+        </button>
+      </div>
+    `).join('');
+  }
+
+  function openPdf(reportId, titulo) {
+    const url = `${APP_URL}/api/portal/reports/${reportId}/pdf`;
+    document.getElementById('viewer-title').textContent = titulo;
+    document.getElementById('pdf-frame').src = url;
+    document.getElementById('pdf-viewer').style.display = 'flex';
+    currentPdfUrl = url;
+  }
+
+  function closePdf() {
+    document.getElementById('pdf-viewer').style.display = 'none';
+    document.getElementById('pdf-frame').src = '';
+    currentPdfUrl = null;
+  }
+
+  function printPdf() {
+    const frame = document.getElementById('pdf-frame');
+    frame.contentWindow.print();
+  }
+
+  // Verificar sesión al cargar
+  window.addEventListener('load', async () => {
+    try {
+      const res = await fetch(`${APP_URL}/api/portal/me`,
+        { credentials: 'include' });
+      if (res.ok) {
+        const data = await res.json();
+        showPortal(data.nombre);
+        loadReports();
+      }
+    } catch(e) {}
+
+    // Enter para login
+    document.getElementById('login-pass')
+      .addEventListener('keypress', e => {
+        if (e.key === 'Enter') handleLogin();
+      });
+  });
+</script>
+</body>
+</html>
+
+
+--- CAMBIO 6: index.html ---
+El botón "Acceso clientes" del topbar debe apuntar a portal.html:
+
+Reemplazar el texto "Acceso clientes" por:
+<a href="portal.html" style="color:rgba(255,255,255,0.7);
+  font-size:11px;text-decoration:none;display:flex;align-items:center;gap:4px">
+  <i class="ti ti-lock" style="font-size:13px"></i> Acceso clientes
+</a>
+
+
+=====================================================================
+NOTAS GENERALES
+=====================================================================
+1. En portal.html reemplazar APP_URL con la URL real de la app
+2. Instalar dependencias si faltan: npm install
+3. Correr el SQL antes de reiniciar el servidor
+4. El PDF se muestra inline en el browser con el visor nativo
+   — el botón de descarga del visor del browser no se puede 
+   eliminar completamente, pero se puede desactivar con:
+   Content-Disposition: inline (ya está configurado así)
+5. Reiniciar el servidor después de todos los cambios

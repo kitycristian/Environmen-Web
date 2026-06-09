@@ -237,6 +237,11 @@ export default function Home() {
                 <i className={`ti ${icon}`}/>
               </a>
             ))}
+            <a href="/portal" style={{ color: "rgba(255,255,255,0.7)", fontSize: 11, textDecoration: "none", display: "flex", alignItems: "center", gap: 4, marginLeft: 4, borderLeft: "1px solid rgba(255,255,255,0.15)", paddingLeft: 12 }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}>
+              <i className="ti ti-lock" style={{ fontSize: 12 }}/> Acceso clientes
+            </a>
           </div>
         </div>
       </div>

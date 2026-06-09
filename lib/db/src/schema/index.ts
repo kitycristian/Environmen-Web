@@ -20,3 +20,5 @@
 export * from "./conversations";
 export * from "./messages";
 export * from "./budget-requests";
+export * from "./client-portal-users";
+export * from "./client-reports";
