@@ -229,12 +229,12 @@ export default function Home() {
         borderBottom: "1px solid #e5e7eb",
         boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.08)" : "none",
         transition: "box-shadow 0.25s",
-        height: 110,
+        height: 86,
       }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 40px", display: "flex", alignItems: "center", height: "100%", gap: 0 }}>
           {/* Logo — LEFT */}
-          <div style={{ width: 110, height: 110, flexShrink: 0 }}>
-            <img src="/logo-eea.png" alt="Environmental Express Argentina" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+          <div style={{ width: 70, height: 70, flexShrink: 0 }}>
+            <LogoSVG />
           </div>
 
           {/* Links — CENTER */}
@@ -523,7 +523,7 @@ export default function Home() {
             {/* Col 1 */}
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                <img src="/logo-eea.png" alt="Environmental Express Argentina" style={{ width: 44, height: 44, objectFit: "contain" }} />
+                <LogoSVG size={44}/>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "white", lineHeight: 1.3 }}>Environmental<br/>Express Argentina</div>
               </div>
               <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.7 }}>
