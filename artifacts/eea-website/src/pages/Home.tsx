@@ -218,7 +218,6 @@ export default function Home() {
                 <i className={`ti ${icon}`}/>
               </a>
             ))}
-            <a href="#" style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", textDecoration: "none", borderLeft: "1px solid rgba(255,255,255,0.25)", paddingLeft: 14 }}>Acceso clientes</a>
           </div>
         </div>
       </div>
