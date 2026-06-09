@@ -194,7 +194,7 @@ export default function Home() {
   };
 
   const activeService = modalIndex !== null ? serviciosInfo[modalIndex] : null;
-  const NAV_H = 36 + 72; // topbar + nav
+  const NAV_H = 36 + 88; // topbar + nav
 
   return (
     <>
@@ -230,11 +230,11 @@ export default function Home() {
         borderBottom: "1px solid #e5e7eb",
         boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.08)" : "none",
         transition: "box-shadow 0.25s",
-        height: 72,
+        height: 88,
       }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <LogoSVG size={52}/>
+            <LogoSVG size={80}/>
             <div>
               <div style={{ fontSize: 15, fontWeight: 700, color: "#1e3a5f", lineHeight: 1.2 }}>Environmental Express Argentina</div>
               <div style={{ fontSize: 11, color: "#166534", fontWeight: 600, letterSpacing: "0.02em" }}>Higiene Ocupacional y Medio Ambiente</div>
