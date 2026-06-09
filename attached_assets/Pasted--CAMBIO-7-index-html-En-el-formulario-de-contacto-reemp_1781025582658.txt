@@ -1,0 +1,107 @@
+--- CAMBIO 7: index.html ---
+En el formulario de contacto, reemplazar el handler del submit:
+
+// URL de la app — REEMPLAZAR con la URL real del deployment
+const APP_URL = 'https://TU-APP.replit.app';
+
+document.querySelector('form, #form-contacto, .contact-form')
+  ?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+
+    const datos = {
+      razonSocial: form.querySelector('[placeholder*="Empresa"], [name="empresa"]')?.value || "-",
+      contactoNombre: form.querySelector('[placeholder*="Nombre"], [name="nombre"]')?.value || "-",
+      contactoEmail: form.querySelector('[type="email"], [name="email"]')?.value || "-",
+      contactoTelefono: form.querySelector('[type="tel"], [name="telefono"]')?.value || "-",
+      medicionesSolicitadas: [
+        form.querySelector('select')?.value || "Consulta general"
+      ],
+      observaciones: form.querySelector('textarea')?.value || "",
+      origen: "web-form",
+    };
+
+    if (!datos.contactoEmail || datos.contactoEmail === "-") {
+      alert("Por favor ingresá tu email.");
+      return;
+    }
+
+    const btn = form.querySelector('button[type="submit"], .fsubmit, button');
+    const textoOriginal = btn?.innerHTML;
+    if (btn) { btn.innerHTML = "Enviando..."; btn.disabled = true; }
+
+    try {
+      await fetch(`${APP_URL}/api/budget-requests`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos),
+      });
+    } catch(err) {
+      console.warn('No se pudo conectar con la app:', err);
+    }
+
+    if (btn) { btn.innerHTML = textoOriginal; btn.disabled = false; }
+
+    // Reemplazar el form con mensaje de éxito
+    form.innerHTML = `
+      <div style="text-align:center;padding:40px 16px">
+        <div style="font-size:52px;margin-bottom:14px">✅</div>
+        <h3 style="color:#166534;font-size:18px;font-weight:700;margin-bottom:8px">
+          ¡Solicitud enviada!
+        </h3>
+        <p style="color:#64748b;font-size:13.5px;line-height:1.7">
+          Recibimos tu pedido y te contactaremos a la brevedad 
+          al email <strong>${datos.contactoEmail}</strong>.
+        </p>
+      </div>
+    `;
+  });
+
+
+--- CAMBIO 8: vera.js ---
+En la función que se ejecuta cuando Vera tiene toda la info y 
+muestra el resumen final, agregar ANTES de abrir el mailto:
+
+const APP_URL = 'https://TU-APP.replit.app';
+// Reemplazar con la URL real de la app
+
+async function enviarPedidoALaApp(conversationData) {
+  try {
+    await fetch(`${APP_URL}/api/budget-requests`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...conversationData,
+        origen: 'vera',
+      }),
+    });
+    console.log('Pedido enviado a la app correctamente');
+  } catch(err) {
+    console.warn('No se pudo enviar a la app:', err);
+    // Falla silenciosamente — el email igual se envía
+  }
+}
+
+// Llamar esta función con los datos recopilados por Vera
+// antes de abrir el mailto en el botón de envío final.
+
+
+=====================================================================
+NOTAS GENERALES
+=====================================================================
+1. En AMBOS proyectos reemplazar 'https://TU-APP.replit.app' 
+   con la URL real del deployment de la app.
+
+2. El endpoint POST /api/budget-requests NO requiere autenticación
+   para que pueda recibir datos desde la web pública.
+
+3. No romper nada del formulario existente en budget-generator.tsx
+   — solo agregar los tabs por encima.
+
+4. Correr el SQL de creación de tablas en la base de datos 
+   antes de reiniciar el servidor.
+
+5. Instalar dependencias si no están:
+   npm install cors @types/cors nodemailer @types/nodemailer
+
+6. Reiniciar el servidor de la app después de todos los cambios.

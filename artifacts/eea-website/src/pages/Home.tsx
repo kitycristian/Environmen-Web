@@ -153,6 +153,8 @@ export default function Home() {
   const [modalIndex, setModalIndex] = useState<number | null>(null);
   const [showNormativa, setShowNormativa] = useState(false);
   const [formData, setFormData] = useState({ nombre: "", empresa: "", email: "", telefono: "", estudio: "", mensaje: "" });
+  const [formSent, setFormSent] = useState(false);
+  const [formSending, setFormSending] = useState(false);
 
   const contactRef = useRef<HTMLElement>(null);
   const serviciosRef = useRef<HTMLElement>(null);
@@ -187,9 +189,26 @@ export default function Home() {
     setMenuOpen(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("¡Gracias! Te contactaremos a la brevedad.");
+    setFormSending(true);
+    try {
+      await fetch("/api/budget-requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          origen: "web-form",
+          nombre: formData.nombre,
+          empresa: formData.empresa,
+          email: formData.email,
+          telefono: formData.telefono,
+          estudio: formData.estudio,
+          mensaje: formData.mensaje,
+        }),
+      });
+    } catch { /* falla silenciosamente */ }
+    setFormSending(false);
+    setFormSent(true);
     setFormData({ nombre: "", empresa: "", email: "", telefono: "", estudio: "", mensaje: "" });
   };
 
@@ -474,44 +493,63 @@ export default function Home() {
           </div>
 
           {/* Right: Form */}
-          <div style={{ padding: "48px 40px" }}>
-            <h3 style={{ fontSize: 20, fontWeight: 700, color: "#1e3a5f", marginBottom: 24 }}>Solicitar estudio</h3>
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                <div>
-                  <label style={labelStyle}>Nombre completo *</label>
-                  <input required value={formData.nombre} onChange={(e) => setFormData({ ...formData, nombre: e.target.value })} placeholder="Juan García" style={inputStyle}/>
-                </div>
-                <div>
-                  <label style={labelStyle}>Empresa</label>
-                  <input value={formData.empresa} onChange={(e) => setFormData({ ...formData, empresa: e.target.value })} placeholder="Empresa S.A." style={inputStyle}/>
-                </div>
+          <div style={{ padding: "48px 40px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            {formSent ? (
+              <div style={{ textAlign: "center", padding: "40px 16px" }}>
+                <div style={{ fontSize: 52, marginBottom: 14 }}>✅</div>
+                <h3 style={{ color: "#166534", fontSize: 18, fontWeight: 700, marginBottom: 8 }}>¡Solicitud enviada!</h3>
+                <p style={{ color: "#64748b", fontSize: 13.5, lineHeight: 1.7 }}>
+                  Recibimos tu pedido y te contactaremos a la brevedad al email{" "}
+                  <strong>{formData.email || "registrado"}</strong>.
+                </p>
+                <button onClick={() => setFormSent(false)}
+                  style={{ marginTop: 20, background: "none", border: "1px solid #166534", color: "#166534", padding: "8px 18px", borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+                  Enviar otra consulta
+                </button>
               </div>
-              <div>
-                <label style={labelStyle}>Email corporativo *</label>
-                <input required type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="juan@empresa.com" style={inputStyle}/>
-              </div>
-              <div>
-                <label style={labelStyle}>Teléfono</label>
-                <input value={formData.telefono} onChange={(e) => setFormData({ ...formData, telefono: e.target.value })} placeholder="+54 381 000 0000" style={inputStyle}/>
-              </div>
-              <div>
-                <label style={labelStyle}>¿Qué estudio necesitás? *</label>
-                <select required value={formData.estudio} onChange={(e) => setFormData({ ...formData, estudio: e.target.value })} style={{ ...inputStyle, color: formData.estudio ? "#111827" : "#9ca3af" }}>
-                  <option value="" disabled>Seleccioná un estudio</option>
-                  {studyOptions.map((o) => <option key={o} value={o} style={{ color: "#111827" }}>{o}</option>)}
-                </select>
-              </div>
-              <div>
-                <label style={labelStyle}>Mensaje</label>
-                <textarea value={formData.mensaje} onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })} placeholder="Describí brevemente tu necesidad..." rows={3} style={{ ...inputStyle, resize: "vertical" }}/>
-              </div>
-              <button type="submit" style={{ backgroundColor: "#166534", color: "white", border: "none", padding: "13px 24px", borderRadius: 4, fontSize: 14, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "background 0.2s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#14532d")}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#166534")}>
-                <i className="ti ti-send" style={{ fontSize: 16 }}/> Enviar solicitud
-              </button>
-            </form>
+            ) : (
+              <>
+                <h3 style={{ fontSize: 20, fontWeight: 700, color: "#1e3a5f", marginBottom: 24 }}>Solicitar estudio</h3>
+                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <div>
+                      <label style={labelStyle}>Nombre completo *</label>
+                      <input required value={formData.nombre} onChange={(e) => setFormData({ ...formData, nombre: e.target.value })} placeholder="Juan García" style={inputStyle}/>
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Empresa</label>
+                      <input value={formData.empresa} onChange={(e) => setFormData({ ...formData, empresa: e.target.value })} placeholder="Empresa S.A." style={inputStyle}/>
+                    </div>
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Email corporativo *</label>
+                    <input required type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="juan@empresa.com" style={inputStyle}/>
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Teléfono</label>
+                    <input value={formData.telefono} onChange={(e) => setFormData({ ...formData, telefono: e.target.value })} placeholder="+54 381 000 0000" style={inputStyle}/>
+                  </div>
+                  <div>
+                    <label style={labelStyle}>¿Qué estudio necesitás? *</label>
+                    <select required value={formData.estudio} onChange={(e) => setFormData({ ...formData, estudio: e.target.value })} style={{ ...inputStyle, color: formData.estudio ? "#111827" : "#9ca3af" }}>
+                      <option value="" disabled>Seleccioná un estudio</option>
+                      {studyOptions.map((o) => <option key={o} value={o} style={{ color: "#111827" }}>{o}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Mensaje</label>
+                    <textarea value={formData.mensaje} onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })} placeholder="Describí brevemente tu necesidad..." rows={3} style={{ ...inputStyle, resize: "vertical" }}/>
+                  </div>
+                  <button type="submit" disabled={formSending}
+                    style={{ backgroundColor: formSending ? "#4ade80" : "#166534", color: "white", border: "none", padding: "13px 24px", borderRadius: 4, fontSize: 14, fontWeight: 700, cursor: formSending ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "background 0.2s" }}
+                    onMouseEnter={(e) => { if (!formSending) e.currentTarget.style.backgroundColor = "#14532d"; }}
+                    onMouseLeave={(e) => { if (!formSending) e.currentTarget.style.backgroundColor = "#166534"; }}>
+                    <i className={`ti ${formSending ? "ti-loader-2" : "ti-send"}`} style={{ fontSize: 16 }}/>
+                    {formSending ? "Enviando..." : "Enviar solicitud"}
+                  </button>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </section>

@@ -232,6 +232,11 @@ export default function Vera() {
 
     if (fullContent.includes("📋 RESUMEN SOLICITUD DE PRESUPUESTO")) {
       setQuickOptions(["Nueva consulta"]);
+      fetch("/api/budget-requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ origen: "vera", resumen: fullContent }),
+      }).catch(() => { /* falla silenciosamente */ });
     }
   }, [attachments]);
 
