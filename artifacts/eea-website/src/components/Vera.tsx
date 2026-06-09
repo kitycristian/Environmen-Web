@@ -14,48 +14,67 @@ type Attachment = {
 
 /* ─── SVG VERA AVATAR ─── */
 const VeraAvatar = ({ size = 40, blink = false }: { size?: number; blink?: boolean }) => (
-  <svg width={size} height={size} viewBox="0 0 40 40" style={{ flexShrink: 0 }}>
-    <circle cx="20" cy="20" r="20" fill="#166534"/>
-    <line x1="20" y1="4" x2="20" y2="8" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round"/>
-    <circle cx="20" cy="3.5" r="1.8" fill="#94a3b8"/>
-    <rect x="9" y="9" width="22" height="18" rx="4" fill="#e2e8f0"/>
-    <rect x="7" y="14" width="3" height="6" rx="1.5" fill="#cbd5e1"/>
-    <rect x="30" y="14" width="3" height="6" rx="1.5" fill="#cbd5e1"/>
+  <svg width={size} height={size} viewBox="0 0 40 44" style={{ flexShrink: 0 }}>
+    {/* Fondo círculo */}
+    <circle cx="20" cy="24" r="20" fill="#166534"/>
+    {/* Cuerpo del robot */}
+    <rect x="9" y="13" width="22" height="18" rx="4" fill="#e2e8f0"/>
+    {/* Orejas */}
+    <rect x="7" y="18" width="3" height="6" rx="1.5" fill="#cbd5e1"/>
+    <rect x="30" y="18" width="3" height="6" rx="1.5" fill="#cbd5e1"/>
     <style>{`
       @keyframes veraBlink { 0%,90%,100%{transform:scaleY(1)} 95%{transform:scaleY(0.1)} }
     `}</style>
-    <g style={{ transformOrigin: "14px 17px", animation: blink ? "veraBlink 3.5s infinite" : "none" }}>
-      <circle cx="14" cy="17" r="3" fill="#1e3a5f"/>
-      <circle cx="15.2" cy="15.8" r="1" fill="white"/>
+    {/* Ojos */}
+    <g style={{ transformOrigin: "15px 21px", animation: blink ? "veraBlink 3.5s infinite" : "none" }}>
+      <circle cx="15" cy="21" r="3" fill="#1e3a5f"/>
+      <circle cx="16.2" cy="19.8" r="1" fill="white"/>
     </g>
-    <g style={{ transformOrigin: "26px 17px", animation: blink ? "veraBlink 3.5s 0.05s infinite" : "none" }}>
-      <circle cx="26" cy="17" r="3" fill="#1e3a5f"/>
-      <circle cx="27.2" cy="15.8" r="1" fill="white"/>
+    <g style={{ transformOrigin: "25px 21px", animation: blink ? "veraBlink 3.5s 0.05s infinite" : "none" }}>
+      <circle cx="25" cy="21" r="3" fill="#1e3a5f"/>
+      <circle cx="26.2" cy="19.8" r="1" fill="white"/>
     </g>
-    <path d="M14 23 Q20 27 26 23" stroke="#64748b" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+    {/* Sonrisa */}
+    <path d="M15 27 Q20 31 25 27" stroke="#64748b" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+    {/* ── CASCO DE SEGURIDAD ── */}
+    {/* Ala del casco */}
+    <rect x="5" y="12" width="30" height="3" rx="1.5" fill="#d97706"/>
+    {/* Domo del casco */}
+    <path d="M7 14 Q7 2 20 1 Q33 2 33 14 Z" fill="#f59e0b"/>
+    {/* Brillo del casco */}
+    <path d="M11 7 Q15 4 20 4" stroke="rgba(255,255,255,0.45)" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
   </svg>
 );
 
 /* ─── ROBOT BUBBLE FACE ─── */
 const RobotFace = () => (
-  <svg width="34" height="34" viewBox="0 0 40 40">
-    <line x1="20" y1="2" x2="20" y2="7" stroke="#7ec8a0" strokeWidth="1.5" strokeLinecap="round"/>
-    <circle cx="20" cy="1.5" r="2" fill="#7ec8a0"/>
-    <rect x="7" y="7" width="26" height="22" rx="5" fill="#d1e8ff"/>
-    <rect x="5" y="12" width="3.5" height="7" rx="1.5" fill="#a8c8e8"/>
-    <rect x="31.5" y="12" width="3.5" height="7" rx="1.5" fill="#a8c8e8"/>
+  <svg width="36" height="40" viewBox="0 0 40 44">
+    {/* Cuerpo del robot */}
+    <rect x="7" y="15" width="26" height="20" rx="5" fill="#d1e8ff"/>
+    {/* Orejas */}
+    <rect x="4" y="20" width="3.5" height="7" rx="1.5" fill="#a8c8e8"/>
+    <rect x="32.5" y="20" width="3.5" height="7" rx="1.5" fill="#a8c8e8"/>
     <style>{`
       @keyframes robotBlink { 0%,88%,100%{transform:scaleY(1)} 92%{transform:scaleY(0.05)} }
     `}</style>
-    <g style={{ transformOrigin: "14px 17px", animation: "robotBlink 3s infinite" }}>
-      <circle cx="14" cy="17" r="3.5" fill="#1e3a5f"/>
-      <circle cx="15.5" cy="15.5" r="1.2" fill="white"/>
+    {/* Ojos */}
+    <g style={{ transformOrigin: "15px 25px", animation: "robotBlink 3s infinite" }}>
+      <circle cx="15" cy="25" r="3.5" fill="#1e3a5f"/>
+      <circle cx="16.5" cy="23.5" r="1.2" fill="white"/>
     </g>
-    <g style={{ transformOrigin: "26px 17px", animation: "robotBlink 3s 0.06s infinite" }}>
-      <circle cx="26" cy="17" r="3.5" fill="#1e3a5f"/>
-      <circle cx="27.5" cy="15.5" r="1.2" fill="white"/>
+    <g style={{ transformOrigin: "25px 25px", animation: "robotBlink 3s 0.06s infinite" }}>
+      <circle cx="25" cy="25" r="3.5" fill="#1e3a5f"/>
+      <circle cx="26.5" cy="23.5" r="1.2" fill="white"/>
     </g>
-    <path d="M13 24 Q20 28.5 27 24" stroke="#334155" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
+    {/* Sonrisa */}
+    <path d="M13 31 Q20 36 27 31" stroke="#334155" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
+    {/* ── CASCO DE SEGURIDAD ── */}
+    {/* Ala del casco */}
+    <rect x="4" y="14" width="32" height="3.5" rx="1.75" fill="#d97706"/>
+    {/* Domo del casco */}
+    <path d="M6 16 Q6 2 20 1 Q34 2 34 16 Z" fill="#f59e0b"/>
+    {/* Brillo del casco */}
+    <path d="M10 9 Q15 5 21 5" stroke="rgba(255,255,255,0.45)" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
   </svg>
 );
 
