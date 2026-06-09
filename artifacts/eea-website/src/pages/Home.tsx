@@ -229,9 +229,14 @@ export default function Home() {
         borderBottom: "1px solid #e5e7eb",
         boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.08)" : "none",
         transition: "box-shadow 0.25s",
-        height: 86,
+        height: 100,
       }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 40px", display: "flex", alignItems: "center", height: "100%", gap: 0 }}>
+          {/* Logo — LEFT */}
+          <a href="#" onClick={scrollToId("hero")} style={{ flexShrink: 0, marginRight: 8 }}>
+            <img src="/logo-eea.png" alt="EEA" style={{ height: 90, width: "auto", display: "block" }} />
+          </a>
+
           {/* Links — CENTER */}
           <div className="nav-links" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 32 }}>
             {[
