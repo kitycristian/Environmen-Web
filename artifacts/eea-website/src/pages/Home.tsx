@@ -229,11 +229,11 @@ export default function Home() {
         borderBottom: "1px solid #e5e7eb",
         boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.08)" : "none",
         transition: "box-shadow 0.25s",
-        height: 86,
+        height: 110,
       }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 40px", display: "flex", alignItems: "center", height: "100%", gap: 0 }}>
           {/* Logo — LEFT */}
-          <div style={{ width: 70, height: 70, flexShrink: 0 }}>
+          <div style={{ width: 110, height: 110, flexShrink: 0 }}>
             <img src="/logo-eea.png" alt="Environmental Express Argentina" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
           </div>
 
