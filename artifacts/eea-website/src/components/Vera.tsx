@@ -242,8 +242,8 @@ export default function Vera() {
     <>
       <style>{`
         @keyframes veraPulse {
-          0%,100%{box-shadow:0 4px 20px rgba(30,58,95,0.35)}
-          50%{box-shadow:0 4px 28px rgba(30,58,95,0.55),0 0 0 8px rgba(30,58,95,0.08)}
+          0%,100%{box-shadow:0 4px 20px rgba(22,101,52,0.4)}
+          50%{box-shadow:0 4px 28px rgba(22,101,52,0.6),0 0 0 8px rgba(22,101,52,0.12)}
         }
         @keyframes veraSlideUp {
           from{opacity:0;transform:translateY(20px)}
@@ -274,7 +274,7 @@ export default function Vera() {
         onClick={openChat}
         style={{
           position: "fixed", bottom: 24, right: 24, width: 64, height: 64,
-          borderRadius: "50%", backgroundColor: "#1e3a5f", border: "none",
+          borderRadius: "50%", backgroundColor: "#166534", border: "none",
           cursor: "pointer", zIndex: 9998,
           display: "flex", alignItems: "center", justifyContent: "center",
           animation: "veraPulse 4s ease-in-out infinite",
