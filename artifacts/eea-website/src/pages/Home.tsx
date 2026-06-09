@@ -35,7 +35,7 @@ const slides = [
   {
     img: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1400&q=80",
     title: "Más de 30 tipos de estudios certificados",
-    sub: "Protocolos oficiales SRT, MTEySS y ASME con informe en 48hs",
+    sub: "Protocolos oficiales SRT, MTEySS y ASME para todos los agentes de riesgo",
     btn: "Ver servicios",
   },
   {
@@ -67,8 +67,7 @@ const services = [
 const stats = [
   { value: "+30", label: "Tipos de estudios" },
   { value: "100%", label: "Normativa SRT" },
-  { value: "48hs", label: "Entrega de informe" },
-  { value: "AHRA", label: "Asociación profesional" },
+  { value: "100%", label: "Informes certificados" },
 ];
 
 const whyItems = [
@@ -204,7 +203,7 @@ export default function Home() {
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1100, backgroundColor: "#1e3a5f", height: 36, display: "flex", alignItems: "center" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
           <span style={{ fontSize: 12, color: "rgba(255,255,255,0.8)" }}>
-            contacto@envexar.com &nbsp;|&nbsp; WhatsApp: Consultas rápidas
+            contacto@envexar.com
           </span>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             {[
@@ -301,7 +300,7 @@ export default function Home() {
         <div style={{ position: "relative", zIndex: 1, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "0 24px" }}>
           {/* Badge */}
           <div style={{ display: "inline-block", backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.7)", borderRadius: 20, fontSize: 11, fontWeight: 600, padding: "5px 16px", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-            Asociados AHRA · Tucumán, Argentina
+            Tucumán, Argentina
           </div>
           {/* Subtitle */}
           <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: 400, marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.14em" }}>
@@ -335,8 +334,7 @@ export default function Home() {
             {[
               { val: "+30", lbl: "Tipos de estudios" },
               { val: "100%", lbl: "Normativa SRT" },
-              { val: "48hs", lbl: "Entrega informe" },
-              { val: "AHRA", lbl: "Asociados" },
+              { val: "Nacional", lbl: "Cobertura" },
             ].map(({ val, lbl }, i) => (
               <div key={i} style={{ textAlign: "center", padding: "0 24px", borderRight: i < 3 ? "1px solid rgba(255,255,255,0.15)" : "none" }}>
                 <div style={{ fontSize: 22, fontWeight: 900, color: "white", lineHeight: 1 }}>{val}</div>
@@ -444,13 +442,6 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <div style={{ marginTop: 32, padding: "14px 20px", backgroundColor: "#f8fafc", border: "1px solid #e5e7eb", borderRadius: 6, display: "flex", alignItems: "center", gap: 12 }}>
-              <div style={{ width: 40, height: 40, borderRadius: "50%", backgroundColor: "#1e3a5f", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: "white", fontSize: 11, fontWeight: 900, letterSpacing: "0.04em" }}>AHRA</div>
-              <div>
-                <div style={{ fontSize: 13, fontWeight: 600, color: "#1e3a5f" }}>Asociación de Higienistas Industriales de Argentina</div>
-                <div style={{ fontSize: 12, color: "#64748b" }}>Profesionales matriculados y habilitados</div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -467,7 +458,6 @@ export default function Home() {
             <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               {[
                 { icon: "ti-mail", label: "EMAIL", value: "contacto@envexar.com" },
-                { icon: "ti-brand-whatsapp", label: "WHATSAPP", value: "Consultas rápidas" },
               ].map(({ icon, label, value }) => (
                 <div key={label} style={{ display: "flex", gap: 14 }}>
                   <div style={{ width: 38, height: 38, borderRadius: "50%", backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -501,7 +491,7 @@ export default function Home() {
                 <input required type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} placeholder="juan@empresa.com" style={inputStyle}/>
               </div>
               <div>
-                <label style={labelStyle}>Teléfono / WhatsApp</label>
+                <label style={labelStyle}>Teléfono</label>
                 <input value={formData.telefono} onChange={(e) => setFormData({ ...formData, telefono: e.target.value })} placeholder="+54 381 000 0000" style={inputStyle}/>
               </div>
               <div>
@@ -546,7 +536,6 @@ export default function Home() {
                 { label: "Inicio", action: scrollToId("hero") },
                 { label: "Servicios", action: scrollTo(serviciosRef as React.RefObject<HTMLElement>) },
                 { label: "Contacto", action: scrollTo(contactRef as React.RefObject<HTMLElement>) },
-                { label: "AHRA", href: "#" },
               ].map(({ label, action, href }) => (
                 <a key={label} href={href || "#"} onClick={action}
                   style={{ display: "block", fontSize: 14, color: "rgba(255,255,255,0.7)", textDecoration: "none", marginBottom: 10 }}
@@ -561,7 +550,6 @@ export default function Home() {
               <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>Contacto</div>
               {[
                 { icon: "ti-mail", text: "contacto@envexar.com" },
-                { icon: "ti-brand-whatsapp", text: "WhatsApp: Consultas rápidas" },
               ].map(({ icon, text }) => (
                 <div key={text} style={{ display: "flex", gap: 10, marginBottom: 14, alignItems: "center" }}>
                   <i className={`ti ${icon}`} style={{ fontSize: 16, color: "#86efac" }}/>
@@ -577,13 +565,6 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* ── WHATSAPP FAB ── */}
-      <a href="https://wa.me/5493814000000" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"
-        style={{ position: "fixed", bottom: 24, right: 24, width: 54, height: 54, borderRadius: "50%", backgroundColor: "#25d366", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, boxShadow: "0 4px 16px rgba(37,211,102,0.4)", zIndex: 999, textDecoration: "none", transition: "transform 0.2s, box-shadow 0.2s" }}
-        onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.1)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(37,211,102,0.55)"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(37,211,102,0.4)"; }}>
-        <i className="ti ti-brand-whatsapp"/>
-      </a>
 
       {/* ── MODAL ── */}
       {activeService && (
