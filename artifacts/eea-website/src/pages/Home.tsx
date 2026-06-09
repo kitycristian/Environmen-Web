@@ -27,19 +27,19 @@ const LogoSVG = ({ size = 70 }: { size?: number }) => (
 /* ─── DATA ─── */
 const slides = [
   {
-    img: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=80",
+    img: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?w=1400&q=80",
     title: "Especialistas en Higiene y Seguridad en el Trabajo",
     sub: "Mediciones ambientales y protocolos SRT para su empresa",
     btn: "Solicitar presupuesto",
   },
   {
-    img: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1400&q=80",
+    img: "https://images.unsplash.com/photo-1581093450021-4a7360e9a6b5?w=1400&q=80",
     title: "Más de 30 tipos de estudios certificados",
     sub: "Protocolos oficiales SRT, MTEySS y ASME para todos los agentes de riesgo",
     btn: "Ver servicios",
   },
   {
-    img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1400&q=80",
+    img: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=1400&q=80",
     title: "Instrumentos calibrados con trazabilidad al INTI",
     sub: "Resultados confiables para presentar ante ART e inspecciones",
     btn: "Conocernos",
