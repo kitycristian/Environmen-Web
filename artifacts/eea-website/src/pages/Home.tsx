@@ -151,6 +151,7 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [slide, setSlide] = useState(0);
   const [modalIndex, setModalIndex] = useState<number | null>(null);
+  const [showNormativa, setShowNormativa] = useState(false);
   const [formData, setFormData] = useState({ nombre: "", empresa: "", email: "", telefono: "", estudio: "", mensaje: "" });
 
   const contactRef = useRef<HTMLElement>(null);
@@ -367,7 +368,8 @@ export default function Home() {
           {quickCards.map(({ icon, title, desc }, i) => (
             <div key={i} style={{ padding: "28px 28px", borderTop: "3px solid #166534", backgroundColor: "white", borderRight: i < 2 ? "1px solid #e5e7eb" : "none", cursor: "pointer", transition: "background 0.2s" }}
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f0fdf4")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}>
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}
+              onClick={title === "Ver normativa" ? () => setShowNormativa(true) : undefined}>
               <i className={`ti ${icon}`} style={{ fontSize: 32, color: "#166534", display: "block", marginBottom: 10 }}/>
               <div style={{ fontSize: 15, fontWeight: 700, color: "#1e3a5f", marginBottom: 4 }}>{title}</div>
               <div style={{ fontSize: 13, color: "#64748b" }}>{desc}</div>
@@ -590,6 +592,49 @@ export default function Home() {
             <div style={{ backgroundColor: "#f0fdf4", borderLeft: "3px solid #16a34a", padding: "12px 14px", borderRadius: "0 8px 8px 0" }}>
               <span style={{ fontSize: 11, fontWeight: 700, color: "#166534", textTransform: "uppercase", letterSpacing: "0.05em" }}>¿Cuándo es obligatorio?</span>
               <p style={{ fontSize: 12, color: "#374151", marginTop: 4, lineHeight: 1.6, margin: "4px 0 0" }}>{activeService.cuando}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL NORMATIVA ── */}
+      {showNormativa && (
+        <div onClick={(e) => { if (e.target === e.currentTarget) setShowNormativa(false); }}
+          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 2000, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ background: "#fff", borderRadius: 14, maxWidth: 600, width: "90%", maxHeight: "85vh", overflowY: "auto", padding: 32, position: "relative" }}>
+            <button onClick={() => setShowNormativa(false)}
+              style={{ position: "absolute", top: 14, right: 16, background: "none", border: "none", fontSize: 24, cursor: "pointer", color: "#64748b" }}>×</button>
+
+            <div style={{ marginBottom: 20 }}>
+              <span style={{ background: "#dcfce7", color: "#166534", fontSize: 10, fontWeight: 800, padding: "3px 10px", borderRadius: 20, textTransform: "uppercase", letterSpacing: "0.07em" }}>Normativa vigente</span>
+              <h2 style={{ color: "#1e3a5f", fontSize: 18, fontWeight: 800, marginTop: 10 }}>Resoluciones SRT aplicables</h2>
+              <p style={{ color: "#64748b", fontSize: 12.5, marginTop: 4 }}>Marco normativo que rige las mediciones ambientales en Argentina</p>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {[
+                { num: "Resol. SRT N° 84/2012", title: "Iluminación en el Ambiente Laboral", desc: "Establece los valores mínimos de iluminancia según el tipo de tarea. Obliga a realizar mediciones con protocolo específico y presentar informe ante la ART." },
+                { num: "Resol. SRT N° 85/2012", title: "Ruido en el Ambiente Laboral", desc: "Regula la exposición ocupacional al ruido. Límite de 85 dBA para 8 horas. Requiere medición con sonómetro Clase 2 y dosimetría en puestos variables." },
+                { num: "Resol. SRT N° 30/2023", title: "Estrés por Calor en el Ambiente Laboral", desc: "Actualiza los criterios de evaluación de carga térmica. Incorpora VLA y VLP. Obliga a declarar trabajadores expuestos ante la ART mediante ESOP 80001." },
+                { num: "Resol. SRT N° 900/2015", title: "Puesta a Tierra y Protecciones Eléctricas", desc: "Obliga a verificar continuidad eléctrica de masas y disyuntores diferenciales. Certificado obligatorio anual para todos los establecimientos." },
+                { num: "Resol. MTEySS N° 295/2003", title: "Especificaciones Técnicas sobre Ergonomía y Procedimientos", desc: "Marco normativo para estrés por frío, agentes químicos, vibraciones, ergonomía y ruido de impulso. Incorpora los TLVs de ACGIH como valores de referencia." },
+                { num: "Ley N° 19.587 / Decreto 351/79", title: "Ley de Higiene y Seguridad en el Trabajo", desc: "Ley madre de la higiene laboral en Argentina. El Decreto 351/79 reglamenta las condiciones de ventilación, iluminación, temperatura y contaminantes en los lugares de trabajo." },
+                { num: "Ley N° 24.557 — SRT", title: "Ley de Riesgos del Trabajo", desc: "Establece el sistema de ART y las obligaciones del empleador en materia de prevención. Las mediciones ambientales son parte del Plan de Mejoramiento exigido por la ART." },
+              ].map(({ num, title, desc }) => (
+                <div key={num} style={{ border: "1px solid #e5e7eb", borderRadius: 10, padding: "14px 16px", borderLeft: "4px solid #166534" }}>
+                  <div style={{ fontSize: 12, fontWeight: 800, color: "#1e3a5f" }}>{num}</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#1e293b", margin: "4px 0 2px" }}>{title}</div>
+                  <div style={{ fontSize: 11.5, color: "#6b7280" }}>{desc}</div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid #f1f5f9", textAlign: "center" }}>
+              <p style={{ fontSize: 11.5, color: "#94a3b8" }}>¿Necesitás más información sobre alguna normativa específica?</p>
+              <a href="#contacto" onClick={() => setShowNormativa(false)}
+                style={{ display: "inline-block", marginTop: 10, background: "#166534", color: "#fff", padding: "9px 20px", borderRadius: 7, fontSize: 12.5, fontWeight: 700, textDecoration: "none" }}>
+                Consultanos
+              </a>
             </div>
           </div>
         </div>

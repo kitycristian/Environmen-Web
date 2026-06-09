@@ -1,0 +1,156 @@
+El botón "Ver normativa" en la sección de accesos rápidos no hace nada 
+al hacer clic. Agregar esta funcionalidad:
+
+Al hacer clic en "Ver normativa", abrir un modal con las resoluciones 
+SRT vigentes más importantes. 
+
+Agregar este modal antes del </body>:
+
+<div id="modal-normativa" style="display:none;position:fixed;inset:0;
+background:rgba(0,0,0,0.55);z-index:2000;align-items:center;
+justify-content:center" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#fff;border-radius:14px;max-width:600px;width:90%;
+  max-height:85vh;overflow-y:auto;padding:32px;position:relative">
+    <button onclick="document.getElementById('modal-normativa').style.display='none'"
+      style="position:absolute;top:14px;right:16px;background:none;border:none;
+      font-size:24px;cursor:pointer;color:#64748b">×</button>
+    
+    <div style="margin-bottom:20px">
+      <span style="background:#dcfce7;color:#166534;font-size:10px;font-weight:800;
+        padding:3px 10px;border-radius:20px;text-transform:uppercase;
+        letter-spacing:0.07em">Normativa vigente</span>
+      <h2 style="color:#1e3a5f;font-size:18px;font-weight:800;margin-top:10px">
+        Resoluciones SRT aplicables
+      </h2>
+      <p style="color:#64748b;font-size:12.5px;margin-top:4px">
+        Marco normativo que rige las mediciones ambientales en Argentina
+      </p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px;
+        border-left:4px solid #166534">
+        <div style="font-size:12px;font-weight:800;color:#1e3a5f">
+          Resol. SRT N° 84/2012
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#1e293b;margin:4px 0 2px">
+          Iluminación en el Ambiente Laboral
+        </div>
+        <div style="font-size:11.5px;color:#6b7280">
+          Establece los valores mínimos de iluminancia según el tipo de tarea. 
+          Obliga a realizar mediciones con protocolo específico y presentar 
+          informe ante la ART.
+        </div>
+      </div>
+
+      <div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px;
+        border-left:4px solid #166534">
+        <div style="font-size:12px;font-weight:800;color:#1e3a5f">
+          Resol. SRT N° 85/2012
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#1e293b;margin:4px 0 2px">
+          Ruido en el Ambiente Laboral
+        </div>
+        <div style="font-size:11.5px;color:#6b7280">
+          Regula la exposición ocupacional al ruido. Límite de 85 dBA para 8 horas. 
+          Requiere medición con sonómetro Clase 2 y dosimetría en puestos variables.
+        </div>
+      </div>
+
+      <div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px;
+        border-left:4px solid #166534">
+        <div style="font-size:12px;font-weight:800;color:#1e3a5f">
+          Resol. SRT N° 30/2023
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#1e293b;margin:4px 0 2px">
+          Estrés por Calor en el Ambiente Laboral
+        </div>
+        <div style="font-size:11.5px;color:#6b7280">
+          Actualiza los criterios de evaluación de carga térmica. Incorpora 
+          VLA y VLP. Obliga a declarar trabajadores expuestos ante la ART 
+          mediante ESOP 80001.
+        </div>
+      </div>
+
+      <div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px;
+        border-left:4px solid #166534">
+        <div style="font-size:12px;font-weight:800;color:#1e3a5f">
+          Resol. SRT N° 900/2015
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#1e293b;margin:4px 0 2px">
+          Puesta a Tierra y Protecciones Eléctricas
+        </div>
+        <div style="font-size:11.5px;color:#6b7280">
+          Obliga a verificar continuidad eléctrica de masas y disyuntores 
+          diferenciales. Certificado obligatorio anual para todos los 
+          establecimientos.
+        </div>
+      </div>
+
+      <div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px;
+        border-left:4px solid #166534">
+        <div style="font-size:12px;font-weight:800;color:#1e3a5f">
+          Resol. MTEySS N° 295/2003
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#1e293b;margin:4px 0 2px">
+          Especificaciones Técnicas sobre Ergonomía y Procedimientos
+        </div>
+        <div style="font-size:11.5px;color:#6b7280">
+          Marco normativo para estrés por frío, agentes químicos, vibraciones, 
+          ergonomía y ruido de impulso. Incorpora los TLVs de ACGIH como 
+          valores de referencia.
+        </div>
+      </div>
+
+      <div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px;
+        border-left:4px solid #166534">
+        <div style="font-size:12px;font-weight:800;color:#1e3a5f">
+          Ley N° 19.587 / Decreto 351/79
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#1e293b;margin:4px 0 2px">
+          Ley de Higiene y Seguridad en el Trabajo
+        </div>
+        <div style="font-size:11.5px;color:#6b7280">
+          Ley madre de la higiene laboral en Argentina. El Decreto 351/79 
+          reglamenta las condiciones de ventilación, iluminación, temperatura 
+          y contaminantes en los lugares de trabajo.
+        </div>
+      </div>
+
+      <div style="border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px;
+        border-left:4px solid #166534">
+        <div style="font-size:12px;font-weight:800;color:#1e3a5f">
+          Ley N° 24.557 — SRT
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#1e293b;margin:4px 0 2px">
+          Ley de Riesgos del Trabajo
+        </div>
+        <div style="font-size:11.5px;color:#6b7280">
+          Establece el sistema de ART y las obligaciones del empleador en 
+          materia de prevención. Las mediciones ambientales son parte del 
+          Plan de Mejoramiento exigido por la ART.
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f1f5f9;
+      text-align:center">
+      <p style="font-size:11.5px;color:#94a3b8">
+        ¿Necesitás más información sobre alguna normativa específica?
+      </p>
+      <a href="#contacto" onclick="document.getElementById('modal-normativa').style.display='none'"
+        style="display:inline-block;margin-top:10px;background:#166534;color:#fff;
+        padding:9px 20px;border-radius:7px;font-size:12.5px;font-weight:700;
+        text-decoration:none">
+        Consultanos
+      </a>
+    </div>
+  </div>
+</div>
+
+Al botón "Ver normativa" agregarle:
+onclick="document.getElementById('modal-normativa').style.display='flex'"
+
+No tocar nada más del HTML.
