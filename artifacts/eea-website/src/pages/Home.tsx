@@ -194,7 +194,7 @@ export default function Home() {
   };
 
   const activeService = modalIndex !== null ? serviciosInfo[modalIndex] : null;
-  const NAV_H = 36 + 88; // topbar + nav
+  const NAV_H = 36 + 86; // topbar + nav
 
   return (
     <>
@@ -226,25 +226,20 @@ export default function Home() {
       {/* ── NAV ── */}
       <nav style={{
         position: "fixed", top: 36, left: 0, right: 0, zIndex: 1000,
-        backgroundColor: "white",
+        backgroundColor: "#fff",
         borderBottom: "1px solid #e5e7eb",
         boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.08)" : "none",
         transition: "box-shadow 0.25s",
-        height: 80,
-        overflow: "hidden",
+        height: 86,
       }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 72, height: 72, flexShrink: 0 }}>
-              <LogoSVG />
-            </div>
-            <div>
-              <div style={{ fontSize: 15, fontWeight: 700, color: "#1e3a5f", lineHeight: 1.2 }}>Environmental Express Argentina</div>
-              <div style={{ fontSize: 11, color: "#64748b", fontWeight: 500, letterSpacing: "0.02em" }}>Higiene Ocupacional y Medio Ambiente</div>
-            </div>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 40px", display: "flex", alignItems: "center", height: "100%", gap: 0 }}>
+          {/* Logo — LEFT */}
+          <div style={{ width: 70, height: 70, flexShrink: 0 }}>
+            <LogoSVG />
           </div>
 
-          <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: 28 }}>
+          {/* Links — CENTER */}
+          <div className="nav-links" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 32 }}>
             {[
               { label: "INICIO", action: scrollToId("hero") },
               { label: "SERVICIOS", action: scrollTo(serviciosRef as React.RefObject<HTMLElement>) },
@@ -258,8 +253,12 @@ export default function Home() {
                 {label}
               </a>
             ))}
+          </div>
+
+          {/* Button — RIGHT */}
+          <div className="nav-links" style={{ flexShrink: 0 }}>
             <a href="#" onClick={scrollTo(contactRef as React.RefObject<HTMLElement>)}
-              style={{ backgroundColor: "#166534", color: "white", padding: "9px 18px", borderRadius: 4, fontSize: 12, fontWeight: 700, textDecoration: "none", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
+              style={{ backgroundColor: "#166534", color: "white", padding: "10px 20px", borderRadius: 4, fontSize: 12, fontWeight: 700, textDecoration: "none", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#14532d")}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#166534")}>
               SOLICITAR PRESUPUESTO
@@ -267,7 +266,7 @@ export default function Home() {
           </div>
 
           <button className="hamburger-btn" onClick={() => setMenuOpen(!menuOpen)}
-            style={{ display: "none", background: "none", border: "none", cursor: "pointer", color: "#1e3a5f", fontSize: 24 }}>
+            style={{ display: "none", background: "none", border: "none", cursor: "pointer", color: "#1e3a5f", fontSize: 24, marginLeft: "auto" }}>
             <i className={menuOpen ? "ti ti-x" : "ti ti-menu-2"}/>
           </button>
         </div>
@@ -300,16 +299,51 @@ export default function Home() {
           </div>
         ))}
         <div style={{ position: "relative", zIndex: 1, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "0 24px" }}>
-          <h1 style={{ fontSize: "clamp(22px, 4vw, 40px)", fontWeight: 800, color: "white", maxWidth: 760, lineHeight: 1.2, marginBottom: 16 }}>
-            {slides[slide].title}
-          </h1>
-          <p style={{ fontSize: "clamp(14px, 2vw, 18px)", color: "rgba(255,255,255,0.85)", marginBottom: 32, maxWidth: 560 }}>
-            {slides[slide].sub}
+          {/* Badge */}
+          <div style={{ display: "inline-block", backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.7)", borderRadius: 20, fontSize: 11, fontWeight: 600, padding: "5px 16px", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
+            Asociados AHRA · Tucumán, Argentina
+          </div>
+          {/* Subtitle */}
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: 400, marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.14em" }}>
+            Environmental Express Argentina
           </p>
-          <a href="#" onClick={scrollTo(contactRef as React.RefObject<HTMLElement>)}
-            style={{ backgroundColor: "#166534", color: "white", padding: "13px 28px", borderRadius: 4, fontSize: 14, fontWeight: 700, textDecoration: "none", letterSpacing: "0.04em" }}>
-            {slides[slide].btn}
-          </a>
+          {/* H1 */}
+          <h1 style={{ color: "#fff", fontSize: "clamp(22px, 4vw, 36px)", fontWeight: 800, lineHeight: 1.2, maxWidth: 700, marginBottom: 16 }}>
+            Especialistas en Higiene y Seguridad en el Trabajo
+          </h1>
+          {/* Description */}
+          <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, lineHeight: 1.7, maxWidth: 560, marginBottom: 28 }}>
+            Mediciones ambientales, protocolos SRT y estudios de riesgo laboral. Más de 30 tipos de estudios para empresas de todo el país.
+          </p>
+          {/* Buttons */}
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center", marginBottom: 40 }}>
+            <a href="#" onClick={scrollTo(contactRef as React.RefObject<HTMLElement>)}
+              style={{ backgroundColor: "#166534", color: "#fff", padding: "12px 26px", borderRadius: 4, fontSize: 14, fontWeight: 700, textDecoration: "none", letterSpacing: "0.04em" }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#14532d")}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#166534")}>
+              Solicitar presupuesto
+            </a>
+            <a href="#" onClick={scrollTo(serviciosRef as React.RefObject<HTMLElement>)}
+              style={{ backgroundColor: "transparent", color: "#fff", padding: "12px 26px", borderRadius: 4, fontSize: 14, fontWeight: 600, textDecoration: "none", border: "1px solid rgba(255,255,255,0.35)", letterSpacing: "0.04em" }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)")}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}>
+              Ver servicios
+            </a>
+          </div>
+          {/* Stats row */}
+          <div style={{ display: "flex", gap: 0, borderTop: "1px solid rgba(255,255,255,0.15)", paddingTop: 24 }}>
+            {[
+              { val: "+30", lbl: "Tipos de estudios" },
+              { val: "100%", lbl: "Normativa SRT" },
+              { val: "48hs", lbl: "Entrega informe" },
+              { val: "AHRA", lbl: "Asociados" },
+            ].map(({ val, lbl }, i) => (
+              <div key={i} style={{ textAlign: "center", padding: "0 24px", borderRight: i < 3 ? "1px solid rgba(255,255,255,0.15)" : "none" }}>
+                <div style={{ fontSize: 22, fontWeight: 900, color: "white", lineHeight: 1 }}>{val}</div>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", marginTop: 4, letterSpacing: "0.04em" }}>{lbl}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Arrows */}

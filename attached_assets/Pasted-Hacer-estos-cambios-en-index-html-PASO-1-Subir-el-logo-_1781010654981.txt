@@ -1,0 +1,68 @@
+Hacer estos cambios en index.html:
+
+---
+
+PASO 1 — Subir el logo
+Subir el archivo PNG del logo original a la raíz del proyecto 
+con el nombre: logo-eea.png
+
+---
+
+PASO 2 — Nav con logo PNG contenido
+Reemplazar el logo actual en el nav por esto:
+
+<div style="width:70px; height:70px; flex-shrink:0">
+  <img src="logo-eea.png" alt="Environmental Express Argentina"
+       style="width:70px; height:70px; object-fit:contain; display:block; border-radius:8px">
+</div>
+
+El nav debe tener height:86px, padding:0 40px, background:#fff,
+border-bottom:1px solid #e5e7eb.
+
+Estructura del nav:
+  IZQUIERDA: img del logo (70x70)
+  CENTRO: links INICIO · SERVICIOS · NOSOTROS · CONTACTO
+  DERECHA: botón verde "SOLICITAR PRESUPUESTO"
+
+---
+
+PASO 3 — Hero sin logo, con nombre de empresa
+El hero-content debe tener este orden exacto:
+
+1. Badge: "Asociados AHRA · Tucumán, Argentina"
+   (fondo rgba(255,255,255,0.08), borde rgba(255,255,255,0.2), 
+    color rgba(255,255,255,0.7), border-radius:20px, 
+    font-size:11px, uppercase, letter-spacing:0.08em)
+
+2. Subtítulo empresa:
+   <p style="color:rgba(255,255,255,0.5); font-size:13px; font-weight:400;
+     margin-bottom:8px; text-transform:uppercase; letter-spacing:0.14em">
+     Environmental Express Argentina
+   </p>
+
+3. H1 principal:
+   "Especialistas en Higiene y Seguridad en el Trabajo"
+   (color:#fff, font-size:36px, font-weight:800, line-height:1.2)
+
+4. Párrafo descripción:
+   "Mediciones ambientales, protocolos SRT y estudios de riesgo laboral.
+    Más de 30 tipos de estudios para empresas de todo el país."
+   (color:rgba(255,255,255,0.65), font-size:14px)
+
+5. Dos botones:
+   - "Solicitar presupuesto" → fondo #166534, color #fff
+   - "Ver servicios" → fondo transparent, borde rgba(255,255,255,0.35), color #fff
+
+6. Estadísticas en fila (separadas por borde superior sutil):
+   +30 · Tipos de estudios
+   100% · Normativa SRT
+   48hs · Entrega informe
+   AHRA · Asociados
+
+---
+
+PASO 4 — Eliminar cualquier SVG del logo que esté dentro del hero.
+Solo debe quedar el logo en el nav como imagen PNG.
+
+No tocar ninguna otra sección del HTML.
+Reiniciar el servidor después del cambio.
