@@ -1,39 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const ANTHROPIC_API_KEY = "TU_API_KEY_AQUI";
-
-const SYSTEM_PROMPT = `Sos Vera, la asistente virtual de Environmental Express Argentina (EEA), consultora de Higiene y Seguridad en el Trabajo de Tucumán, Argentina.
-Tu personalidad: amigable, profesional, empática, usás tuteo rioplatense. Usás emojis con moderación para ser más cercana.
-Tu objetivo es recopilar toda la información necesaria para un presupuesto de mediciones ambientales según normativa SRT argentina.
-
-ORDEN ESTRICTO:
-1. Datos de la empresa: Razón social, CUIT, Dirección del establecimiento (localidad y provincia), Rubro / actividad principal.
-2. Datos de contacto: Nombre y apellido, Cargo, Email (lo usarás para enviar el resumen), Teléfono.
-3. Mediciones solicitadas (puede ser más de una). Opciones: Iluminación (SRT 84/2012), Ruido (SRT 85/2012), Carga térmica (SRT 30/2023), Estrés por frío (MTEySS 295/2003), Puesta a tierra (SRT 900/2015), Ventilación (Dec. 351/79), Espesores ultrasonido (ASME VIII), Agentes químicos (295/2003), Ergonomía y vibraciones (295/2003).
-4. Por cada medición, preguntar detalles específicos:
-   ILUMINACIÓN: cantidad de sectores, por cada sector: nombre y dimensiones (largo×ancho×altura), tipo de iluminación, tipo de tarea.
-   RUIDO: cantidad de puestos, sector, tarea, fuentes de ruido, horas de exposición, tipo de ruido, si hay trabajadores móviles.
-   CARGA TÉRMICA: puestos, sector, tarea, fuentes de calor, ropa de trabajo, si están aclimatados.
-   ESTRÉS POR FRÍO: tipo de ambiente, temperatura aproximada, horas de exposición, ciclos de entrada/salida.
-   PUESTA A TIERRA: cantidad de tableros, jabalinas, disyuntores diferenciales, superficie del establecimiento.
-   VENTILACIÓN: sectores, dimensiones, fuentes de contaminación, si tiene extracción instalada.
-   ESPESORES: tipo de recipiente, material, dimensiones, fluido, presión de operación.
-   AGENTES QUÍMICOS: sustancias, puestos expuestos, horas de exposición, hojas de seguridad.
-   ERGONOMÍA: tipo (mano-brazo o cuerpo entero), herramientas/vehículos, horas de uso diario, trabajadores expuestos.
-5. Preguntas finales: cantidad total de trabajadores, ART contratada, urgencia/fecha estimada, observaciones.
-6. Generar resumen completo y ofrecer envío por email a contacto@envexar.com.
-
-REGLAS:
-- Hacé UNA sola pregunta por mensaje, nunca varias juntas.
-- Si el usuario no sabe un dato técnico, explicale brevemente por qué lo necesitás.
-- Al final, mostrá el resumen completo con formato claro antes de enviar.
-- Cuando ya tengas toda la info, generá el resumen con este formato exacto empezando con "📋 RESUMEN SOLICITUD DE PRESUPUESTO" y terminando con "---FIN---".`;
-
 type Message = {
   id: string;
   role: "user" | "assistant";
   content: string;
-  isTyping?: boolean;
 };
 
 type Attachment = {
@@ -52,13 +22,13 @@ const VeraAvatar = ({ size = 40, blink = false }: { size?: number; blink?: boole
     <rect x="7" y="14" width="3" height="6" rx="1.5" fill="#cbd5e1"/>
     <rect x="30" y="14" width="3" height="6" rx="1.5" fill="#cbd5e1"/>
     <style>{`
-      @keyframes blink { 0%,90%,100%{transform:scaleY(1)} 95%{transform:scaleY(0.1)} }
+      @keyframes veraBlink { 0%,90%,100%{transform:scaleY(1)} 95%{transform:scaleY(0.1)} }
     `}</style>
-    <g style={{ transformOrigin: "14px 17px", animation: blink ? "blink 3.5s infinite" : "none" }}>
+    <g style={{ transformOrigin: "14px 17px", animation: blink ? "veraBlink 3.5s infinite" : "none" }}>
       <circle cx="14" cy="17" r="3" fill="#1e3a5f"/>
       <circle cx="15.2" cy="15.8" r="1" fill="white"/>
     </g>
-    <g style={{ transformOrigin: "26px 17px", animation: blink ? "blink 3.5s 0.05s infinite" : "none" }}>
+    <g style={{ transformOrigin: "26px 17px", animation: blink ? "veraBlink 3.5s 0.05s infinite" : "none" }}>
       <circle cx="26" cy="17" r="3" fill="#1e3a5f"/>
       <circle cx="27.2" cy="15.8" r="1" fill="white"/>
     </g>
@@ -104,6 +74,50 @@ const TypingDots = () => (
   </div>
 );
 
+/* ─── API HELPERS ─── */
+async function createConversation(): Promise<number> {
+  const res = await fetch("/api/openai/conversations", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title: "Vera chat" }),
+  });
+  const data = await res.json() as { id: number };
+  return data.id;
+}
+
+async function* streamMessage(conversationId: number, content: string): AsyncGenerator<string> {
+  const res = await fetch(`/api/openai/conversations/${conversationId}/messages`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ content }),
+  });
+
+  if (!res.ok || !res.body) {
+    yield "Lo siento, tuve un problema técnico. Podés escribirnos a contacto@envexar.com 😔";
+    return;
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split("\n");
+    buffer = lines.pop() ?? "";
+    for (const line of lines) {
+      if (!line.startsWith("data: ")) continue;
+      try {
+        const parsed = JSON.parse(line.slice(6)) as { content?: string; done?: boolean };
+        if (parsed.content) yield parsed.content;
+        if (parsed.done) return;
+      } catch { /* skip malformed */ }
+    }
+  }
+}
+
 /* ─── MAIN COMPONENT ─── */
 export default function Vera() {
   const [isOpen, setIsOpen] = useState(false);
@@ -111,76 +125,54 @@ export default function Vera() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [quickOptions, setQuickOptions] = useState<string[]>(["¡Sí, empecemos!", "Tengo una consulta"]);
+  const [quickOptions, setQuickOptions] = useState<string[]>([]);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [notification, setNotification] = useState(true);
   const [summaryText, setSummaryText] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const conversationHistory = useRef<{ role: "user" | "assistant"; content: string }[]>([]);
+  const conversationId = useRef<number | null>(null);
 
-  const scrollToBottom = () => {
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  }, [messages, isTyping]);
 
-  useEffect(() => { scrollToBottom(); }, [messages, isTyping]);
-
-  const addMessage = (role: "user" | "assistant", content: string) => {
+  const addMessage = (role: "user" | "assistant", content: string): string => {
     const id = Math.random().toString(36).slice(2);
     setMessages((prev) => [...prev, { id, role, content }]);
     return id;
   };
 
-  const callAnthropic = async (userMessage: string): Promise<string> => {
-    conversationHistory.current.push({ role: "user", content: userMessage });
-    try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": ANTHROPIC_API_KEY,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true",
-        },
-        body: JSON.stringify({
-          model: "claude-opus-4-5",
-          max_tokens: 1024,
-          system: SYSTEM_PROMPT,
-          messages: conversationHistory.current,
-        }),
-      });
-      if (!res.ok) throw new Error(`API error ${res.status}`);
-      const data = await res.json();
-      const reply = data.content[0].text as string;
-      conversationHistory.current.push({ role: "assistant", content: reply });
-      return reply;
-    } catch {
-      return "Lo siento, tuve un problema técnico 😔 Podés escribirnos directamente a contacto@envexar.com y te respondemos a la brevedad.";
-    }
+  const appendToLast = (chunk: string) => {
+    setMessages((prev) => {
+      const copy = [...prev];
+      const last = copy[copy.length - 1];
+      if (last?.role === "assistant") {
+        copy[copy.length - 1] = { ...last, content: last.content + chunk };
+      }
+      return copy;
+    });
   };
 
-  const openChat = useCallback(() => {
+  const openChat = useCallback(async () => {
     setIsOpen(true);
     setNotification(false);
-    if (!hasOpened) {
-      setHasOpened(true);
-      setQuickOptions([]);
-      setIsTyping(true);
-      setTimeout(() => {
-        setIsTyping(false);
-        const welcomeId = Math.random().toString(36).slice(2);
-        setMessages([{
-          id: welcomeId,
-          role: "assistant",
-          content: "¡Hola! Soy Vera 🤖 la asistente de Environmental Express Argentina.\nEstoy acá para ayudarte a armar tu solicitud de presupuesto de mediciones ambientales. ¿Empezamos?",
-        }]);
-        conversationHistory.current = [{
-          role: "assistant",
-          content: "¡Hola! Soy Vera 🤖 la asistente de Environmental Express Argentina.\nEstoy acá para ayudarte a armar tu solicitud de presupuesto de mediciones ambientales. ¿Empezamos?",
-        }];
-        setQuickOptions(["¡Sí, empecemos!", "Tengo una consulta"]);
-      }, 1400);
+    if (hasOpened) return;
+    setHasOpened(true);
+    setIsTyping(true);
+
+    // Create conversation on backend
+    try {
+      conversationId.current = await createConversation();
+    } catch {
+      conversationId.current = null;
     }
+
+    setTimeout(() => {
+      setIsTyping(false);
+      addMessage("assistant", "¡Hola! Soy Vera 🤖 la asistente de Environmental Express Argentina.\nEstoy acá para ayudarte a armar tu solicitud de presupuesto de mediciones ambientales. ¿Empezamos?");
+      setQuickOptions(["¡Sí, empecemos!", "Tengo una consulta"]);
+    }, 1200);
   }, [hasOpened]);
 
   const sendMessage = useCallback(async (text: string) => {
@@ -188,17 +180,40 @@ export default function Vera() {
     const msgText = attachments.length > 0
       ? `${text}${text ? "\n" : ""}📎 Archivos adjuntos: ${attachments.map((a) => a.name).join(", ")}`
       : text;
+
     addMessage("user", msgText);
     setInput("");
     setAttachments([]);
     setQuickOptions([]);
     setIsTyping(true);
-    const reply = await callAnthropic(msgText);
-    setIsTyping(false);
-    addMessage("assistant", reply);
 
-    if (reply.includes("📋 RESUMEN SOLICITUD DE PRESUPUESTO")) {
-      setSummaryText(reply);
+    if (!conversationId.current) {
+      try { conversationId.current = await createConversation(); } catch { /* fallback */ }
+    }
+
+    if (!conversationId.current) {
+      setIsTyping(false);
+      addMessage("assistant", "Lo siento, no pude conectarme. Escribinos a contacto@envexar.com 😔");
+      return;
+    }
+
+    // Start streaming
+    setIsTyping(false);
+    const streamingId = Math.random().toString(36).slice(2);
+    setMessages((prev) => [...prev, { id: streamingId, role: "assistant", content: "" }]);
+
+    let fullContent = "";
+    try {
+      for await (const chunk of streamMessage(conversationId.current, msgText)) {
+        fullContent += chunk;
+        appendToLast(chunk);
+      }
+    } catch {
+      appendToLast("Lo siento, tuve un problema técnico. Podés escribirnos a contacto@envexar.com 😔");
+    }
+
+    if (fullContent.includes("📋 RESUMEN SOLICITUD DE PRESUPUESTO")) {
+      setSummaryText(fullContent);
       setQuickOptions(["📧 Enviar solicitud por email"]);
     }
   }, [attachments]);
@@ -207,8 +222,10 @@ export default function Vera() {
     if (opt === "📧 Enviar solicitud por email" && summaryText) {
       const body = summaryText.replace(/---FIN---/, "").trim();
       const razón = body.match(/Empresa[:\s]+([^\n]+)/)?.[1]?.trim() || "Consulta";
-      const mailtoUrl = `mailto:contacto@envexar.com?subject=${encodeURIComponent(`Solicitud de presupuesto - ${razón}`)}&body=${encodeURIComponent(body)}`;
-      window.open(mailtoUrl, "_blank");
+      window.open(
+        `mailto:contacto@envexar.com?subject=${encodeURIComponent(`Solicitud de presupuesto - ${razón}`)}&body=${encodeURIComponent(body)}`,
+        "_blank"
+      );
       setQuickOptions([]);
       addMessage("assistant", "¡Listo! Se abrió tu cliente de email con toda la información 📨 ¿Necesitás algo más?");
       setQuickOptions(["Nueva consulta", "Cerrar chat"]);
@@ -216,10 +233,10 @@ export default function Vera() {
       setIsOpen(false);
     } else if (opt === "Nueva consulta") {
       setMessages([]);
-      conversationHistory.current = [];
       setSummaryText("");
       setHasOpened(false);
-      setQuickOptions(["¡Sí, empecemos!", "Tengo una consulta"]);
+      conversationId.current = null;
+      setQuickOptions([]);
       openChat();
     } else {
       sendMessage(opt);
@@ -228,8 +245,7 @@ export default function Vera() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    const remaining = 3 - attachments.length;
-    files.slice(0, remaining).forEach((file) => {
+    files.slice(0, 3 - attachments.length).forEach((file) => {
       setAttachments((prev) => [...prev, { id: Math.random().toString(36).slice(2), name: file.name, file }]);
     });
     if (fileInputRef.current) fileInputRef.current.value = "";
@@ -250,17 +266,11 @@ export default function Vera() {
           from{opacity:0;transform:translateY(8px)}
           to{opacity:1;transform:translateY(0)}
         }
-        @keyframes veraDot {
-          0%,80%,100%{opacity:0.3}
-          40%{opacity:1}
-        }
         @keyframes veraOnline {
-          0%,100%{opacity:1}
-          50%{opacity:0.35}
+          0%,100%{opacity:1} 50%{opacity:0.35}
         }
         .vera-msg { animation: veraMsgIn 0.25s ease forwards; }
         .vera-chip:hover { background:#f0fdf4 !important; }
-        .vera-chip-selected { background:#166534 !important; color:white !important; }
         .vera-send:hover { background:#14532d !important; }
         .vera-attach:hover { background:#f1f5f9 !important; }
         .vera-close:hover { background:rgba(255,255,255,0.12) !important; }
@@ -282,7 +292,6 @@ export default function Vera() {
           display: "flex", alignItems: "center", justifyContent: "center",
           animation: "veraPulse 4s ease-in-out infinite",
           transition: "transform 0.2s",
-          boxShadow: "0 4px 20px rgba(30,58,95,0.35)",
         }}
         aria-label="Abrir chat con Vera"
       >
@@ -408,7 +417,7 @@ export default function Vera() {
           {/* Input */}
           <div style={{ padding: "8px 12px 12px", borderTop: "1px solid #e2e8f0", backgroundColor: "white", flexShrink: 0, display: "flex", alignItems: "center", gap: 8 }}>
             <input
-              ref={fileInputRef as React.RefObject<HTMLInputElement>}
+              ref={fileInputRef}
               type="file"
               accept=".pdf,.jpg,.jpeg,.png"
               multiple
