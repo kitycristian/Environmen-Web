@@ -1,0 +1,65 @@
+El logo en el nav se sale del contenedor y se ve mal. Hacer estos ajustes:
+
+CAMBIO 1 — Altura del nav
+Cambiar el nav a height: 80px con overflow: hidden y align-items: center.
+
+CAMBIO 2 — Contenedor del logo
+Envolver el SVG del logo en un div con estas propiedades:
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 72px
+  height: 72px
+  flex-shrink: 0
+
+CAMBIO 3 — SVG del logo
+Reemplazar el SVG actual por este que tiene proporciones correctas
+y se ve bien en 72x72px:
+
+<svg width="72" height="72" viewBox="0 0 110 110">
+  <rect width="110" height="110" fill="#0D2F5E" rx="8"/>
+
+  <!-- Textos superiores -->
+  <text x="55" y="12" text-anchor="middle" font-family="Arial"
+        font-size="6.5" fill="#7EC8A0" font-weight="700"
+        letter-spacing="0.3">HIGIENE OCUPACIONAL</text>
+  <text x="55" y="20" text-anchor="middle" font-family="Arial"
+        font-size="6.5" fill="#7EC8A0" font-weight="700"
+        letter-spacing="0.3">Y MEDIO AMBIENTE</text>
+
+  <!-- Globo terrestre — elipse horizontal -->
+  <ellipse cx="55" cy="57" rx="34" ry="26" fill="none"
+           stroke="#2E7D32" stroke-width="2.5"/>
+  <!-- Meridiano horizontal central -->
+  <ellipse cx="55" cy="57" rx="34" ry="10" fill="none"
+           stroke="#2E7D32" stroke-width="1.8"/>
+  <!-- Meridiano vertical central -->
+  <ellipse cx="55" cy="57" rx="13" ry="26" fill="none"
+           stroke="#2E7D32" stroke-width="1.8"/>
+
+  <!-- Círculo interior con EEA -->
+  <circle cx="55" cy="57" r="19" fill="#0D2F5E"/>
+  <text x="55" y="64" text-anchor="middle" font-family="Arial Black"
+        font-weight="900" font-size="18" fill="#ffffff"
+        letter-spacing="1.5">EEA</text>
+
+  <!-- Textos inferiores -->
+  <text x="55" y="91" text-anchor="middle" font-family="Arial"
+        font-size="6.5" fill="#ffffff" font-weight="700"
+        letter-spacing="0.4">ENVIRONMENTAL EXPRESS</text>
+  <text x="55" y="100" text-anchor="middle" font-family="Arial"
+        font-size="6.5" fill="#ffffff" font-weight="700"
+        letter-spacing="0.4">ARGENTINA</text>
+
+  <!-- Tilde verde -->
+  <circle cx="96" cy="96" r="10" fill="#2E7D32"/>
+  <text x="96" y="101" text-anchor="middle" font-family="Arial"
+        font-size="12" fill="#fff" font-weight="900">✓</text>
+</svg>
+
+CAMBIO 4 — Separación con el texto del nav
+Entre el SVG y el div con el nombre/subtítulo agregar gap: 14px
+El nombre debe ser font-size: 15px font-weight: 700 color: #1e3a5f
+El subtítulo font-size: 11px color: #64748b
+
+No tocar nada más del HTML — solo el logo y el nav.

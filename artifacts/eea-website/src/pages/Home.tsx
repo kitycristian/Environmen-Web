@@ -1,26 +1,26 @@
 import { useState, useEffect, useRef } from "react";
 
 /* ─── LOGO ─── */
-const LogoSVG = ({ size = 56 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 120 120">
-    <rect width="120" height="120" fill="#0D2F5E" rx="6"/>
-    <text x="60" y="14" textAnchor="middle" fontFamily="Arial" fontSize="7.5"
-          fill="#7EC8A0" fontWeight="700">HIGIENE OCUPACIONAL</text>
-    <text x="60" y="23" textAnchor="middle" fontFamily="Arial" fontSize="7.5"
-          fill="#7EC8A0" fontWeight="700">Y MEDIO AMBIENTE</text>
-    <circle cx="60" cy="59" r="30" fill="none" stroke="#2E7D32" strokeWidth="2.5"/>
-    <ellipse cx="60" cy="59" rx="30" ry="12" fill="none" stroke="#2E7D32" strokeWidth="1.5"/>
-    <ellipse cx="60" cy="59" rx="12" ry="30" fill="none" stroke="#2E7D32" strokeWidth="1.5"/>
-    <circle cx="60" cy="59" r="18" fill="#0D2F5E" stroke="#2E7D32" strokeWidth="2"/>
-    <text x="60" y="65" textAnchor="middle" fontFamily="Arial Black"
-          fontWeight="900" fontSize="16" fill="#ffffff">EEA</text>
-    <text x="60" y="97" textAnchor="middle" fontFamily="Arial" fontSize="7"
-          fill="#ffffff" fontWeight="700">ENVIRONMENTAL</text>
-    <text x="60" y="106" textAnchor="middle" fontFamily="Arial" fontSize="7"
-          fill="#ffffff" fontWeight="700">EXPRESS ARGENTINA</text>
-    <circle cx="104" cy="104" r="11" fill="#2E7D32"/>
-    <text x="104" y="109" textAnchor="middle" fontFamily="Arial"
-          fontSize="13" fill="#fff" fontWeight="900">✓</text>
+const LogoSVG = () => (
+  <svg width="72" height="72" viewBox="0 0 110 110">
+    <rect width="110" height="110" fill="#0D2F5E" rx="8"/>
+    <text x="55" y="12" textAnchor="middle" fontFamily="Arial"
+          fontSize="6.5" fill="#7EC8A0" fontWeight="700" letterSpacing="0.3">HIGIENE OCUPACIONAL</text>
+    <text x="55" y="20" textAnchor="middle" fontFamily="Arial"
+          fontSize="6.5" fill="#7EC8A0" fontWeight="700" letterSpacing="0.3">Y MEDIO AMBIENTE</text>
+    <ellipse cx="55" cy="57" rx="34" ry="26" fill="none" stroke="#2E7D32" strokeWidth="2.5"/>
+    <ellipse cx="55" cy="57" rx="34" ry="10" fill="none" stroke="#2E7D32" strokeWidth="1.8"/>
+    <ellipse cx="55" cy="57" rx="13" ry="26" fill="none" stroke="#2E7D32" strokeWidth="1.8"/>
+    <circle cx="55" cy="57" r="19" fill="#0D2F5E"/>
+    <text x="55" y="64" textAnchor="middle" fontFamily="Arial Black"
+          fontWeight="900" fontSize="18" fill="#ffffff" letterSpacing="1.5">EEA</text>
+    <text x="55" y="91" textAnchor="middle" fontFamily="Arial"
+          fontSize="6.5" fill="#ffffff" fontWeight="700" letterSpacing="0.4">ENVIRONMENTAL EXPRESS</text>
+    <text x="55" y="100" textAnchor="middle" fontFamily="Arial"
+          fontSize="6.5" fill="#ffffff" fontWeight="700" letterSpacing="0.4">ARGENTINA</text>
+    <circle cx="96" cy="96" r="10" fill="#2E7D32"/>
+    <text x="96" y="101" textAnchor="middle" fontFamily="Arial"
+          fontSize="12" fill="#fff" fontWeight="900">✓</text>
   </svg>
 );
 
@@ -230,14 +230,17 @@ export default function Home() {
         borderBottom: "1px solid #e5e7eb",
         boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.08)" : "none",
         transition: "box-shadow 0.25s",
-        height: 88,
+        height: 80,
+        overflow: "hidden",
       }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <LogoSVG size={80}/>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 72, height: 72, flexShrink: 0 }}>
+              <LogoSVG />
+            </div>
             <div>
               <div style={{ fontSize: 15, fontWeight: 700, color: "#1e3a5f", lineHeight: 1.2 }}>Environmental Express Argentina</div>
-              <div style={{ fontSize: 11, color: "#166534", fontWeight: 600, letterSpacing: "0.02em" }}>Higiene Ocupacional y Medio Ambiente</div>
+              <div style={{ fontSize: 11, color: "#64748b", fontWeight: 500, letterSpacing: "0.02em" }}>Higiene Ocupacional y Medio Ambiente</div>
             </div>
           </div>
 
