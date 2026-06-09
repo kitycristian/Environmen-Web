@@ -1,0 +1,225 @@
+Crear un chatbot flotante llamado "Vera" en un archivo vera.js que se 
+inyecta en index.html. Es una burbuja flotante abajo a la derecha con 
+diseño de robotita amigable.
+
+---
+
+BURBUJA FLOTANTE (cerrada):
+- Círculo de 64px, fondo navy #1e3a5f, sombra suave
+- Cara de robotita SVG dentro del círculo:
+  · Cabeza cuadrada redondeada en azul claro
+  · Dos ojos circulares que parpadean cada 3 segundos
+  · Sonrisa simple
+  · Antena pequeña arriba con bolita
+- Badge rojo con "1" encima del círculo (notificación)
+- Al hacer hover: escala 1.05 con transición suave
+- Al hacer clic: abre el panel del chat
+
+---
+
+PANEL DEL CHAT (abierto):
+Dimensiones: 360px ancho × 520px alto
+Border-radius: 16px
+Sombra: 0 8px 32px rgba(0,0,0,0.18)
+Posición: fixed, bottom 90px, right 24px
+
+HEADER del panel:
+- Fondo degradado de #1e3a5f a #0d2240
+- Avatar de Vera a la izquierda (robotita en círculo verde)
+- Nombre "Vera" en blanco bold
+- Subtítulo "Asistente de presupuestos · EEA" en verde claro
+- Punto verde parpadeante de "en línea"
+- Botón X para cerrar arriba a la derecha
+
+ÁREA DE MENSAJES:
+- Fondo #f8fafc
+- Scroll vertical cuando hay muchos mensajes
+- Burbujas del bot (Vera): 
+  · Fondo blanco, borde 1px #e2e8f0, border-radius 4px 16px 16px 16px
+  · Texto #1e293b, font-size 13.5px
+  · Pequeño avatar de Vera a la izquierda
+- Burbujas del usuario:
+  · Fondo #1e3a5f, texto blanco
+  · border-radius 16px 16px 4px 16px
+  · Alineadas a la derecha
+- Animación de "escribiendo" (3 puntos pulsantes) mientras Vera procesa
+
+BOTONES DE OPCIONES RÁPIDAS:
+- Chips horizontales scrolleables
+- Borde #166534, texto #166534, fondo blanco
+- Al hover: fondo #f0fdf4
+- Al seleccionar: fondo #166534, texto blanco
+
+INPUT AREA:
+- Fondo blanco, borde superior #e2e8f0
+- Input de texto con placeholder "Escribí tu mensaje..."
+- Botón enviar: círculo #166534 con flecha blanca
+- Botón adjuntar (clip): gris, al hacer clic abre file picker
+  (acepta PDF, JPG, PNG, máximo 3 archivos)
+- Mostrar archivos adjuntos como chips removibles sobre el input
+
+---
+
+AVATAR SVG DE VERA (robotita):
+Diseñar un SVG de 40x40px con:
+- Fondo círculo verde #166534
+- Cabeza rectangular redondeada gris claro (#e2e8f0) centrada
+- Antena: línea fina + círculo pequeño arriba
+- Ojos: dos círculos azules (#1e3a5f) con punto blanco (brillo)
+- Boca: línea curva (sonrisa)
+- Orejas: dos pequeños rectángulos a los lados
+- Efecto parpadeo en los ojos cada 3-4 segundos (CSS animation)
+
+---
+
+MENSAJE DE BIENVENIDA (aparece automáticamente al abrir):
+Vera escribe con efecto de typing:
+"¡Hola! Soy Vera 🤖 la asistente de Environmental Express Argentina.
+Estoy acá para ayudarte a armar tu solicitud de presupuesto de 
+mediciones ambientales. ¿Empezamos?"
+
+Luego mostrar botones: ["¡Sí, empecemos!" | "Tengo una consulta"]
+
+---
+
+FLUJO DE CONVERSACIÓN (usando API de Anthropic):
+const ANTHROPIC_API_KEY = 'TU_API_KEY_AQUI';
+
+System prompt para la API:
+---
+Sos Vera, la asistente virtual de Environmental Express Argentina 
+(EEA), consultora de Higiene y Seguridad en el Trabajo de Tucumán, Argentina.
+Tu personalidad: amigable, profesional, empática, usás tuteo rioplatense.
+Usás emojis con moderación para ser más cercana.
+
+Tu objetivo es recopilar toda la información necesaria para un 
+presupuesto de mediciones ambientales según normativa SRT argentina.
+
+ORDEN ESTRICTO:
+1. Datos de la empresa:
+   - Razón social
+   - CUIT
+   - Dirección del establecimiento, localidad y provincia
+   - Rubro / actividad principal
+   
+2. Datos de contacto:
+   - Nombre y apellido
+   - Cargo
+   - Email (importante: lo usarás para enviar el resumen)
+   - Teléfono o WhatsApp
+
+3. Mediciones solicitadas (puede ser más de una):
+   Opciones: Iluminación (SRT 84/2012), Ruido (SRT 85/2012), 
+   Carga térmica (SRT 30/2023), Estrés por frío (MTEySS 295/2003),
+   Puesta a tierra (SRT 900/2015), Ventilación (Dec. 351/79),
+   Espesores ultrasonido (ASME VIII), Agentes químicos (295/2003),
+   Ergonomía y vibraciones (295/2003)
+
+4. Por cada medición solicitada, preguntar:
+
+   ILUMINACIÓN: cantidad de sectores, por cada sector: nombre y 
+   dimensiones (largo×ancho×altura en metros), tipo de iluminación 
+   (natural/artificial/mixta), tipo de tarea realizada.
+
+   RUIDO: cantidad de puestos, por cada puesto: sector, tarea, 
+   fuentes de ruido, horas de exposición, si es ruido continuo o 
+   de impulso, si hay trabajadores móviles que requieran dosimetría.
+
+   CARGA TÉRMICA: cantidad de puestos, por cada uno: sector, tarea, 
+   fuentes de calor (horno/sol/maquinaria), tipo de ropa de trabajo, 
+   si los trabajadores están aclimatados.
+
+   ESTRÉS POR FRÍO: tipo de ambiente (cámara frigorífica/depósito/exterior),
+   temperatura aproximada, horas de exposición por turno, 
+   ciclos de entrada/salida.
+
+   PUESTA A TIERRA: cantidad de tableros, cantidad de jabalinas, 
+   cantidad de disyuntores diferenciales, superficie del establecimiento.
+
+   VENTILACIÓN: cantidad de sectores, dimensiones, fuentes de 
+   contaminación (polvo/vapores/gases), si tiene extracción instalada.
+
+   ESPESORES: tipo de recipiente (tanque/cañería/caldera), material, 
+   dimensiones aproximadas, fluido que contiene, presión de operación.
+
+   AGENTES QUÍMICOS: sustancias utilizadas, cantidad de puestos 
+   expuestos, horas de exposición, si tienen hojas de seguridad.
+
+   ERGONOMÍA: tipo (mano-brazo o cuerpo entero), herramientas o 
+   vehículos involucrados, horas de uso diario, trabajadores expuestos.
+
+5. Preguntas finales (para todas):
+   - Cantidad total de trabajadores en el establecimiento
+   - ART contratada
+   - ¿Tiene urgencia? ¿Fecha estimada para el estudio?
+   - Observaciones adicionales
+
+6. Generar resumen y ofrecer envío por email.
+
+REGLAS IMPORTANTES:
+- Hacé UNA sola pregunta por mensaje, nunca varias juntas
+- Si el usuario no sabe un dato técnico, explicale brevemente por qué 
+  lo necesitás con una frase simple
+- Cuando el usuario mencione una medición, confirmala y pasá a sus 
+  preguntas específicas
+- Al final, antes de enviar, mostrá el resumen completo y pedí 
+  confirmación
+- Generá el resumen en formato claro con secciones bien separadas
+---
+
+---
+
+RESUMEN FINAL Y ENVÍO:
+Cuando Vera tenga toda la info, mostrar:
+
+1. Resumen en burbuja grande con toda la info estructurada:
+   📋 SOLICITUD DE PRESUPUESTO
+   🏢 Empresa: [datos]
+   👤 Contacto: [datos]  
+   📊 Mediciones solicitadas: [lista]
+   [detalle de cada medición]
+   📎 Archivos adjuntos: [lista]
+
+2. Botón único: "📧 Enviar solicitud por email"
+   Al hacer clic, abrir mailto con:
+   - Para: contacto@envexar.com
+   - Asunto: "Solicitud de presupuesto - [Razón Social]"
+   - Cuerpo: el resumen completo formateado en texto plano
+
+3. Mensaje de Vera: "¡Listo! Se abrirá tu cliente de email con 
+   toda la información. ¿Necesitás algo más?"
+
+---
+
+IMPLEMENTACIÓN:
+Crear DOS archivos:
+
+1. vera.js — todo el código del chatbot (lógica + UI + estilos en JS)
+2. vera.css — estilos del chatbot
+
+En index.html agregar antes del </body>:
+<link rel="stylesheet" href="vera.css">
+<script src="vera.js"></script>
+
+El chatbot se inicializa solo al cargar la página.
+
+---
+
+ANIMACIONES:
+- Burbuja flotante: animación de "pulso" suave cada 4 segundos 
+  para llamar la atención
+- Al abrir el panel: slide-up + fade in
+- Al cerrar: slide-down + fade out
+- Mensajes nuevos: fade in desde abajo
+- Avatar de Vera: ojos parpadean cada 3-4 segundos
+- Punto de "en línea": parpadeo verde suave
+
+---
+
+NOTAS:
+- No usar jQuery ni frameworks
+- Compatible con mobile (el panel ocupa 90% del ancho en pantallas chicas)
+- La API key va como constante al inicio de vera.js para que 
+  el usuario la reemplace fácilmente
+- Si la API falla, Vera responde con un mensaje de error amigable 
+  y ofrece el email directo: contacto@envexar.com

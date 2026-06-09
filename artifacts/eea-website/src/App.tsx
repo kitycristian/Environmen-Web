@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import Home from "@/pages/Home";
+import Vera from "@/components/Vera";
 
 const queryClient = new QueryClient();
 
@@ -8,6 +9,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Home />
+      <Vera />
       <Toaster />
     </QueryClientProvider>
   );

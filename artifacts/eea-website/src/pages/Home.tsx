@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 /* ─── LOGO ─── */
-const LogoSVG = () => (
+const LogoSVG = ({ size = 70 }: { size?: number }) => (
   <svg width="72" height="72" viewBox="0 0 110 110">
     <rect width="110" height="110" fill="#0D2F5E" rx="8"/>
     <text x="55" y="12" textAnchor="middle" fontFamily="Arial"
@@ -536,8 +536,8 @@ export default function Home() {
                 { label: "Inicio", action: scrollToId("hero") },
                 { label: "Servicios", action: scrollTo(serviciosRef as React.RefObject<HTMLElement>) },
                 { label: "Contacto", action: scrollTo(contactRef as React.RefObject<HTMLElement>) },
-              ].map(({ label, action, href }) => (
-                <a key={label} href={href || "#"} onClick={action}
+              ].map(({ label, action }) => (
+                <a key={label} href="#" onClick={action}
                   style={{ display: "block", fontSize: 14, color: "rgba(255,255,255,0.7)", textDecoration: "none", marginBottom: 10 }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#86efac")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}>
