@@ -5,6 +5,11 @@ import { budgetRequests } from "@workspace/db";
 const router = Router();
 
 router.post("/budget-requests", async (req, res) => {
+  console.log("=== NUEVO PEDIDO RECIBIDO ===");
+  console.log("Body:", JSON.stringify(req.body, null, 2));
+  console.log("SMTP_HOST:", process.env.SMTP_HOST);
+  console.log("SMTP_USER:", process.env.SMTP_USER);
+  console.log("SMTP_PASS existe:", !!process.env.SMTP_PASS);
   try {
     const { origen, nombre, empresa, email, telefono, estudio, mensaje, resumen } = req.body as {
       origen?: string; nombre?: string; empresa?: string; email?: string;
