@@ -232,11 +232,6 @@ export default function Home() {
         height: 86,
       }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 40px", display: "flex", alignItems: "center", height: "100%", gap: 0 }}>
-          {/* Logo — LEFT */}
-          <div style={{ width: 70, height: 70, flexShrink: 0 }}>
-            <LogoSVG />
-          </div>
-
           {/* Links — CENTER */}
           <div className="nav-links" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 32 }}>
             {[
@@ -522,9 +517,8 @@ export default function Home() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 40, marginBottom: 40 }}>
             {/* Col 1 */}
             <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                <LogoSVG size={44}/>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "white", lineHeight: 1.3 }}>Environmental<br/>Express Argentina</div>
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ fontSize: 15, fontWeight: 800, color: "white", lineHeight: 1.3 }}>Environmental Express Argentina</div>
               </div>
               <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.7 }}>
                 Especialistas en higiene ocupacional y medio ambiente. Mediciones certificadas en todo el país.
