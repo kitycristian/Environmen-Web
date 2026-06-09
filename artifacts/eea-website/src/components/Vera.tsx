@@ -128,7 +128,6 @@ export default function Vera() {
   const [quickOptions, setQuickOptions] = useState<string[]>([]);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [notification, setNotification] = useState(true);
-  const [summaryText, setSummaryText] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const conversationId = useRef<number | null>(null);
@@ -213,27 +212,15 @@ export default function Vera() {
     }
 
     if (fullContent.includes("📋 RESUMEN SOLICITUD DE PRESUPUESTO")) {
-      setSummaryText(fullContent);
-      setQuickOptions(["📧 Enviar solicitud por email"]);
+      setQuickOptions(["Nueva consulta"]);
     }
   }, [attachments]);
 
   const handleOption = (opt: string) => {
-    if (opt === "📧 Enviar solicitud por email" && summaryText) {
-      const body = summaryText.replace(/---FIN---/, "").trim();
-      const razón = body.match(/Empresa[:\s]+([^\n]+)/)?.[1]?.trim() || "Consulta";
-      window.open(
-        `mailto:contacto@envexar.com?subject=${encodeURIComponent(`Solicitud de presupuesto - ${razón}`)}&body=${encodeURIComponent(body)}`,
-        "_blank"
-      );
-      setQuickOptions([]);
-      addMessage("assistant", "¡Listo! Se abrió tu cliente de email con toda la información 📨 ¿Necesitás algo más?");
-      setQuickOptions(["Nueva consulta", "Cerrar chat"]);
-    } else if (opt === "Cerrar chat") {
+    if (opt === "Cerrar chat") {
       setIsOpen(false);
     } else if (opt === "Nueva consulta") {
       setMessages([]);
-      setSummaryText("");
       setHasOpened(false);
       conversationId.current = null;
       setQuickOptions([]);
