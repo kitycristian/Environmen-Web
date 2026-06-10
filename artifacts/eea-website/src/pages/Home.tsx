@@ -195,6 +195,7 @@ export default function Home() {
     try {
       await fetch("/api/budget-requests", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           origen: "web-form",
