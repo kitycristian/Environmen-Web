@@ -244,7 +244,7 @@ export default function Vera() {
       const contactoEmail   = extraerCampo(/(?:email|correo|e-mail)[:\s]+([^\n]+)/i);
       const contactoTelefono = extraerCampo(/(?:tel[eé]fono|tel|celular)[:\s]+([^\n]+)/i);
 
-      fetch("/api/budget-requests", {
+      fetch("https://app.envexar.com/api/budget-requests", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
