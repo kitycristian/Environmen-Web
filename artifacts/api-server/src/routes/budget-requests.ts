@@ -5,28 +5,41 @@ import { budgetRequests } from "@workspace/db";
 const router = Router();
 
 router.post("/budget-requests", async (req, res) => {
-  console.log("=== NUEVO PEDIDO RECIBIDO ===");
-  console.log("Body:", JSON.stringify(req.body, null, 2));
-  console.log("SMTP_HOST:", process.env.SMTP_HOST);
-  console.log("SMTP_USER:", process.env.SMTP_USER);
-  console.log("SMTP_PASS existe:", !!process.env.SMTP_PASS);
   try {
-    const { origen, nombre, empresa, email, telefono, estudio, mensaje, resumen } = req.body as {
-      origen?: string; nombre?: string; empresa?: string; email?: string;
-      telefono?: string; estudio?: string; mensaje?: string; resumen?: string;
-    };
+    const body = req.body as Record<string, unknown>;
+
+    // Accept both legacy field names (web form) and new structured names (Vera)
+    const origen   = (body["origen"]   as string | undefined) ?? "web-form";
+    const nombre   = (body["nombre"]   as string | undefined)
+                  ?? (body["contactoNombre"] as string | undefined)
+                  ?? null;
+    const empresa  = (body["empresa"]  as string | undefined)
+                  ?? (body["razonSocial"] as string | undefined)
+                  ?? null;
+    const email    = (body["email"]    as string | undefined)
+                  ?? (body["contactoEmail"] as string | undefined)
+                  ?? null;
+    const telefono = (body["telefono"] as string | undefined)
+                  ?? (body["contactoTelefono"] as string | undefined)
+                  ?? null;
+    const estudio  = (body["estudio"]  as string | undefined) ?? null;
+    const mensaje  = (body["mensaje"]  as string | undefined)
+                  ?? (body["observaciones"] as string | undefined)
+                  ?? null;
+    const resumen  = (body["resumen"]  as string | undefined) ?? null;
 
     const [record] = await db.insert(budgetRequests).values({
-      origen: origen ?? "web-form",
-      nombre: nombre ?? null,
-      empresa: empresa ?? null,
-      email: email ?? null,
-      telefono: telefono ?? null,
-      estudio: estudio ?? null,
-      mensaje: mensaje ?? null,
-      resumen: resumen ?? null,
+      origen,
+      nombre,
+      empresa,
+      email,
+      telefono,
+      estudio,
+      mensaje,
+      resumen,
     }).returning();
 
+    req.log.info({ id: record.id, origen }, "budget-request created");
     res.status(201).json({ ok: true, id: record.id });
   } catch (err) {
     req.log.error(err, "budget-requests POST failed");

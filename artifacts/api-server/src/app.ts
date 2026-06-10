@@ -37,6 +37,9 @@ const isProd = process.env["NODE_ENV"] === "production";
 const allowedOrigins = [
   "https://envexar.com",
   "https://www.envexar.com",
+  "https://app.envexar.com",
+  "http://localhost:5000",
+  "http://localhost:3000",
   ...(process.env["REPLIT_DOMAINS"]
     ? process.env["REPLIT_DOMAINS"].split(",").map((d) => `https://${d.trim()}`)
     : []),
@@ -45,13 +48,16 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin) || !isProd) {
+      // Allow requests with no origin (curl, Postman, same-origin) and all listed origins
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(null, true); // open for now; restrict later if needed
+        callback(null, true); // open for now — tighten if needed
       }
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 app.use(express.json({ limit: "50mb" }));
