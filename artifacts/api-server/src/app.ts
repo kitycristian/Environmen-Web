@@ -32,7 +32,28 @@ app.use(
     },
   }),
 );
-app.use(cors({ origin: true, credentials: true }));
+const isProd = process.env["NODE_ENV"] === "production";
+
+const allowedOrigins = [
+  "https://envexar.com",
+  "https://www.envexar.com",
+  ...(process.env["REPLIT_DOMAINS"]
+    ? process.env["REPLIT_DOMAINS"].split(",").map((d) => `https://${d.trim()}`)
+    : []),
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || !isProd) {
+        callback(null, true);
+      } else {
+        callback(null, true); // open for now; restrict later if needed
+      }
+    },
+    credentials: true,
+  }),
+);
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(
@@ -42,8 +63,10 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env["NODE_ENV"] === "production",
-      sameSite: "lax",
+      secure: isProd,
+      // "none" allows cross-domain cookies (envexar.com → replit.app)
+      // requires secure:true (HTTPS), which is always the case in production
+      sameSite: isProd ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     },
   }),
