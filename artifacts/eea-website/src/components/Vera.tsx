@@ -248,10 +248,12 @@ export default function Vera() {
       };
 
       // Concatenar todos los mensajes del asistente para el parseo
-      const resumenTexto = messages
-        .filter((m) => m.role === "assistant")
-        .map((m) => m.content)
-        .join("\n");
+      const resumenTexto = [
+        ...messages
+          .filter((m) => m.role === "assistant")
+          .map((m) => m.content),
+        fullContent,
+      ].join("\n");
 
       const medicionesSolicitadas: string[] = [];
       if (/iluminaci/i.test(resumenTexto))                    medicionesSolicitadas.push("iluminacion");
