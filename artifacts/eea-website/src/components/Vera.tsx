@@ -232,10 +232,33 @@ export default function Vera() {
 
     if (fullContent.includes("📋 RESUMEN SOLICITUD DE PRESUPUESTO")) {
       setQuickOptions(["Nueva consulta"]);
+
+      // Extraer campos del resumen generado por la IA
+      const extraerCampo = (patron: RegExp): string => {
+        const m = fullContent.match(patron);
+        return m ? m[1].trim() : "";
+      };
+
+      const razonSocial     = extraerCampo(/(?:empresa|razón social|razon social)[:\s]+([^\n]+)/i);
+      const contactoNombre  = extraerCampo(/(?:nombre|contacto)[:\s]+([^\n]+)/i);
+      const contactoEmail   = extraerCampo(/(?:email|correo|e-mail)[:\s]+([^\n]+)/i);
+      const contactoTelefono = extraerCampo(/(?:tel[eé]fono|tel|celular)[:\s]+([^\n]+)/i);
+
       fetch("/api/budget-requests", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ origen: "vera", resumen: fullContent }),
+        body: JSON.stringify({
+          razonSocial:        razonSocial || "Sin nombre",
+          contactoNombre:     contactoNombre,
+          contactoEmail:      contactoEmail,
+          contactoTelefono:   contactoTelefono,
+          medicionesSolicitadas: [],
+          detallesPorMedicion:   {},
+          observaciones:      "",
+          origen:             "vera",
+          resumen:            fullContent,
+        }),
       }).catch(() => { /* falla silenciosamente */ });
     }
   }, [attachments]);
