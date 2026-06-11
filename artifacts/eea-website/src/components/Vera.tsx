@@ -232,65 +232,10 @@ export default function Vera() {
 
     if (fullContent.includes("📋 RESUMEN SOLICITUD DE PRESUPUESTO")) {
       setQuickOptions(["Nueva consulta"]);
-
-      // Limpia asteriscos markdown y espacios sobrantes
-      const limpiar = (texto: string) =>
-        texto?.replace(/\*+/g, "").replace(/^[\s\-:]+/, "").trim() || "";
-
-      // Extrae un campo probando múltiples patrones
-      const extraerCampo = (texto: string, ...patrones: string[]): string => {
-        for (const patron of patrones) {
-          const regex = new RegExp(`${patron}[:\\s]+([^\\n]+)`, "i");
-          const match = texto.match(regex);
-          if (match) return limpiar(match[1]);
-        }
-        return "";
-      };
-
-      // Concatenar todos los mensajes del asistente para el parseo
-      const resumenTexto = [
-        ...messages
-          .filter((m) => m.role === "assistant")
-          .map((m) => m.content),
-        fullContent,
-      ].join("\n");
-
-      const medicionesSolicitadas: string[] = [];
-      if (/iluminaci/i.test(resumenTexto))                    medicionesSolicitadas.push("iluminacion");
-      if (/ruido|dosimetr/i.test(resumenTexto))               medicionesSolicitadas.push("ruido");
-      if (/calor|t.rmica/i.test(resumenTexto))                medicionesSolicitadas.push("calor");
-      if (/fr.o/i.test(resumenTexto))                         medicionesSolicitadas.push("frio");
-      if (/tierra|PAT|tablero|disyuntor/i.test(resumenTexto)) medicionesSolicitadas.push("puesta_tierra");
-      if (/ventilaci/i.test(resumenTexto))                    medicionesSolicitadas.push("ventilacion");
-      if (/espesor/i.test(resumenTexto))                      medicionesSolicitadas.push("espesores");
-      if (/qu.mico|COV|plomo/i.test(resumenTexto))            medicionesSolicitadas.push("quimicos");
-      if (/ergonom.a|vibraci/i.test(resumenTexto))            medicionesSolicitadas.push("ergonomia");
-
-      const datosParseados = {
-        razonSocial:           extraerCampo(resumenTexto, "Empresa", "Razón social", "Razon social") || "Sin nombre",
-        cuit:                  extraerCampo(resumenTexto, "CUIT"),
-        direccion:             extraerCampo(resumenTexto, "Dirección", "Direccion", "Domicilio"),
-        localidad:             extraerCampo(resumenTexto, "Localidad", "Ciudad"),
-        provincia:             extraerCampo(resumenTexto, "Provincia"),
-        rubro:                 extraerCampo(resumenTexto, "Rubro", "Actividad"),
-        contactoNombre:        extraerCampo(resumenTexto, "Nombre", "Nombre y apellido", "Contacto"),
-        contactoCargo:         extraerCampo(resumenTexto, "Cargo", "Puesto"),
-        contactoEmail:         extraerCampo(resumenTexto, "Email", "Correo"),
-        contactoTelefono:      extraerCampo(resumenTexto, "Teléfono", "Telefono", "Tel"),
-        art:                   extraerCampo(resumenTexto, "ART"),
-        fechaEstimada:         extraerCampo(resumenTexto, "Fecha", "Urgencia", "Fecha estimada"),
-        observaciones:         extraerCampo(resumenTexto, "Observaciones", "Urgencia"),
-        medicionesSolicitadas,
-        detallesPorMedicion:   {},
-        origen:                "vera",
-        resumen:               fullContent,
-      };
-
-      fetch("https://app.envexar.com/api/budget-requests", {
+      fetch("/api/budget-requests", {
         method: "POST",
-        credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datosParseados),
+        body: JSON.stringify({ origen: "vera", resumen: fullContent }),
       }).catch(() => { /* falla silenciosamente */ });
     }
   }, [attachments]);
