@@ -28,7 +28,7 @@ const LogoSVG = ({ size = 70 }: { size?: number }) => (
 const slides = [
   {
     img: "/slides/slide1.jpg",
-    title: "Especialistas en Higiene y Seguridad en el Trabajo",
+    title: "Environmental Express Argentina",
     sub: "Mediciones ambientales y protocolos SRT para su empresa",
     btn: "Solicitar presupuesto",
   },
@@ -333,7 +333,7 @@ export default function Home() {
           </p>
           {/* H1 */}
           <h1 style={{ color: "#fff", fontSize: "clamp(22px, 4vw, 36px)", fontWeight: 800, lineHeight: 1.2, maxWidth: 700, marginBottom: 16 }}>
-            Especialistas en Higiene y Seguridad en el Trabajo
+            Environmental Express Argentina
           </h1>
           {/* Description */}
           <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, lineHeight: 1.7, maxWidth: 560, marginBottom: 28 }}>
