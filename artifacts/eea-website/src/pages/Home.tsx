@@ -221,7 +221,7 @@ export default function Home() {
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
 
       {/* ── TOPBAR ── */}
-      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1100, backgroundColor: "#1a2744", height: 36, display: "flex", alignItems: "center" }}>
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1100, backgroundColor: "#0B1F3A", height: 36, display: "flex", alignItems: "center" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
           {/* Mail */}
           <a href="mailto:contacto@envexar.com" style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}
@@ -256,27 +256,27 @@ export default function Home() {
       {/* ── HEADER PRINCIPAL ── */}
       <header style={{
         position: "fixed", top: 36, left: 0, right: 0, zIndex: 1000,
-        backgroundColor: "#fff",
-        borderBottom: "1px solid #e8edf2",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+        backgroundColor: "#0D2F5E",
+        borderBottom: "2px solid #166534",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.18)",
         height: 80,
       }}>
         <style>{`
           .eea-nav-link {
-            font-size: 14px; font-weight: 600; color: #1a2744;
+            font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.8);
             text-decoration: none; padding-bottom: 3px;
             border-bottom: 2px solid transparent;
             transition: color 0.2s, border-color 0.2s;
           }
-          .eea-nav-link:hover { color: #3a7d2c; border-bottom-color: #3a7d2c; }
+          .eea-nav-link:hover { color: white; border-bottom-color: white; }
           .eea-cta-btn {
-            background: #3a7d2c; color: white; border: none; cursor: pointer;
+            background: #166534; color: white; border: none; cursor: pointer;
             padding: 9px 18px; border-radius: 6px; font-size: 14px; font-weight: 600;
             text-decoration: none; white-space: nowrap; transition: background 0.2s;
           }
-          .eea-cta-btn:hover { background: #2f6624; }
+          .eea-cta-btn:hover { background: #14532d; }
           .eea-hamburger { display: none !important; }
-          .logo img { height: 60px; mix-blend-mode: multiply; }
+          .logo img { height: 60px; }
           @media (max-width: 768px) {
             .eea-nav-links { display: none !important; }
             .eea-cta-desktop { display: none !important; }
@@ -297,10 +297,10 @@ export default function Home() {
             </span>
             <span style={{ width: 2, height: 48, backgroundColor: "#3a7d2c", borderRadius: 1, flexShrink: 0 }}/>
             <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <span style={{ fontSize: 15, fontWeight: 700, color: "#1a2744", lineHeight: 1.2, letterSpacing: "0.01em" }}>
+              <span style={{ fontSize: 15, fontWeight: 700, color: "white", lineHeight: 1.2, letterSpacing: "0.01em" }}>
                 Environmental Express Argentina
               </span>
-              <span style={{ fontSize: 11, fontWeight: 600, color: "#5f7a3a", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+              <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.65)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
                 Higiene Ocupacional y Medio Ambiente
               </span>
             </span>
@@ -327,7 +327,7 @@ export default function Home() {
           {/* MOBILE: Hamburguesa */}
           <button className="eea-hamburger"
             onClick={() => setMenuOpen(!menuOpen)}
-            style={{ marginLeft: "auto", background: "none", border: "none", cursor: "pointer", color: "#1a2744", fontSize: 26, padding: 4, display: "flex", alignItems: "center" }}>
+            style={{ marginLeft: "auto", background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.85)", fontSize: 26, padding: 4, display: "flex", alignItems: "center" }}>
             <i className={menuOpen ? "ti ti-x" : "ti ti-menu-2"}/>
           </button>
         </div>
@@ -361,11 +361,19 @@ export default function Home() {
 
         {/* ── COLUMNA IZQUIERDA: Logo ── */}
         <div style={{
-          backgroundColor: "white",
+          backgroundColor: "#0D2F5E",
           display: "flex", alignItems: "center", justifyContent: "center",
           padding: 40,
+          position: "relative",
+          overflow: "hidden",
         }}>
-          <img src="/logo.jpeg" alt="EEA" style={{ height: 360, width: "auto", objectFit: "contain", display: "block" }} />
+          {/* Decorative circles */}
+          <div style={{ position: "absolute", right: -60, top: -60, width: 320, height: 320, borderRadius: "50%", background: "rgba(22,101,52,0.08)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", right: 80, bottom: -80, width: 220, height: 220, borderRadius: "50%", background: "rgba(13,47,94,0.5)", border: "1px solid rgba(46,125,50,0.15)", pointerEvents: "none" }} />
+          {/* Logo wrapper */}
+          <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(46,125,50,0.25)", borderRadius: 16, padding: 32, position: "relative", zIndex: 1 }}>
+            <img src="/logo.jpeg" alt="EEA" style={{ height: 360, width: "auto", objectFit: "contain", display: "block" }} />
+          </div>
         </div>
 
         {/* ── COLUMNA DERECHA: Carrusel ── */}
@@ -417,15 +425,15 @@ export default function Home() {
           </div>
 
           {/* Stats bar */}
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2, backgroundColor: "rgba(0,0,0,0.38)", borderTop: "1px solid rgba(255,255,255,0.12)", display: "flex" }}>
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2, backgroundColor: "#f0f4f8", borderTop: "3px solid #166534", display: "flex" }}>
             {[
               { val: "+30", lbl: "Tipos de estudios" },
               { val: "100%", lbl: "Normativa SRT" },
               { val: "Nacional", lbl: "Cobertura" },
             ].map(({ val, lbl }, i) => (
-              <div key={i} style={{ flex: 1, textAlign: "center", padding: "12px 8px", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.12)" : "none" }}>
-                <div style={{ fontSize: 18, fontWeight: 800, color: "white", lineHeight: 1 }}>{val}</div>
-                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.6)", marginTop: 3, letterSpacing: "0.04em", textTransform: "uppercase" }}>{lbl}</div>
+              <div key={i} style={{ flex: 1, textAlign: "center", padding: "12px 8px", borderRight: i < 2 ? "1px solid #d1dae6" : "none" }}>
+                <div style={{ fontSize: 18, fontWeight: 800, color: "#0D2F5E", lineHeight: 1 }}>{val}</div>
+                <div style={{ fontSize: 10, color: "#5f7a9a", marginTop: 3, letterSpacing: "0.04em", textTransform: "uppercase" }}>{lbl}</div>
               </div>
             ))}
           </div>
@@ -441,18 +449,23 @@ export default function Home() {
       </section>
 
       {/* ── QUICK CARDS ── */}
-      <div style={{ backgroundColor: "white", padding: "0 24px" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 0, borderTop: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.07)", borderRadius: "0 0 8px 8px", overflow: "hidden" }}>
-          {quickCards.map(({ icon, title, desc }, i) => (
-            <div key={i} style={{ padding: "28px 28px", backgroundColor: "white", borderRight: i < 2 ? "1px solid #e5e7eb" : "none", cursor: "pointer", transition: "background 0.2s" }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f0fdf4")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}
-              onClick={title === "Ver normativa" ? () => setShowNormativa(true) : undefined}>
-              <i className={`ti ${icon}`} style={{ fontSize: 32, color: "#166534", display: "block", marginBottom: 10 }}/>
-              <div style={{ fontSize: 15, fontWeight: 700, color: "#1e3a5f", marginBottom: 4 }}>{title}</div>
-              <div style={{ fontSize: 13, color: "#64748b" }}>{desc}</div>
-            </div>
-          ))}
+      <div style={{ backgroundColor: "#f0f4f8", padding: "0 24px", borderTop: "3px solid #166534" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 0, boxShadow: "0 4px 20px rgba(0,0,0,0.07)", borderRadius: "0 0 8px 8px", overflow: "hidden" }}>
+          {quickCards.map(({ icon, title, desc }, i) => {
+            const iconBg = i === 1 ? "#0D2F5E" : "#166534";
+            return (
+              <div key={i} style={{ padding: "28px 28px", backgroundColor: "#f0f4f8", borderRight: i < 2 ? "1px solid #d1dae6" : "none", cursor: "pointer", transition: "background 0.2s", display: "flex", flexDirection: "column", gap: 4 }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#e6edf5")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#f0f4f8")}
+                onClick={title === "Ver normativa" ? () => setShowNormativa(true) : undefined}>
+                <div style={{ width: 38, height: 38, borderRadius: 8, backgroundColor: iconBg, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 8 }}>
+                  <i className={`ti ${icon}`} style={{ fontSize: 20, color: "white" }}/>
+                </div>
+                <div style={{ fontSize: 15, fontWeight: 500, color: "#0D2F5E" }}>{title}</div>
+                <div style={{ fontSize: 13, color: "#5f7a9a" }}>{desc}</div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -469,20 +482,26 @@ export default function Home() {
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20 }}>
-            {services.map(({ icon, name, norm, desc }, i) => (
-              <div key={i} onClick={() => setModalIndex(i)}
-                style={{ backgroundColor: "white", borderRadius: 8, padding: "28px 24px", border: "1px solid #e5e7eb", cursor: "pointer", transition: "box-shadow 0.2s, transform 0.2s", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
-                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.10)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)"; e.currentTarget.style.transform = "translateY(0)"; }}>
-                <div style={{ width: 48, height: 48, borderRadius: "50%", backgroundColor: "#f0fdf4", border: "1.5px solid #bbf7d0", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
-                  <i className={`ti ${icon}`} style={{ fontSize: 22, color: "#166534" }}/>
+            {services.map(({ icon, name, norm, desc }, i) => {
+              const isNavyGroup = i % 6 < 3;
+              const borderTopColor = isNavyGroup ? "#0D2F5E" : "#166534";
+              const iconColor = isNavyGroup ? "#166534" : "#0D2F5E";
+              const iconBgBorder = isNavyGroup ? { backgroundColor: "#f0fdf4", border: "1.5px solid #bbf7d0" } : { backgroundColor: "#eff6ff", border: "1.5px solid #bfdbfe" };
+              return (
+                <div key={i} onClick={() => setModalIndex(i)}
+                  style={{ backgroundColor: "#f8fafb", borderRadius: 8, padding: "28px 24px", border: "0.5px solid #d1dae6", borderTop: `3px solid ${borderTopColor}`, cursor: "pointer", transition: "box-shadow 0.2s, transform 0.2s", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.10)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)"; e.currentTarget.style.transform = "translateY(0)"; }}>
+                  <div style={{ width: 48, height: 48, borderRadius: "50%", ...iconBgBorder, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+                    <i className={`ti ${icon}`} style={{ fontSize: 22, color: iconColor }}/>
+                  </div>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: "#1e293b", marginBottom: 4 }}>{name}</div>
+                  <div style={{ fontSize: 12, color: "#166534", fontWeight: 600, marginBottom: 8 }}>{norm}</div>
+                  <div style={{ fontSize: 13, color: "#64748b", lineHeight: 1.5, marginBottom: 14 }}>{desc}</div>
+                  <div style={{ fontSize: 13, color: borderTopColor, fontWeight: 700 }}>Ver más →</div>
                 </div>
-                <div style={{ fontSize: 15, fontWeight: 700, color: "#1e293b", marginBottom: 4 }}>{name}</div>
-                <div style={{ fontSize: 12, color: "#166534", fontWeight: 600, marginBottom: 8 }}>{norm}</div>
-                <div style={{ fontSize: 13, color: "#64748b", lineHeight: 1.5, marginBottom: 14 }}>{desc}</div>
-                <div style={{ fontSize: 13, color: "#166534", fontWeight: 700 }}>Ver más →</div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

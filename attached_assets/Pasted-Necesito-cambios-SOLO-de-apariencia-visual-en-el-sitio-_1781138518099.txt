@@ -1,0 +1,43 @@
+Necesito cambios SOLO de apariencia visual en el sitio, sin modificar ningún texto, contenido, lógica ni estructura de componentes.
+
+CAMBIOS A APLICAR:
+
+1. HERO SECTION
+- Cambiar el fondo del hero de blanco a navy #0D2F5E
+- Todo el texto que estaba en oscuro pasarlo a blanco (#fff) o rgba(255,255,255,0.85)
+- El subtítulo/descripción a rgba(255,255,255,0.65)
+- El logo EEA que ya está grande a la izquierda, dejarlo igual pero agregar un wrapper con: background: rgba(255,255,255,0.04), border: 1px solid rgba(46,125,50,0.25), border-radius: 16px, padding: 32px
+- Agregar dos círculos decorativos de fondo (position: absolute, pointer-events: none):
+  · Círculo 1: right: -60px, top: -60px, 320x320px, border-radius 50%, background: rgba(22,101,52,0.08)
+  · Círculo 2: right: 80px, bottom: -80px, 220x220px, border-radius 50%, background: rgba(13,47,94,0.5), border: 1px solid rgba(46,125,50,0.15)
+
+2. STATS BAR (la banda con +30, 100%, Nacional)
+- Fondo: #f0f4f8 en lugar de blanco
+- Agregar border-top: 3px solid #166534
+- Los números en color #fff sobre fondo oscuro, o en #0D2F5E si el fondo es claro
+- Separadores entre columnas: border-right: 1px solid #d1dae6
+
+3. BANDA DE ACCESOS RÁPIDOS (Solicitar estudio / Ver normativa / Contacto directo)
+- Fondo: #f0f4f8
+- border-top: 3px solid #166534
+- Cada ícono envuelto en un div de 38x38px con border-radius: 8px:
+  · "Solicitar estudio": background #166534, ícono blanco
+  · "Ver normativa": background #0D2F5E, ícono blanco  
+  · "Contacto directo": background #166534, ícono blanco
+- Separadores: border-right: 1px solid #d1dae6 entre columnas
+- Título de cada bloque: color #0D2F5E, font-weight 500
+- Subtítulo: color #5f7a9a
+
+4. CARDS DE SERVICIOS
+- Fondo de cada card: #f8fafb en lugar de blanco puro
+- Border: 0.5px solid #d1dae6
+- Agregar border-top: 3px solid alternando: primeras 3 cards #0D2F5E, siguientes 3 cards #166534
+- El ícono de cada card en color #166534 para las navy, #0D2F5E para las verdes
+
+5. NAVBAR
+- Si el fondo es blanco, cambiarlo a #0D2F5E
+- border-bottom: 2px solid #166534
+- Todos los links de navegación: color rgba(255,255,255,0.8)
+- El topbar superior (con email y redes): background #0B1F3A
+
+NO tocar: textos, labels, títulos, subtítulos, lógica, rutas, componentes, props ni estructura JSX. Solo clases de Tailwind o estilos CSS inline.
