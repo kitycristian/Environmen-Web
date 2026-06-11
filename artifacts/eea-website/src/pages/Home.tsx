@@ -214,100 +214,140 @@ export default function Home() {
   };
 
   const activeService = modalIndex !== null ? serviciosInfo[modalIndex] : null;
-  const NAV_H = 36 + 200; // topbar + nav
+  const NAV_H = 36 + 80; // topbar + header
 
   return (
     <>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
 
       {/* ── TOPBAR ── */}
-      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1100, backgroundColor: "#1e3a5f", height: 36, display: "flex", alignItems: "center" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.8)" }}>
-            contacto@envexar.com
-          </span>
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1100, backgroundColor: "#1a2744", height: 36, display: "flex", alignItems: "center" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+          {/* Mail */}
+          <a href="mailto:contacto@envexar.com" style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.75)")}>
+            <i className="ti ti-mail" style={{ fontSize: 14 }}/> contacto@envexar.com
+          </a>
+          {/* Right side */}
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             {[
-              { icon: "ti-brand-facebook", href: "#" },
-              { icon: "ti-brand-instagram", href: "#" },
-              { icon: "ti-brand-linkedin", href: "#" },
+              { icon: "ti-brand-facebook", href: "https://facebook.com" },
+              { icon: "ti-brand-instagram", href: "https://instagram.com" },
+              { icon: "ti-brand-linkedin", href: "https://linkedin.com" },
             ].map(({ icon, href }) => (
-              <a key={icon} href={href} style={{ color: "rgba(255,255,255,0.7)", fontSize: 15, textDecoration: "none" }}
+              <a key={icon} href={href} target="_blank" rel="noreferrer"
+                style={{ color: "rgba(255,255,255,0.75)", fontSize: 15, textDecoration: "none" }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}>
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.75)")}>
                 <i className={`ti ${icon}`}/>
               </a>
             ))}
-            <a href="/portal" style={{ color: "rgba(255,255,255,0.7)", fontSize: 11, textDecoration: "none", display: "flex", alignItems: "center", gap: 4, marginLeft: 4, borderLeft: "1px solid rgba(255,255,255,0.15)", paddingLeft: 12 }}
+            <span style={{ width: 1, height: 16, backgroundColor: "rgba(255,255,255,0.2)", display: "inline-block" }}/>
+            <a href="/portal" style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", textDecoration: "none", display: "flex", alignItems: "center", gap: 5 }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}>
-              <i className="ti ti-lock" style={{ fontSize: 12 }}/> Acceso clientes
+              onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.75)")}>
+              <i className="ti ti-lock" style={{ fontSize: 13 }}/> Acceso clientes
             </a>
           </div>
         </div>
       </div>
 
-      {/* ── NAV ── */}
-      <nav style={{
+      {/* ── HEADER PRINCIPAL ── */}
+      <header style={{
         position: "fixed", top: 36, left: 0, right: 0, zIndex: 1000,
         backgroundColor: "#fff",
-        borderBottom: "1px solid #e5e7eb",
-        boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.08)" : "none",
-        transition: "box-shadow 0.25s",
-        height: 200,
+        borderBottom: "1px solid #e8edf2",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+        height: 80,
       }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 40px 0 8px", display: "flex", alignItems: "center", height: "100%", gap: 0 }}>
-          {/* Logo — LEFT */}
-          <a href="#" onClick={scrollToId("hero")} style={{ flexShrink: 0, marginRight: 16 }}>
-            <img src="/logo.jpeg" alt="EEA" style={{ height: 180, width: "auto", display: "block" }} />
+        <style>{`
+          .eea-nav-link {
+            font-size: 14px; font-weight: 600; color: #1a2744;
+            text-decoration: none; padding-bottom: 3px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+          }
+          .eea-nav-link:hover { color: #3a7d2c; border-bottom-color: #3a7d2c; }
+          .eea-cta-btn {
+            background: #3a7d2c; color: white; border: none; cursor: pointer;
+            padding: 9px 18px; border-radius: 6px; font-size: 14px; font-weight: 600;
+            text-decoration: none; white-space: nowrap; transition: background 0.2s;
+          }
+          .eea-cta-btn:hover { background: #2f6624; }
+          .eea-hamburger { display: none !important; }
+          @media (max-width: 768px) {
+            .eea-nav-links { display: none !important; }
+            .eea-cta-desktop { display: none !important; }
+            .eea-hamburger { display: flex !important; }
+          }
+        `}</style>
+
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", height: "100%", gap: 20 }}>
+
+          {/* IZQUIERDA: Logo + divisor + texto empresa */}
+          <a href="#" onClick={scrollToId("hero")} style={{ display: "flex", alignItems: "center", gap: 14, textDecoration: "none", flexShrink: 0 }}>
+            <img
+              src="/logo.jpeg"
+              alt="EEA"
+              style={{ height: 60, width: "auto", display: "block", mixBlendMode: "multiply" }}
+            />
+            <span style={{ width: 2, height: 48, backgroundColor: "#3a7d2c", borderRadius: 1, flexShrink: 0 }}/>
+            <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <span style={{ fontSize: 15, fontWeight: 700, color: "#1a2744", lineHeight: 1.2, letterSpacing: "0.01em" }}>
+                Environmental Express Argentina
+              </span>
+              <span style={{ fontSize: 11, fontWeight: 600, color: "#5f7a3a", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                Higiene Ocupacional y Medio Ambiente
+              </span>
+            </span>
           </a>
 
-          {/* Links — CENTER */}
-          <div className="nav-links" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 32 }}>
+          {/* CENTRO: Nav links */}
+          <nav className="eea-nav-links" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 32 }}>
             {[
-              { label: "INICIO", action: scrollToId("hero") },
-              { label: "SERVICIOS", action: scrollTo(serviciosRef as React.RefObject<HTMLElement>) },
-              { label: "NOSOTROS", action: scrollToId("por-que") },
-              { label: "CONTACTO", action: scrollTo(contactRef as React.RefObject<HTMLElement>) },
+              { label: "Inicio", action: scrollToId("hero") },
+              { label: "Servicios", action: scrollTo(serviciosRef as React.RefObject<HTMLElement>) },
+              { label: "Nosotros", action: scrollToId("por-que") },
+              { label: "Contacto", action: scrollTo(contactRef as React.RefObject<HTMLElement>) },
             ].map(({ label, action }) => (
-              <a key={label} href="#" onClick={action}
-                style={{ fontSize: 13, fontWeight: 600, color: "#1e3a5f", textDecoration: "none", letterSpacing: "0.04em" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#166534")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#1e3a5f")}>
-                {label}
-              </a>
+              <a key={label} href="#" onClick={action} className="eea-nav-link">{label}</a>
             ))}
-          </div>
+          </nav>
 
-          {/* Button — RIGHT */}
-          <div className="nav-links" style={{ flexShrink: 0 }}>
-            <a href="#" onClick={scrollTo(contactRef as React.RefObject<HTMLElement>)}
-              style={{ backgroundColor: "#166534", color: "white", padding: "10px 20px", borderRadius: 4, fontSize: 12, fontWeight: 700, textDecoration: "none", letterSpacing: "0.05em", whiteSpace: "nowrap" }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#14532d")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#166534")}>
-              SOLICITAR PRESUPUESTO
-            </a>
-          </div>
+          {/* DERECHA: CTA */}
+          <a href="#" onClick={scrollTo(contactRef as React.RefObject<HTMLElement>)}
+            className="eea-cta-btn eea-cta-desktop">
+            Solicitar presupuesto
+          </a>
 
-          <button className="hamburger-btn" onClick={() => setMenuOpen(!menuOpen)}
-            style={{ display: "none", background: "none", border: "none", cursor: "pointer", color: "#1e3a5f", fontSize: 24, marginLeft: "auto" }}>
+          {/* MOBILE: Hamburguesa */}
+          <button className="eea-hamburger"
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{ marginLeft: "auto", background: "none", border: "none", cursor: "pointer", color: "#1a2744", fontSize: 26, padding: 4, display: "flex", alignItems: "center" }}>
             <i className={menuOpen ? "ti ti-x" : "ti ti-menu-2"}/>
           </button>
         </div>
 
+        {/* MOBILE MENU */}
         {menuOpen && (
-          <div style={{ backgroundColor: "white", borderTop: "1px solid #e5e7eb", padding: "16px 24px", display: "flex", flexDirection: "column", gap: 14 }}>
-            {["INICIO", "SERVICIOS", "NOSOTROS", "CONTACTO"].map((l) => (
-              <a key={l} href="#" onClick={l === "SERVICIOS" ? scrollTo(serviciosRef as React.RefObject<HTMLElement>) : l === "CONTACTO" ? scrollTo(contactRef as React.RefObject<HTMLElement>) : scrollToId(l === "NOSOTROS" ? "por-que" : "hero")}
-                style={{ fontSize: 14, fontWeight: 600, color: "#1e3a5f", textDecoration: "none" }}>{l}</a>
+          <div style={{ backgroundColor: "white", borderTop: "1px solid #e8edf2", padding: "16px 24px", display: "flex", flexDirection: "column", gap: 16, boxShadow: "0 4px 12px rgba(0,0,0,0.08)" }}>
+            {[
+              { label: "Inicio", action: scrollToId("hero") },
+              { label: "Servicios", action: scrollTo(serviciosRef as React.RefObject<HTMLElement>) },
+              { label: "Nosotros", action: scrollToId("por-que") },
+              { label: "Contacto", action: scrollTo(contactRef as React.RefObject<HTMLElement>) },
+            ].map(({ label, action }) => (
+              <a key={label} href="#" onClick={(e) => { action(e); setMenuOpen(false); }}
+                style={{ fontSize: 15, fontWeight: 600, color: "#1a2744", textDecoration: "none" }}>{label}</a>
             ))}
-            <a href="#" onClick={scrollTo(contactRef as React.RefObject<HTMLElement>)}
-              style={{ backgroundColor: "#166534", color: "white", padding: "10px", borderRadius: 4, fontSize: 13, fontWeight: 700, textDecoration: "none", textAlign: "center" }}>
-              SOLICITAR PRESUPUESTO
+            <a href="#" onClick={(e) => { scrollTo(contactRef as React.RefObject<HTMLElement>)(e); setMenuOpen(false); }}
+              className="eea-cta-btn" style={{ textAlign: "center" }}>
+              Solicitar presupuesto
             </a>
           </div>
         )}
-      </nav>
+      </header>
 
       {/* ── HERO SLIDER ── */}
       <div id="hero" style={{ marginTop: NAV_H, height: 520, position: "relative", overflow: "hidden" }}>
