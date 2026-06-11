@@ -354,17 +354,18 @@ export default function Home() {
         {/* ── COLUMNA IZQUIERDA: Logo ── */}
         <div style={{
           backgroundColor: "#0D2F5E",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          padding: 40,
+          display: "flex", alignItems: "stretch", justifyContent: "center",
+          flexDirection: "column",
+          padding: 24,
           position: "relative",
           overflow: "hidden",
         }}>
           {/* Decorative circles */}
           <div style={{ position: "absolute", right: -60, top: -60, width: 320, height: 320, borderRadius: "50%", background: "rgba(22,101,52,0.08)", pointerEvents: "none" }} />
           <div style={{ position: "absolute", right: 80, bottom: -80, width: 220, height: 220, borderRadius: "50%", background: "rgba(13,47,94,0.5)", border: "1px solid rgba(46,125,50,0.15)", pointerEvents: "none" }} />
-          {/* Logo wrapper */}
-          <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(46,125,50,0.25)", borderRadius: 16, padding: 32, position: "relative", zIndex: 1 }}>
-            <img src="/logo.jpeg" alt="EEA" style={{ height: 360, width: "auto", objectFit: "contain", display: "block" }} />
+          {/* Logo wrapper — fills full column height */}
+          <div style={{ flex: 1, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(46,125,50,0.25)", borderRadius: 16, padding: 32, position: "relative", zIndex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <img src="/logo.jpeg" alt="EEA" style={{ maxHeight: 380, width: "auto", objectFit: "contain", display: "block" }} />
           </div>
         </div>
 
