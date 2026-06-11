@@ -352,82 +352,102 @@ export default function Home() {
         )}
       </header>
 
-      {/* ── HERO SLIDER ── */}
-      <div id="hero" style={{ marginTop: NAV_H, height: 520, position: "relative", overflow: "hidden" }}>
-        {slides.map((s, i) => (
-          <div key={i} style={{
-            position: "absolute", inset: 0,
-            backgroundImage: `url(${s.img})`,
-            backgroundSize: "cover", backgroundPosition: "center",
-            opacity: i === slide ? 1 : 0,
-            transition: "opacity 0.8s ease",
-          }}>
-            <div style={{ position: "absolute", inset: 0, backgroundColor: "rgba(10,20,40,0.58)" }}/>
+      {/* ── HERO ── */}
+      <style>{`
+        .eea-hero { display: grid; grid-template-columns: 1fr 1.6fr; }
+        @media (max-width: 768px) { .eea-hero { grid-template-columns: 1fr; } }
+      `}</style>
+      <section id="hero" className="eea-hero" style={{ marginTop: NAV_H, minHeight: 340, backgroundColor: "#0d1b2e" }}>
+
+        {/* ── COLUMNA IZQUIERDA: Logo ── */}
+        <div style={{
+          background: "linear-gradient(160deg, #1a2744 0%, #0d3320 100%)",
+          display: "flex", flexDirection: "column", alignItems: "center",
+          justifyContent: "center", padding: "48px 32px", gap: 18,
+        }}>
+          <div style={{ backgroundColor: "white", borderRadius: 16, padding: 16, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
+            <img src="/logo.jpeg" alt="EEA" style={{ width: 180, height: 180, objectFit: "contain", display: "block" }} />
           </div>
-        ))}
-        <div style={{ position: "relative", zIndex: 1, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "0 24px" }}>
-          {/* Badge */}
-          <div style={{ display: "inline-block", backgroundColor: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.7)", borderRadius: 20, fontSize: 11, fontWeight: 600, padding: "5px 16px", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-            Tucumán, Argentina
-          </div>
-          {/* Subtitle */}
-          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: 400, marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.14em" }}>
+          <span style={{ color: "white", fontSize: 16, fontWeight: 500, textAlign: "center", lineHeight: 1.4 }}>
             Environmental Express Argentina
-          </p>
-          {/* H1 */}
-          <h1 style={{ color: "#fff", fontSize: "clamp(22px, 4vw, 36px)", fontWeight: 800, lineHeight: 1.2, maxWidth: 700, marginBottom: 16 }}>
-            Environmental Express Argentina
-          </h1>
-          {/* Description */}
-          <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, lineHeight: 1.7, maxWidth: 560, marginBottom: 28 }}>
-            Mediciones ambientales, protocolos SRT y estudios de riesgo laboral. Más de 30 tipos de estudios para empresas de todo el país.
-          </p>
-          {/* Buttons */}
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center", marginBottom: 40 }}>
-            <a href="#" onClick={scrollTo(contactRef as React.RefObject<HTMLElement>)}
-              style={{ backgroundColor: "#166534", color: "#fff", padding: "12px 26px", borderRadius: 4, fontSize: 14, fontWeight: 700, textDecoration: "none", letterSpacing: "0.04em" }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#14532d")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#166534")}>
-              Solicitar presupuesto
-            </a>
-            <a href="#" onClick={scrollTo(serviciosRef as React.RefObject<HTMLElement>)}
-              style={{ backgroundColor: "transparent", color: "#fff", padding: "12px 26px", borderRadius: 4, fontSize: 14, fontWeight: 600, textDecoration: "none", border: "1px solid rgba(255,255,255,0.35)", letterSpacing: "0.04em" }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}>
-              Ver servicios
-            </a>
+          </span>
+          <div style={{ width: 40, height: 3, backgroundColor: "#3a7d2c", borderRadius: 2 }} />
+          <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", textAlign: "center" }}>
+            Higiene Ocupacional y Medio Ambiente
+          </span>
+        </div>
+
+        {/* ── COLUMNA DERECHA: Carrusel ── */}
+        <div style={{ position: "relative", overflow: "hidden", minHeight: 340 }}>
+          {/* Slides background */}
+          {slides.map((s, i) => (
+            <div key={i} style={{
+              position: "absolute", inset: 0,
+              backgroundImage: `url(${s.img})`,
+              backgroundSize: "cover", backgroundPosition: "center",
+              filter: "brightness(55%)",
+              opacity: i === slide ? 1 : 0,
+              transition: "opacity 0.8s ease",
+            }} />
+          ))}
+
+          {/* Slide content */}
+          <div style={{ position: "relative", zIndex: 1, minHeight: 300, display: "flex", flexDirection: "column", justifyContent: "center", padding: "36px 40px 64px" }}>
+            <div style={{ display: "inline-block", alignSelf: "flex-start", backgroundColor: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)", color: "rgba(255,255,255,0.9)", borderRadius: 20, fontSize: 11, fontWeight: 600, padding: "4px 14px", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>
+              Tucumán, Argentina
+            </div>
+            <h1 style={{ color: "white", fontSize: 22, fontWeight: 700, lineHeight: 1.3, maxWidth: 480, margin: "0 0 10px", padding: 0 }}>
+              {slides[slide]?.title}
+            </h1>
+            <p style={{ color: "rgba(255,255,255,0.75)", fontSize: 12, lineHeight: 1.7, maxWidth: 420, margin: "0 0 24px" }}>
+              {slides[slide]?.sub}
+            </p>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 28 }}>
+              <a href="#" onClick={scrollTo(contactRef as React.RefObject<HTMLElement>)}
+                style={{ backgroundColor: "#3a7d2c", color: "#fff", padding: "10px 20px", borderRadius: 6, fontSize: 13, fontWeight: 600, textDecoration: "none", transition: "background 0.2s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#2f6624")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#3a7d2c")}>
+                Solicitar presupuesto
+              </a>
+              <a href="#" onClick={scrollTo(serviciosRef as React.RefObject<HTMLElement>)}
+                style={{ backgroundColor: "transparent", color: "#fff", padding: "10px 20px", borderRadius: 6, fontSize: 13, fontWeight: 600, textDecoration: "none", border: "1px solid rgba(255,255,255,0.45)", transition: "background 0.2s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.1)")}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}>
+                Ver servicios
+              </a>
+            </div>
+            {/* Dots */}
+            <div style={{ display: "flex", gap: 6 }}>
+              {slides.map((_, i) => (
+                <button key={i} onClick={() => setSlide(i)}
+                  style={{ width: i === slide ? 24 : 8, height: 8, borderRadius: 4, backgroundColor: i === slide ? "white" : "rgba(255,255,255,0.4)", border: "none", cursor: "pointer", transition: "width 0.3s", padding: 0 }} />
+              ))}
+            </div>
           </div>
-          {/* Stats row */}
-          <div style={{ display: "flex", gap: 0, borderTop: "1px solid rgba(255,255,255,0.15)", paddingTop: 24 }}>
+
+          {/* Stats bar */}
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 2, backgroundColor: "rgba(0,0,0,0.38)", borderTop: "1px solid rgba(255,255,255,0.12)", display: "flex" }}>
             {[
               { val: "+30", lbl: "Tipos de estudios" },
               { val: "100%", lbl: "Normativa SRT" },
               { val: "Nacional", lbl: "Cobertura" },
             ].map(({ val, lbl }, i) => (
-              <div key={i} style={{ textAlign: "center", padding: "0 24px", borderRight: i < 3 ? "1px solid rgba(255,255,255,0.15)" : "none" }}>
-                <div style={{ fontSize: 22, fontWeight: 900, color: "white", lineHeight: 1 }}>{val}</div>
-                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", marginTop: 4, letterSpacing: "0.04em" }}>{lbl}</div>
+              <div key={i} style={{ flex: 1, textAlign: "center", padding: "12px 8px", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.12)" : "none" }}>
+                <div style={{ fontSize: 18, fontWeight: 800, color: "white", lineHeight: 1 }}>{val}</div>
+                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.6)", marginTop: 3, letterSpacing: "0.04em", textTransform: "uppercase" }}>{lbl}</div>
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Arrows */}
-        {[{ dir: -1, label: "‹" }, { dir: 1, label: "›" }].map(({ dir, label }) => (
-          <button key={dir} onClick={() => setSlide((s) => (s + dir + slides.length) % slides.length)}
-            style={{ position: "absolute", top: "50%", [dir === -1 ? "left" : "right"]: 20, transform: "translateY(-50%)", background: "rgba(255,255,255,0.18)", border: "none", color: "white", fontSize: 28, width: 44, height: 44, borderRadius: "50%", cursor: "pointer", zIndex: 2, display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>
-            {label}
-          </button>
-        ))}
-
-        {/* Dots */}
-        <div style={{ position: "absolute", bottom: 20, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 8, zIndex: 2 }}>
-          {slides.map((_, i) => (
-            <button key={i} onClick={() => setSlide(i)}
-              style={{ width: i === slide ? 24 : 8, height: 8, borderRadius: 4, backgroundColor: i === slide ? "white" : "rgba(255,255,255,0.45)", border: "none", cursor: "pointer", transition: "width 0.3s", padding: 0 }}/>
+          {/* Arrows */}
+          {[{ dir: -1, label: "‹" }, { dir: 1, label: "›" }].map(({ dir, label }) => (
+            <button key={dir} onClick={() => setSlide((s) => (s + dir + slides.length) % slides.length)}
+              style={{ position: "absolute", top: "45%", [dir === -1 ? "left" : "right"]: 12, transform: "translateY(-50%)", background: "rgba(255,255,255,0.15)", border: "none", color: "white", fontSize: 22, width: 34, height: 34, borderRadius: "50%", cursor: "pointer", zIndex: 3, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              {label}
+            </button>
           ))}
         </div>
-      </div>
+      </section>
 
       {/* ── QUICK CARDS ── */}
       <div style={{ backgroundColor: "white", padding: "0 24px" }}>
