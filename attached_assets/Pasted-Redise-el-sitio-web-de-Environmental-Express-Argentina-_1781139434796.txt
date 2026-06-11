@@ -1,0 +1,59 @@
+Rediseñá el sitio web de Environmental Express Argentina (envexar.com) manteniendo exactamente los mismos textos del sitio actual. No cambies ningún texto, solo el diseño visual.
+
+Diseño a implementar:
+
+**Paleta de colores:**
+- Fondo principal: #0D1F3C (azul marino oscuro)
+- Fondo claro: #F2F4F7
+- Verde acción: #2D7A3A
+- Dorado acento: #C8A84B
+- Blanco: #FFFFFF
+- Footer: #07131F
+
+**Tipografía:** Inter (Google Fonts), pesos 400/600/700/800
+
+**Navbar:**
+- Fondo #0D1F3C, altura 64px
+- Logo izquierda: nombre en blanco bold + subtítulo "HIGIENE OCUPACIONAL Y MEDIO AMBIENTE" en dorado #C8A84B, mayúsculas, tracking amplio
+- Links centrados: Inicio / Servicios / Nosotros / Contacto — color blanco 75% opacidad
+- Derecha: "Acceso clientes" en gris suave + botón "Solicitar presupuesto" fondo #2D7A3A, texto blanco, border-radius 4px
+
+**Hero (2 columnas):**
+- Fondo #0D1F3C
+- Columna izquierda: tag pill "TUCUMÁN, ARGENTINA" en dorado con borde; H1 blanco 34px font-weight 800; subtítulo blanco 60% opacidad; dos botones: primario verde #2D7A3A y secundario outline blanco
+- Columna derecha: fondo ligeramente más claro con el logo/badge de EEA centrado sobre fondo blanco, border-radius 8px, con el check verde abajo
+
+**Barra de stats (3 columnas):**
+- Fondo blanco, border-bottom 3px solid #C8A84B
+- "+30 / TIPOS DE ESTUDIOS" | "100% / NORMATIVA SRT" | "Nacional / COBERTURA"
+- Números grandes font-weight 800, labels en mayúsculas pequeñas color gris
+
+**Quick actions (3 columnas):**
+- Fondo blanco, border-top sutil
+- Cada item: ícono cuadrado redondeado fondo #EAF4ED color verde + título bold + subtítulo gris
+- "Solicitar estudio / Cotizá tu medición sin cargo" | "Ver normativa / Resoluciones SRT vigentes" | "Contacto directo / Respondemos en menos de 24hs"
+
+**Sección servicios:**
+- Fondo #F2F4F7
+- Grid 3 columnas de cards blancas con border-top 3px verde #2D7A3A
+- Cada card: ícono en cuadrado verde claro + título + descripción breve
+
+**Sección normativa (fondo oscuro #0D1F3C):**
+- 2 columnas: izquierda con label dorado + título blanco + texto + pills de resoluciones (SRT 85/12, SRT 295/03, Decreto 351/79, MTEySS, ASME)
+- Derecha: grid 2x2 de mini-cards oscuras con número grande dorado y label blanco suave
+
+**CTA strip:**
+- Fondo #2D7A3A full-width
+- Izquierda: título blanco bold + subtítulo semitransparente
+- Derecha: botón blanco con texto verde
+
+**Footer:**
+- Fondo #07131F, 3 columnas
+- Logo + descripción breve | Links de servicios | Contacto
+- Bottom bar: copyright izquierda + email dorado derecha
+
+**General:**
+- border-radius 4px para botones, 8px para cards
+- Sin sombras ni gradientes
+- Completamente responsive (mobile-first)
+- Conservar todos los textos, links y estructura de navegación del sitio actual
