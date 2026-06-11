@@ -444,7 +444,7 @@ export default function Home() {
       <div style={{ backgroundColor: "white", padding: "0 24px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 0, borderTop: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.07)", borderRadius: "0 0 8px 8px", overflow: "hidden" }}>
           {quickCards.map(({ icon, title, desc }, i) => (
-            <div key={i} style={{ padding: "28px 28px", borderTop: "3px solid #166534", backgroundColor: "white", borderRight: i < 2 ? "1px solid #e5e7eb" : "none", cursor: "pointer", transition: "background 0.2s" }}
+            <div key={i} style={{ padding: "28px 28px", backgroundColor: "white", borderRight: i < 2 ? "1px solid #e5e7eb" : "none", cursor: "pointer", transition: "background 0.2s" }}
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f0fdf4")}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}
               onClick={title === "Ver normativa" ? () => setShowNormativa(true) : undefined}>
