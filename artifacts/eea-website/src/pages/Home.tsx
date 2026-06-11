@@ -286,16 +286,8 @@ export default function Home() {
 
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", height: "100%", gap: 20 }}>
 
-          {/* IZQUIERDA: Logo + divisor + texto empresa */}
+          {/* IZQUIERDA: Texto empresa */}
           <a href="#" onClick={scrollToId("hero")} style={{ display: "flex", alignItems: "center", gap: 14, textDecoration: "none", flexShrink: 0 }}>
-            <span className="logo">
-              <img
-                src="/logo.jpeg"
-                alt="EEA"
-                style={{ width: "auto", display: "block" }}
-              />
-            </span>
-            <span style={{ width: 2, height: 48, backgroundColor: "#3a7d2c", borderRadius: 1, flexShrink: 0 }}/>
             <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <span style={{ fontSize: 15, fontWeight: 700, color: "white", lineHeight: 1.2, letterSpacing: "0.01em" }}>
                 Environmental Express Argentina
