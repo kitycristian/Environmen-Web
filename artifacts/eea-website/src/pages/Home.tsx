@@ -276,6 +276,7 @@ export default function Home() {
           }
           .eea-cta-btn:hover { background: #2f6624; }
           .eea-hamburger { display: none !important; }
+          .logo img { height: 60px; mix-blend-mode: multiply; }
           @media (max-width: 768px) {
             .eea-nav-links { display: none !important; }
             .eea-cta-desktop { display: none !important; }
@@ -287,11 +288,13 @@ export default function Home() {
 
           {/* IZQUIERDA: Logo + divisor + texto empresa */}
           <a href="#" onClick={scrollToId("hero")} style={{ display: "flex", alignItems: "center", gap: 14, textDecoration: "none", flexShrink: 0 }}>
-            <img
-              src="/logo.jpeg"
-              alt="EEA"
-              style={{ height: 60, width: "auto", display: "block", mixBlendMode: "multiply" }}
-            />
+            <span className="logo">
+              <img
+                src="/logo.jpeg"
+                alt="EEA"
+                style={{ width: "auto", display: "block" }}
+              />
+            </span>
             <span style={{ width: 2, height: 48, backgroundColor: "#3a7d2c", borderRadius: 1, flexShrink: 0 }}/>
             <span style={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <span style={{ fontSize: 15, fontWeight: 700, color: "#1a2744", lineHeight: 1.2, letterSpacing: "0.01em" }}>
