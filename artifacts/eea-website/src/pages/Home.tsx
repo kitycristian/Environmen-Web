@@ -365,7 +365,7 @@ export default function Home() {
           display: "flex", alignItems: "center", justifyContent: "center",
           padding: 40,
         }}>
-          <img src="/logo.jpeg" alt="EEA" style={{ height: 260, width: "auto", objectFit: "contain", display: "block" }} />
+          <img src="/logo.jpeg" alt="EEA" style={{ height: 360, width: "auto", objectFit: "contain", display: "block" }} />
         </div>
 
         {/* ── COLUMNA DERECHA: Carrusel ── */}
