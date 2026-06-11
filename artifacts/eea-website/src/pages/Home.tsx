@@ -361,20 +361,11 @@ export default function Home() {
 
         {/* ── COLUMNA IZQUIERDA: Logo ── */}
         <div style={{
-          background: "linear-gradient(160deg, #1a2744 0%, #0d3320 100%)",
-          display: "flex", flexDirection: "column", alignItems: "center",
-          justifyContent: "center", padding: "48px 32px", gap: 18,
+          backgroundColor: "white",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          padding: 40,
         }}>
-          <div style={{ backgroundColor: "white", borderRadius: 16, padding: 16, boxShadow: "0 8px 32px rgba(0,0,0,0.35)" }}>
-            <img src="/logo.jpeg" alt="EEA" style={{ width: 180, height: 180, objectFit: "contain", display: "block" }} />
-          </div>
-          <span style={{ color: "white", fontSize: 16, fontWeight: 500, textAlign: "center", lineHeight: 1.4 }}>
-            Environmental Express Argentina
-          </span>
-          <div style={{ width: 40, height: 3, backgroundColor: "#3a7d2c", borderRadius: 2 }} />
-          <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", textAlign: "center" }}>
-            Higiene Ocupacional y Medio Ambiente
-          </span>
+          <img src="/logo.jpeg" alt="EEA" style={{ height: 260, width: "auto", objectFit: "contain", display: "block" }} />
         </div>
 
         {/* ── COLUMNA DERECHA: Carrusel ── */}
